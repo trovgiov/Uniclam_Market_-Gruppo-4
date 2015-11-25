@@ -52,6 +52,7 @@ public class Server {
 
 	    String r=in.readLine();
 	    String[] parts = r.split("/");
+	    
 		operation = parts[0]; // Operazione
 	    
 		if(operation.contentEquals(INSERT_AMICI)){

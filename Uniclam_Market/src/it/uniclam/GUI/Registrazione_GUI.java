@@ -142,21 +142,35 @@ public class Registrazione_GUI extends JFrame {
 				 	 String nome= txtNome.getText();
 				 	 String cognome=textCognome.getText();
 				 	 String email=textEmail.getText();
+
 				 	 String telefono=textTelefono.getText();
 				 	 String massimale=textMassimale.getText();
+				 
+				 	 String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+				 	if (email.matches(emailPattern)) 
+				 	{ 
+				 		
+						String req=Server.INSERT_AMICI+"/"+nome+"/"+cognome+"/"+email+"/"+telefono+"/"+massimale;
+						 
+						 
+	 					out.println(req);
+	 					System.out.println("Email valida"); 
+						System.out.println("Inviato: " + req);
+				 		 
+						
+				 	}
+				 	else{
+				 		out.println("Errore MAIL");
+						JOptionPane.showMessageDialog(Registrazione_GUI.this, "Mail Non Corretta !!", "Error", JOptionPane.ERROR_MESSAGE);
+
+				 	}
+	
 				 	 
-				 	 
-					String req=Server.INSERT_AMICI+"/"+nome+"/"+cognome+"/"+email+"/"+telefono+"/"+massimale;
-					 
- 
-					
-					out.println(req);
-					
-					System.out.println("Inviato: " + req);
+	 
 					
 					String line = in.readLine();
 					System.out.println(line);
-					/*
+					
 					if(line.contentEquals("OK")){
 						JOptionPane.showMessageDialog(Registrazione_GUI.this, "I dati da lei Inseriti sono : \n"+
 					      "Nome : "+txtNome.getText()+
@@ -164,16 +178,17 @@ public class Registrazione_GUI extends JFrame {
 								"\n"+"Email : "+textEmail.getText()+
 								"\n"+"Telefono : "+textTelefono.getText()+
 								"\n"+"Massimale : "+textMassimale.getText());
+						s.close();
+
 
 					}
 				
-				 else {
-						JOptionPane.showMessageDialog(Registrazione_GUI.this, "Error in communication with server!", "Error", JOptionPane.ERROR_MESSAGE);
+				 else if(line.contentEquals("null")){
+						JOptionPane.showMessageDialog(Registrazione_GUI.this, "Campi Obbligatori non inseriti", "Error", JOptionPane.ERROR_MESSAGE);
 
 					}
-					*/
-					s.close();
-				} catch (IOException ioe){
+					
+ 				} catch (IOException ioe){
 					JOptionPane.showMessageDialog(Registrazione_GUI.this, "Error in communication with server!", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
