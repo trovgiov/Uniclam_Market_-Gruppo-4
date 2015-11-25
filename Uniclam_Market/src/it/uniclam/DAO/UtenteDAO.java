@@ -8,5 +8,5 @@ public interface UtenteDAO {
 
 	
 	public void insertUtente(Utente u) throws SQLException;
-	
+	public void generatePin(String string) throws SQLException;
 }

@@ -1,28 +1,22 @@
 package it.uniclam.entity;
 
 public class Utente {
-	private int idUtente;
-private String nome;
+ private String nome;
 private String cognome;
 private String email;
 private String telefono;
 private double massimale;
-public Utente(int idUtente,String nome, String cognome, String email, String telefono,
+public Utente(String nome, String cognome, String email, String telefono,
 		double massimale) {
 	super();
-	this.idUtente=idUtente;
+	 
 	this.nome = nome;
 	this.cognome = cognome;
 	this.email = email;
 	this.telefono = telefono;
 	this.massimale = massimale;
 }
-public int getIdUtente() {
-	return idUtente;
-}
-public void setIdUtente(int idUtente) {
-	this.idUtente = idUtente;
-}
+ 
 public String getNome() {
 	return nome;
 }
