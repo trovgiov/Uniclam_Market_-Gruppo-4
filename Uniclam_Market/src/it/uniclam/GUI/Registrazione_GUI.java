@@ -124,6 +124,9 @@ public class Registrazione_GUI extends JFrame {
 		this.getContentPane().add(btnRegistrati);
 		setVisible(true);
  		this.getContentPane().add(lblNewLabel);
+ 		
+ 		
+ 
 		
  		btnRegistrati.addActionListener(new ActionListener() {
 			
@@ -136,17 +139,16 @@ public class Registrazione_GUI extends JFrame {
 					BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
 					PrintWriter out = new PrintWriter(s.getOutputStream(), true);
 					
-					
-					
+				 	 String nome= txtNome.getText();
+				 	 String cognome=textCognome.getText();
+				 	 String email=textEmail.getText();
+				 	 String telefono=textTelefono.getText();
+				 	 String massimale=textMassimale.getText();
+				 	 
+				 	 
+					String req=Server.INSERT_AMICI+"/"+nome+"/"+cognome+"/"+email+"/"+telefono+"/"+massimale;
 					 
-					String req = Server.INSERT_AMICI+ "\n" + 
-							"nome:" + txtNome.getText() + "\n" + 
-							"cognome:" +textCognome.getText() + "\n" + 
-							"email:" + textEmail.getText() + "\n" + 
-							"telefono:" + textTelefono.getText() + "\n" +
-							"massimale:" + textMassimale.getText()+ "\n" +
-							"\n";
-					
+ 
 					
 					out.println(req);
 					
@@ -154,7 +156,7 @@ public class Registrazione_GUI extends JFrame {
 					
 					String line = in.readLine();
 					System.out.println(line);
-					
+					/*
 					if(line.contentEquals("OK")){
 						JOptionPane.showMessageDialog(Registrazione_GUI.this, "I dati da lei Inseriti sono : \n"+
 					      "Nome : "+txtNome.getText()+
@@ -169,7 +171,7 @@ public class Registrazione_GUI extends JFrame {
 						JOptionPane.showMessageDialog(Registrazione_GUI.this, "Error in communication with server!", "Error", JOptionPane.ERROR_MESSAGE);
 
 					}
-					
+					*/
 					s.close();
 				} catch (IOException ioe){
 					JOptionPane.showMessageDialog(Registrazione_GUI.this, "Error in communication with server!", "Error", JOptionPane.ERROR_MESSAGE);

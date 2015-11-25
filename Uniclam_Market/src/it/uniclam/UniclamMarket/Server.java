@@ -23,12 +23,14 @@ public class Server {
 	public static String INSERT_AMICI = "req_insert_amici";
 	public static String HOST = "localhost";
 	public static int port = 8888;
+ 
  	
 
 	public static void main(String[] args) throws Throwable {
 		// TODO Auto-generated method stub
 
-
+		String operation=null;
+	 
 	    ServerSocket ss= new ServerSocket(8888);
 		
 	    System.out.println("Server in ascolto sulla porta 8888");
@@ -49,16 +51,22 @@ public class Server {
 		 int idUtente = 0;
 
 	    String r=in.readLine();
+	    String[] parts = r.split("/");
+		operation = parts[0]; // Operazione
 	    
-		if(r.contentEquals(INSERT_AMICI)){
-			
-		String nome = in.readLine().replace("nome:", "").replace("\n", "");
-		String cognome = in.readLine().replace("cognome:", "").replace("\n", "");
+		if(operation.contentEquals(INSERT_AMICI)){
 		 
-		String email = in.readLine().replace("email:", "").replace("\n", "");
+			
+			String nome = parts[1];
+			String cognome = parts[2];
+			
+			 
+			String email = parts[3];
 
-		String telefono = in.readLine().replace("telefono:", "").replace("\n", "");
- 		String massimal = in.readLine().replace("massimale:", "").replace("\n", "");
+			String telefono = parts[4];
+	 		String massimal = parts[5];
+ 
+	 
 		
 		double massimale=Double.parseDouble(massimal);
 		
@@ -66,7 +74,7 @@ public class Server {
  Utente u=new Utente(idUtente,nome,cognome,email,telefono,massimale);	
  UtenteDAOImpl.getInstance().insertUtente(u);
  
- String response="OK";
+String response="OK";
 out.println(response);
  
  		}
