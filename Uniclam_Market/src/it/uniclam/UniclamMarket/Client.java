@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.Color;
+import javax.swing.SwingConstants;
 
 public class Client extends JFrame {
 	//private Registrazione_GUI Reg_GUI_Panel;
@@ -53,7 +54,7 @@ public class Client extends JFrame {
 	 */
 	private void initialize() {
  		frmUniclamMarket = new JFrame();
- 		frmUniclamMarket.getContentPane().setBackground(new Color(204, 0, 0));
+ 		frmUniclamMarket.getContentPane().setBackground(new Color(102, 0, 0));
  		frmUniclamMarket.setTitle("UNICLAM MARKET");
 		frmUniclamMarket.setBounds(100, 100, 526, 169);
 		frmUniclamMarket.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,9 +70,10 @@ public class Client extends JFrame {
 		frmUniclamMarket.getContentPane().add(btnLogin);
 		
 		JLabel lblNewLabel = new JLabel("BENVENUTI!");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD, 16));
-		lblNewLabel.setIcon(new ImageIcon(Client.class.getResource("/com/sun/javafx/scene/control/skin/caspian/dialog-information.png")));
+		lblNewLabel.setIcon(null);
 		lblNewLabel.setBounds(187, 6, 155, 55);
 		frmUniclamMarket.getContentPane().add(lblNewLabel);
 		

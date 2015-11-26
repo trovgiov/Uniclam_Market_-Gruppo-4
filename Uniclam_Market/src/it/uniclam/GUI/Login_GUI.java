@@ -36,7 +36,7 @@ public class Login_GUI {
 		
 		JLabel lblAutenticazioneNelSistema = new JLabel("AUTENTICAZIONE NEL SISTEMA");
 		lblAutenticazioneNelSistema.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAutenticazioneNelSistema.setIcon(new ImageIcon(Login_GUI.class.getResource("/com/sun/javafx/scene/control/skin/caspian/dialog-information.png")));
+		lblAutenticazioneNelSistema.setIcon(null);
 		lblAutenticazioneNelSistema.setFont(new Font("Lucida Grande", Font.BOLD, 15));
 		lblAutenticazioneNelSistema.setForeground(Color.WHITE);
 		lblAutenticazioneNelSistema.setBounds(90, 6, 341, 36);
@@ -66,7 +66,7 @@ public class Login_GUI {
 		textField.setColumns(10);
 		
 		JButton btnLogin = new JButton("LOGIN");
-		btnLogin.setIcon(new ImageIcon(Login_GUI.class.getResource("/com/sun/javafx/scene/control/skin/caspian/fxvk-capslock-button.png")));
+		btnLogin.setIcon(null);
 		btnLogin.setBackground(Color.GREEN);
 		btnLogin.setBounds(418, 149, 84, 36);
 		frmUniclamMarket.getContentPane().add(btnLogin);

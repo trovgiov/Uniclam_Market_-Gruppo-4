@@ -129,8 +129,7 @@ public class Registrazione_GUI extends JFrame {
 
 		JButton btnRegistrati = new JButton("REGISTRATI");
 		btnRegistrati.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 13));
-		btnRegistrati.setIcon(new ImageIcon(Registrazione_GUI.class.getResource("/com/sun/javafx/scene/control/skin/caspian/fxvk-capslock-button.png")));
-		btnRegistrati.setBounds(317, 310, 141, 43);
+		btnRegistrati.setBounds(335, 310, 123, 43);
 		this.getContentPane().add(btnRegistrati);
 		setVisible(true);
 		this.getContentPane().add(lblNewLabel);
