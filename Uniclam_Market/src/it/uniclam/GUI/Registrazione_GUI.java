@@ -57,7 +57,7 @@ public class Registrazione_GUI extends JFrame {
 		// this = new JFrame();
 		this.setFont(new Font("Adobe Heiti Std", Font.BOLD, 12));
 		this.setTitle("UNICLAM MARKET");
-		this.getContentPane().setBackground(new Color(204, 255, 255));
+		this.getContentPane().setBackground(new Color(153, 0, 0));
 		this.getContentPane().setForeground(Color.GRAY);
 		this.setBounds(100, 100, 478, 395);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,6 +70,7 @@ public class Registrazione_GUI extends JFrame {
 		txtNome.setColumns(10);
 
 		JLabel lblNome = new JLabel("NOME:");
+		lblNome.setForeground(Color.WHITE);
 		lblNome.setBounds(99, 60, 61, 16);
 		this.getContentPane().add(lblNome);
 		this.getContentPane().add(lblNome);
@@ -77,6 +78,7 @@ public class Registrazione_GUI extends JFrame {
 		this.getContentPane().add(lblNome);
 
 		JLabel lblCognome = new JLabel("COGNOME:");
+		lblCognome.setForeground(Color.WHITE);
 		lblCognome.setBounds(73, 104, 77, 16);
 		this.getContentPane().add(lblCognome);
 
@@ -86,6 +88,7 @@ public class Registrazione_GUI extends JFrame {
 		textCognome.setColumns(10);
 
 		JLabel lblEmail = new JLabel("EMAIL:");
+		lblEmail.setForeground(Color.WHITE);
 		lblEmail.setBounds(101, 148, 51, 16);
 		this.getContentPane().add(lblEmail);
 
@@ -95,6 +98,7 @@ public class Registrazione_GUI extends JFrame {
 		textEmail.setColumns(10);
 
 		JLabel lblTelfono = new JLabel("TELEFONO:");
+		lblTelfono.setForeground(Color.WHITE);
 		lblTelfono.setBounds(73, 191, 77, 16);
 		this.getContentPane().add(lblTelfono);
 
@@ -104,23 +108,29 @@ public class Registrazione_GUI extends JFrame {
 		textTelefono.setColumns(10);
 
 		JLabel lblImpostareIlMassimale = new JLabel(
-				"Impostare il massimale di spesa mensile:");
+				"Impostare il massimale di spesa mensile: €");
+		lblImpostareIlMassimale.setForeground(Color.WHITE);
 		lblImpostareIlMassimale.setFont(new Font("Lucida Grande", Font.PLAIN,
 				15));
-		lblImpostareIlMassimale.setBounds(90, 249, 298, 16);
+		lblImpostareIlMassimale.setBounds(90, 249, 315, 16);
 		this.getContentPane().add(lblImpostareIlMassimale);
 
 		textMassimale = new JTextField();
-		textMassimale.setBounds(179, 277, 130, 26);
+		textMassimale.setBackground(Color.LIGHT_GRAY);
+		textMassimale.setBounds(187, 277, 130, 26);
 		this.getContentPane().add(textMassimale);
 		textMassimale.setColumns(10);
 
 		JLabel lblNewLabel = new JLabel("Registrazione al Sistema");
-		lblNewLabel.setBounds(163, 17, 158, 26);
+		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD, 15));
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setBounds(156, 17, 200, 26);
 		this.getContentPane().add(lblNewLabel);
 
 		JButton btnRegistrati = new JButton("REGISTRATI");
-		btnRegistrati.setBounds(339, 324, 117, 29);
+		btnRegistrati.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 13));
+		btnRegistrati.setIcon(new ImageIcon(Registrazione_GUI.class.getResource("/com/sun/javafx/scene/control/skin/caspian/fxvk-capslock-button.png")));
+		btnRegistrati.setBounds(317, 310, 141, 43);
 		this.getContentPane().add(btnRegistrati);
 		setVisible(true);
 		this.getContentPane().add(lblNewLabel);
