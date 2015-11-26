@@ -102,7 +102,7 @@ public class Client extends JFrame {
 				// TODO Auto-generated method stub
 				
 				Login_GUI loginwindows = new Login_GUI();
-				
+				loginwindows.setVisible(true);
 			}
 		});
 		
