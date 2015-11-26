@@ -182,7 +182,7 @@ public class Registrazione_GUI extends JFrame {
 									.showMessageDialog(
 											Registrazione_GUI.this,
 											"Complimenti. La sua carta è stata attivata."
-													+ "\nA breve riceverà una mail con il numero carta ed il pin, necessario per l'accesso.+"
+													+ "\nA breve riceverà una mail con il numero carta ed il pin, necessario per l'accesso."
 													+ "\nUniclam Market");
 
 							/*
@@ -193,10 +193,7 @@ public class Registrazione_GUI extends JFrame {
 							 */
 							//
 
-							String host = "smtp.gmail.com";
-							String port = "587";
-							String userName = "uniclamarket@gmail.com";
-							String password = "trovinimarinelli";
+					 
 							String subject = "Registrazione Sistema Uniclam Market";
 
 							String message2 = "Benvenuto nel nostro sistema, gentile "
@@ -204,7 +201,7 @@ public class Registrazione_GUI extends JFrame {
 									+ " "
 									+ cognome
 									+ " \n\n"
-									+ "Le comunichiamo che la sua carta fedelta' è stata attivata !!!"
+									+ "Le comunichiamo che la sua carta fedelta' e' stata attivata !!!"
 									+ " \n\n"
 									+ "Riepilogo Dati: "
 									+ " \n"
@@ -228,8 +225,8 @@ public class Registrazione_GUI extends JFrame {
 									+ ".\n\n"
 									+ "Saluti - Uniclam Market ";
 
-							EmailUtility.sendEmail(host, port, userName,
-									password, email, subject, message2);
+							EmailUtility.sendEmail(EmailUtility.HOST, EmailUtility.PASSWORD, EmailUtility.USER,
+									EmailUtility.PASSWORD, email, subject, message2);
 
 						}
 
