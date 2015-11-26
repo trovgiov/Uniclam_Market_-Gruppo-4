@@ -32,9 +32,9 @@ public class Server {
 		// TODO Auto-generated method stub
 
 		String operation = null;
+ 
 
 		ServerSocket ss = new ServerSocket(8888);
-
 		System.out.println("Server in ascolto sulla porta 8888");
 		Socket s = ss.accept();
 
@@ -43,10 +43,7 @@ public class Server {
 		InputStreamReader isr = new InputStreamReader(s.getInputStream());
 
 		BufferedReader in = new BufferedReader(isr);
-
-		System.out.println(" Collegamento Effettuato");
-
-		System.out.println("(Server) Eseguo String r=in.readLine() : ");
+ 
 
 		int idUtente = 0;
 
@@ -96,14 +93,12 @@ Date data_attivazione = null;
 				System.out.println(response);
 
 				
-			System.out.println(u.getEmail());
- 
+  
 		}
 
 		// String[] parts = r.split("/");
 
-		System.out.println("\n(Server) Dopo String r=in.readLine() : " + r);
-
+ 
 	}
 
 }

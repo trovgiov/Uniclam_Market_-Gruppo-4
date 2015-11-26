@@ -1,7 +1,7 @@
 package it.uniclam.DAO;
 
 import it.uniclam.db.DBUtility;
- import it.uniclam.entity.Scheda;
+import it.uniclam.entity.Scheda;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +11,6 @@ import java.util.Random;
 import com.mysql.jdbc.Connection;
 
 public class SchedaDAOImpl implements SchedaDAO {
-
 
 	private SchedaDAOImpl() {
 	}
@@ -24,21 +23,15 @@ public class SchedaDAOImpl implements SchedaDAO {
 		}
 		return dao;
 	}
-	
-	
-	
-	
-	
+
 	@Override
-	public void activeCard(Scheda s,String email_Utente) throws SQLException {
- 
-		
+	public void activeCard(Scheda s, String email_Utente) throws SQLException {
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
-		Date today=new Date ();
-		
+		//Date today = new Date();
+
 		String insertTableSQL = "insert into scheda (punti_totali,massimale_res,utente_email) VALUES (?,?,?)";
 
 		try {
@@ -46,16 +39,11 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
 
- 
-			preparedStatement.setDouble(1,s.getPunti_totali());
+			preparedStatement.setDouble(1, s.getPunti_totali());
 
-			preparedStatement.setDouble(2,s.getMassimale_res());
-			
+			preparedStatement.setDouble(2, s.getMassimale_res());
 
-			preparedStatement.setString(3,email_Utente);
-			
-			
- 			 
+			preparedStatement.setString(3, email_Utente);
 
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
@@ -77,15 +65,8 @@ public class SchedaDAOImpl implements SchedaDAO {
 			}
 
 		}
-		
-		
-		
-		
+
 	}
-
-
-
-
 
 	@Override
 	public int[] generatePin(String m) throws SQLException {
@@ -93,37 +74,32 @@ public class SchedaDAOImpl implements SchedaDAO {
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
-		//Seleziono l'id scheda corrispondente alla mail in ingresso
-		 
-java.sql.Statement s = DBUtility.getStatement();
-int idScheda=0;
-		String sql = " Select idScheda from scheda where utente_email='"+m+"'  ";
-		
+		// Seleziono l'id scheda corrispondente alla mail in ingresso
+
+		java.sql.Statement s = DBUtility.getStatement();
+		int idScheda = 0;
+		String sql = " Select idScheda from scheda where utente_email='" + m
+				+ "'  ";
+
 		try {
-			ResultSet rs= s.executeQuery(sql);
-			
- 			
-			
-			while(rs.next()){
-				  idScheda=rs.getInt("idScheda");
-				 
+			ResultSet rs = s.executeQuery(sql);
+
+			while (rs.next()) {
+				idScheda = rs.getInt("idScheda");
+
 			}
-			
-	
-			
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
- 		
-		
-		//Crea Pin
- 		Random random = new Random();
+
+		// Crea Pin
+		Random random = new Random();
 		int j = 3000;
 		int n = 7000 - j;
 		int pin = random.nextInt(n) + j;
-		
+
 		String insertTableSQL = "insert into login (pin,scheda_idScheda) VALUES (?,?)";
 
 		try {
@@ -131,14 +107,9 @@ int idScheda=0;
 
 			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
 
- 
-			preparedStatement.setInt(1,pin);
+			preparedStatement.setInt(1, pin);
 
-			preparedStatement.setInt(2,idScheda);
-			
-
-		 
-			 
+			preparedStatement.setInt(2, idScheda);
 
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
@@ -160,23 +131,10 @@ int idScheda=0;
 			}
 
 		}
- int [] a = {idScheda,pin};
-	 
-		
+		int[] a = { idScheda, pin };
+
 		return a;
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	 
+
 	}
 
 }
