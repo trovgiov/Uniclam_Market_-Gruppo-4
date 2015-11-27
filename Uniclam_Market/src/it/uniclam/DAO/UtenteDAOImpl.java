@@ -1,6 +1,6 @@
 package it.uniclam.DAO;
 
- import java.sql.ResultSet;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.mysql.jdbc.Connection;
@@ -36,7 +36,7 @@ public class UtenteDAOImpl implements UtenteDAO {
 
 			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
 
- 
+
 			preparedStatement.setString(1, u.getNome());
 			preparedStatement.setString(2, u.getCognome());
 			preparedStatement.setString(3, u.getEmail());
@@ -69,14 +69,106 @@ public class UtenteDAOImpl implements UtenteDAO {
 	@Override
 	public void updateUtente(Utente u) {
 		// TODO Auto-generated method stub
-		
+		Connection dbConnection = null;
+		java.sql.PreparedStatement preparedStatement = null;
+
+		//Dichiaro la stringa di Update sulla colonna EMAIL
+		String updateTableSQL = "UPDATE utente SET email = ? " + "WHERE email = ?";
+
+		try {
+			dbConnection = DBUtility.getDBConnection();
+
+			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
+
+			preparedStatement.setString(3, u.getEmail());
+
+			// execute update SQL stetement
+			preparedStatement.executeUpdate();
+
+			System.out.println("Aggiornamento Email effettuato");
+
+		}
+
+
+		catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+
+		} finally {
+
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			if (dbConnection != null) {
+				try {
+					dbConnection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}
+
 	}
 
 	@Override
 	public void deleteUtente(String email) {
 		// TODO Auto-generated method stub
-		
+
+		Connection dbConnection = null;
+		java.sql.PreparedStatement preparedStatement = null;
+
+		String deleteSQL = "DELETE utente WHERE email = ?";
+
+		try {
+			dbConnection = DBUtility.getDBConnection();
+
+			preparedStatement = dbConnection.prepareStatement(deleteSQL);
+
+			preparedStatement.setString(3, email);
+
+			// execute delete SQL stetement
+			preparedStatement.executeUpdate();
+
+			System.out.println("Utente cancellato dal sistema!!");
+
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+
+		} finally {
+
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			if (dbConnection != null) {
+				try {
+					dbConnection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}
+
 	}
+
+
+
 
 	@Override
 	public boolean login(int id, int pin) throws SQLException {
@@ -96,8 +188,8 @@ public class UtenteDAOImpl implements UtenteDAO {
 
 			if (rs.next()) {
 
-				 login_succed=true;
-  				
+				login_succed=true;
+
 			}
 			else 
 				return  login_succed=false;
@@ -106,12 +198,12 @@ public class UtenteDAOImpl implements UtenteDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
- 		
-		
-		
+
+
+
 		return login_succed;
 	}
 
- 	 
+
 
 }
