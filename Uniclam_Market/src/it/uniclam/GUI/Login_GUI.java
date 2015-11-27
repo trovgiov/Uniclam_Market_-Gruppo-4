@@ -1,12 +1,28 @@
 package it.uniclam.GUI;
 
+import it.uniclam.DAO.UtenteDAOImpl;
+import it.uniclam.UniclamMarket.Server;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+
 import java.awt.Color;
+
 import javax.swing.JLabel;
+
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.sql.SQLException;
+
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -72,5 +88,67 @@ public class Login_GUI extends JFrame {
 		this.setBackground(new Color(153, 0, 0));
 		this.setBounds(100, 100, 535, 229);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		btnLogin.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				try{
+				String numScheda =textNumeroScheda.getText();
+ 				
+				String pino=textField.getText();
+				
+				int scheda=Integer.parseInt(numScheda);
+				int pin=Integer.parseInt(pino);
+				//
+				boolean result;
+				result=UtenteDAOImpl.getInstance().login(scheda, pin);
+
+				if(result==true){
+				
+				Socket s = new Socket("localhost", 8888);
+
+				BufferedReader in = new BufferedReader(
+						new InputStreamReader(s.getInputStream()));
+				PrintWriter out = new PrintWriter(s.getOutputStream(),
+						true);
+
+				String req = Server.LOGIN_UTENTE + "/" + scheda + "/"
+						+ pin ;
+				
+				out.println(req);
+				
+				String line=in.readLine();
+				System.out.println(line);
+				
+                 s.close();
+				}
+				else {
+					JOptionPane.showMessageDialog(Login_GUI.this, "User O Password errate");
+ 
+				
+				}
+				
+ 				
+				
+				
+				
+				
+				
+				
+				
+				
+				}
+				 
+					catch (IOException | SQLException ioe) {
+
+						JOptionPane.showMessageDialog(Login_GUI.this,
+								"Error in communication with server!", "Error",
+								JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 	}
 }

@@ -21,6 +21,7 @@ import java.net.Socket;
 public class Server {
 
 	public static String INSERT_UTENTE = "req_insert_utente";
+	public static String LOGIN_UTENTE="req_login";
 	public static String HOST = "localhost";
 	public static int port = 8888;
 
@@ -90,9 +91,22 @@ public class Server {
   
 		}
 
+		
+		else if(operation.contentEquals(LOGIN_UTENTE)) {
+			
+			
+			
+			String response="login_Ok";
+			
+			out.println(response);
+			
+			}
+			
+			
+		}
 		// String[] parts = r.split("/");
 
  
 	}
 
-}
+

@@ -191,7 +191,7 @@ public class Registrazione_GUI extends JFrame {
 							 * "Numero Carta : " + cardnumber + "\n" + "Pin : "
 							 * + pin + "\n");
 							 */
-							//
+							
 
 					 
 							String subject = "Registrazione Sistema Uniclam Market";

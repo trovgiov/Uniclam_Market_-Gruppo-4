@@ -1,6 +1,7 @@
 package it.uniclam.DAO;
 
- import java.sql.SQLException;
+ import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import com.mysql.jdbc.Connection;
 
@@ -75,6 +76,40 @@ public class UtenteDAOImpl implements UtenteDAO {
 	public void deleteUtente(String email) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean login(int id, int pin) throws SQLException {
+		// TODO Auto-generated method stub
+		Connection dbConnection = null;
+		java.sql.PreparedStatement preparedStatement = null;
+
+		boolean login_succed=true;
+		// Seleziono l'id scheda corrispondente alla mail in ingresso
+
+		java.sql.Statement s = DBUtility.getStatement();
+		int idScheda = 0;
+		String sql = " select scheda_idScheda,pin from login where scheda_idScheda='" +id+ "' and pin= '"+pin+"' ";
+
+		try {
+			ResultSet rs = s.executeQuery(sql);
+
+			if (rs.next()) {
+
+				 login_succed=true;
+  				
+			}
+			else 
+				return  login_succed=false;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 		
+		
+		
+		return login_succed;
 	}
 
  	 
