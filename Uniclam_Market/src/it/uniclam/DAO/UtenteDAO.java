@@ -8,5 +8,6 @@ public interface UtenteDAO {
 
 	
 	public void insertUtente(Utente u) throws SQLException;
-	public void generatePin(String string) throws SQLException;
-}
+	public void updateUtente(Utente u);
+	public void deleteUtente (String email);
+ }

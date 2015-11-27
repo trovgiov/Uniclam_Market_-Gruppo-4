@@ -72,25 +72,7 @@ public class EmailUtility {
 		msg.setSentDate(new Date());
 		msg.setContent(message, "text/plain");
 
-		// creates message part
-		// MimeBodyPart messageBodyPart = new MimeBodyPart();
-		// messageBodyPart.setContent(message, "text/plain");
 
-		// creates multi-part
-		// Multipart multipart = new MimeMultipart();
-		// multipart.addBodyPart(messageBodyPart);
-
-		/*
-		 * // adds attachments if (attachFile != null) { MimeBodyPart attachPart
-		 * = new MimeBodyPart();
-		 * 
-		 * try { attachPart.attachFile(attachFile); } catch (IOException ex) {
-		 * ex.printStackTrace(); }
-		 * 
-		 * multipart.addBodyPart(attachPart); }
-		 */
-		// sets the multi-part as e-mail's content
-		// msg.setContent(multipart);
 		msg.setContent(message, "text/plain");
 
 		// sends the e-mail

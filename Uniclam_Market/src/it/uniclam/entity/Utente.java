@@ -23,6 +23,11 @@ public String getNome() {
 public void setNome(String nome) {
 	this.nome = nome;
 }
+public Utente(String email) {
+	super();
+	this.email = email;
+}
+
 public String getCognome() {
 	return cognome;
 }

@@ -6,16 +6,12 @@ import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Utente;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
-
-import javax.swing.JOptionPane;
-
+ 
+ 
 /**
  * Classe Server - Socket
  * 
@@ -34,6 +30,7 @@ public class Server {
 		String operation = null;
  
 
+		@SuppressWarnings("resource")
 		ServerSocket ss = new ServerSocket(8888);
 		System.out.println("Server in ascolto sulla porta 8888");
 		Socket s = ss.accept();
@@ -45,8 +42,7 @@ public class Server {
 		BufferedReader in = new BufferedReader(isr);
  
 
-		int idUtente = 0;
-
+ 
 		String r = in.readLine();
 		String[] parts = r.split("/");
 
@@ -69,10 +65,8 @@ public class Server {
 			UtenteDAOImpl.getInstance().insertUtente(u);
 			
 			//Creo Scheda e attivo
-int idScheda;
-double punti_totali=0;
-Date data_attivazione = null;
-   
+ double punti_totali=0;
+    
  
 			
  			Scheda card = new Scheda (punti_totali,massimale);

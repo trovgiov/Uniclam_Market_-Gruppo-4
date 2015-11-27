@@ -4,20 +4,20 @@ import it.uniclam.GUI.*;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+ 
+
+
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JLabel;
-import javax.swing.ImageIcon;
+
 import java.awt.Font;
 import java.awt.Color;
+
 import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class Client extends JFrame {
 	//private Registrazione_GUI Reg_GUI_Panel;
  
@@ -85,6 +85,7 @@ public class Client extends JFrame {
  
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				@SuppressWarnings("unused")
 				Registrazione_GUI window = new Registrazione_GUI();
 				
 				//window.setVisible(true);

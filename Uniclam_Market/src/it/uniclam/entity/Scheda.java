@@ -1,7 +1,6 @@
 package it.uniclam.entity;
 
-import java.util.Date;
-
+ 
 public class Scheda {
 
 	private int idScheda;

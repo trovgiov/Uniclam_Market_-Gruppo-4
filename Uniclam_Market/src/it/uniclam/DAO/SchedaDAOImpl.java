@@ -2,11 +2,10 @@ package it.uniclam.DAO;
 
 import it.uniclam.db.DBUtility;
 import it.uniclam.entity.Scheda;
-
+ 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.Random;
+ import java.util.Random;
 
 import com.mysql.jdbc.Connection;
 
@@ -68,8 +67,9 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 	}
 
+	@SuppressWarnings("resource")
 	@Override
-	public int[] generatePin(String m) throws SQLException {
+	public int[] generatePin(String mail) throws SQLException {
 		// TODO Auto-generated method stub
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
@@ -78,7 +78,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 		java.sql.Statement s = DBUtility.getStatement();
 		int idScheda = 0;
-		String sql = " Select idScheda from scheda where utente_email='" + m
+		String sql = " Select idScheda from scheda where utente_email='" + mail
 				+ "'  ";
 
 		try {
@@ -115,7 +115,9 @@ public class SchedaDAOImpl implements SchedaDAO {
 			preparedStatement.executeUpdate();
 
 			System.out.println("Inserimento Effettuato");
-
+			//Utente a = null;
+			//System.out.println(a.getEmail());
+ 
 		} catch (SQLException e) {
 
 			System.out.println(e.getMessage());
@@ -134,7 +136,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 		int[] a = { idScheda, pin };
 
 		return a;
-
+ 		
 	}
 
 }
