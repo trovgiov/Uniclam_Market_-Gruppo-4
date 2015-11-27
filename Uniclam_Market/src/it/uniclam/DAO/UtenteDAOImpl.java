@@ -2,6 +2,7 @@ package it.uniclam.DAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.mysql.jdbc.Connection;
 
@@ -67,54 +68,18 @@ public class UtenteDAOImpl implements UtenteDAO {
 	}
 
 	@Override
-	public void updateUtente(Utente u) {
+	public void updateUtente(Utente u,String mail) throws SQLException {
 		// TODO Auto-generated method stub
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
-		//Dichiaro la stringa di Update sulla colonna EMAIL
-		String updateTableSQL = "UPDATE utente SET email = ? " + "WHERE email = ?";
 
-		try {
-			dbConnection = DBUtility.getDBConnection();
-
-			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
-
-			preparedStatement.setString(3, u.getEmail());
-
-			// execute update SQL stetement
-			preparedStatement.executeUpdate();
-
-			System.out.println("Aggiornamento Email effettuato");
-
-		}
-
-
-		catch (SQLException e) {
-
-			System.out.println(e.getMessage());
-
-		} finally {
-
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-
-			if (dbConnection != null) {
-				try {
-					dbConnection.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-
-		}
+		Statement s = DBUtility.getStatement();
+		// '" + getTesi_idtesi() + "'";
+		String updateQuery = "UPDATE utente SET email ='"
+				+mail + "'   WHERE email = '"
+				+ u.getEmail() + "' ";
+		int n = s.executeUpdate(updateQuery);
 
 	}
 
@@ -124,46 +89,18 @@ public class UtenteDAOImpl implements UtenteDAO {
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
-
-		String deleteSQL = "DELETE utente WHERE email = ?";
-
 		try {
-			dbConnection = DBUtility.getDBConnection();
-
+		String deleteSQL = "DELETE utente WHERE email = ?";
+		 
 			preparedStatement = dbConnection.prepareStatement(deleteSQL);
 
-			preparedStatement.setString(3, email);
-
-			// execute delete SQL stetement
+			preparedStatement.setString(1, email);
 			preparedStatement.executeUpdate();
 
-			System.out.println("Utente cancellato dal sistema!!");
-
 		} catch (SQLException e) {
-
-			System.out.println(e.getMessage());
-
-		} finally {
-
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-
-			if (dbConnection != null) {
-				try {
-					dbConnection.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-
+			System.err.println(e.getMessage());
 		}
+
 
 	}
 

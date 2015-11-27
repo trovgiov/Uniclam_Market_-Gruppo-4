@@ -127,7 +127,7 @@ public class Login_GUI extends JFrame {
 				else {
 					JOptionPane.showMessageDialog(Login_GUI.this, "User O Password errate");
  
-				
+ 
 				}
 				
  				
