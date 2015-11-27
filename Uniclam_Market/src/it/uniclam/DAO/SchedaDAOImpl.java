@@ -2,10 +2,15 @@ package it.uniclam.DAO;
 
 import it.uniclam.db.DBUtility;
 import it.uniclam.entity.Scheda;
- 
+import it.uniclam.mail.EmailUtility;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
- import java.util.Random;
+import java.util.Random;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import javax.swing.JOptionPane;
 
 import com.mysql.jdbc.Connection;
 
@@ -29,7 +34,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
-		//Date today = new Date();
+		// Date today = new Date();
 
 		String insertTableSQL = "insert into scheda (punti_totali,massimale_res,utente_email) VALUES (?,?,?)";
 
@@ -115,9 +120,9 @@ public class SchedaDAOImpl implements SchedaDAO {
 			preparedStatement.executeUpdate();
 
 			System.out.println("Inserimento Effettuato");
-			//Utente a = null;
-			//System.out.println(a.getEmail());
- 
+			// Utente a = null;
+			// System.out.println(a.getEmail());
+
 		} catch (SQLException e) {
 
 			System.out.println(e.getMessage());
@@ -136,7 +141,72 @@ public class SchedaDAOImpl implements SchedaDAO {
 		int[] a = { idScheda, pin };
 
 		return a;
- 		
+
+	}
+
+	
+	//Funziona Extra per il recupero pin
+	
+	@Override
+	public void recovery_pin(String email) throws SQLException,
+			AddressException, MessagingException {
+
+		int pin = 0;
+		int idscheda = 0;
+
+		//Controllo se l'email è presente nel db
+
+		java.sql.Statement s = DBUtility.getStatement();
+		String sql = " Select email from utente where email='" + email + "'  ";
+
+		try {
+			ResultSet rs = s.executeQuery(sql);
+
+			if (rs.next()) {
+
+				// Cerco il Pin con l'email inserita
+
+				java.sql.Statement s1 = DBUtility.getStatement();
+				String sql2 = "select pin,scheda_idScheda from utente u ,scheda s ,login l where u.email='"
+						+ email
+						+ "' and u.email=s.utente_email and s.idscheda=l.scheda_idscheda";
+
+				ResultSet rs2 = s1.executeQuery(sql2);
+
+				while (rs2.next()) {
+					pin = rs2.getInt("pin");
+
+					idscheda = rs2.getInt("scheda_idScheda");
+
+				}
+
+				// Creo il messaggio
+				String oggetto = "Recupero Numero Scheda e Pin - Uniclam Market";
+				String message_recovery = "Salve, come da lei richiesto, ecco i dati necessari per il recupero dei dati di accesso al sistema Uniclam market"
+						+ "\n\n"
+						+ "Numero Carta "
+						+ idscheda
+						+ "\n"
+						+ "Pin : "
+						+ pin
+						+ "\n\n"
+						+ "Se non ha richiesto il recupero del pin, ignori questa mail."
+						+ "\n\n" + "Saluti - Uniclam Market ";
+
+				EmailUtility.sendEmail(EmailUtility.HOST, EmailUtility.PORT,
+						EmailUtility.USER, EmailUtility.PASSWORD, email,
+						oggetto, message_recovery);
+
+			} else {
+				JOptionPane.showMessageDialog(null,
+						"La sua mail non è presente nei nostri sistemi.");
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }

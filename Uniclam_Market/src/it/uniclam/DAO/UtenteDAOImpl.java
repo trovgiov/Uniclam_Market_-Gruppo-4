@@ -75,8 +75,7 @@ public class UtenteDAOImpl implements UtenteDAO {
 
 
 		Statement s = DBUtility.getStatement();
-		// '" + getTesi_idtesi() + "'";
-		String updateQuery = "UPDATE utente SET email ='"
+ 		String updateQuery = "UPDATE utente SET email ='"
 				+mail + "'   WHERE email = '"
 				+ u.getEmail() + "' ";
 		int n = s.executeUpdate(updateQuery);
@@ -110,27 +109,23 @@ public class UtenteDAOImpl implements UtenteDAO {
 	@Override
 	public boolean login(int id, int pin) throws SQLException {
 		// TODO Auto-generated method stub
-		Connection dbConnection = null;
-		java.sql.PreparedStatement preparedStatement = null;
+		 
 
-		boolean login_succed=true;
-		// Seleziono l'id scheda corrispondente alla mail in ingresso
-
+		boolean login_succed = false;
+ 
 		java.sql.Statement s = DBUtility.getStatement();
-		int idScheda = 0;
-		String sql = " select scheda_idScheda,pin from login where scheda_idScheda='" +id+ "' and pin= '"+pin+"' ";
+ 		String sql = " select scheda_idScheda,pin from login where scheda_idScheda='" +id+ "' and pin= '"+pin+"' ";
 
 		try {
 			ResultSet rs = s.executeQuery(sql);
 
 			if (rs.next()) {
 
-				login_succed=true;
+			login_succed=true ;
 
 			}
-			else 
-				return  login_succed=false;
-
+			 
+ 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

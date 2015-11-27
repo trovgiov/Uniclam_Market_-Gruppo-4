@@ -3,8 +3,21 @@ package it.uniclam.entity;
  
 public class Scheda {
 
-	private int idScheda;
 	
+ 	private int idScheda;
+	private int pin;
+	
+	public Scheda(int idScheda, int pin) {
+		super();
+		this.idScheda = idScheda;
+		this.pin = pin;
+	}
+	public int getPin() {
+		return pin;
+	}
+	public void setPin(int pin) {
+		this.pin = pin;
+	}
 	//Costruttore Creazione Scheda
 	public Scheda( double punti_totali, double massimale_res) {
 		super();

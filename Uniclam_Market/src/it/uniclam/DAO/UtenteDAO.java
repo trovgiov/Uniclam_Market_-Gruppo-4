@@ -9,6 +9,7 @@ public interface UtenteDAO {
 	
 	public void insertUtente(Utente u) throws SQLException;
  	public void deleteUtente (String email);
-	public boolean login(int id , int pin) throws SQLException;
 	void updateUtente(Utente u, String mail) throws SQLException;
- }
+    public boolean login(int id , int pin) throws SQLException;
+  }
+ 
