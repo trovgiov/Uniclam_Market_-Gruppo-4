@@ -145,17 +145,16 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 	}
 
-
-	//Funziona Extra per il recupero pin
+	// Funziona Extra per il recupero pin
 
 	@Override
 	public void recovery_pin(String email) throws SQLException,
-	AddressException, MessagingException {
+			AddressException, MessagingException {
 
 		int pin = 0;
 		int idscheda = 0;
 
-		//Controllo se l'email è presente nel db
+		// Controllo se l'email è presente nel db
 
 		java.sql.Statement s = DBUtility.getStatement();
 		String sql = " Select email from utente where email='" + email + "'  ";
@@ -212,11 +211,11 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 	@Override
 	public double checkMassimale(int idscheda) throws SQLException {
-		double massimale_residuo=0;
-
+		double massimale_residuo = 0;
 
 		java.sql.Statement s = DBUtility.getStatement();
-		String sql = " Select massimale_res from scheda where idScheda='" + idscheda + "'  ";
+		String sql = " Select massimale_res from scheda where idScheda='"
+				+ idscheda + "'  ";
 
 		ResultSet rs = s.executeQuery(sql);
 
@@ -227,17 +226,18 @@ public class SchedaDAOImpl implements SchedaDAO {
 		rs.close();
 		return massimale_residuo;
 	}
-	
+
+	/*
 	@Override
 	public String checkUtente(int idscheda) throws SQLException {
 		String email = null;
 		String nome = null;
 		String cognome = null;
 		String utente = null;
-		
 
 		java.sql.Statement s = DBUtility.getStatement();
-		String sql = " Select utente_email from scheda where idScheda='" + idscheda + "'  ";
+		String sql = " Select utente_email from scheda where idScheda='"
+				+ idscheda + "'  ";
 
 		ResultSet rs = s.executeQuery(sql);
 
@@ -246,42 +246,42 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 		}
 		rs.close();
- 		
+
 		java.sql.Statement s1 = DBUtility.getStatement();
-		String sql1 = " Select nome,cognome from utente where email='"+email +"' ";
-		
+		String sql1 = " Select nome,cognome from utente where email='" + email
+				+ "' ";
+
 		ResultSet rs1 = s1.executeQuery(sql1);
 		while (rs1.next()) {
 			nome = rs1.getString("nome");
 			cognome = rs1.getString("cognome");
 			utente = nome + " " + cognome;
 		}
-		
+
 		rs1.close();
-		
 
 		return utente;
 	}
 
+*/
 	@Override
 	public Utente checkUser(int idScheda) throws SQLException {
 		// TODO Auto-generated method stub
 		Utente u = null;
 		java.sql.Statement s = DBUtility.getStatement();
-		String sql = "	select u.nome, u.cognome from utente u,scheda s where idscheda= '"+idScheda+"' and s.utente_email=u.email";
+		String sql = "	select u.nome, u.cognome from utente u,scheda s where idscheda= '"
+				+ idScheda + "' and s.utente_email=u.email";
 
 		ResultSet rs = s.executeQuery(sql);
 
-		while(rs.next()) {
- 
-			u=new Utente(rs.getString("u.nome"),rs.getString("u.cognome"));
-		 
+		while (rs.next()) {
+
+			u = new Utente(rs.getString("u.nome"), rs.getString("u.cognome"));
+
 		}
 		rs.close();
 		return u;
-		
-	 
-		
+
 	}
 
 }

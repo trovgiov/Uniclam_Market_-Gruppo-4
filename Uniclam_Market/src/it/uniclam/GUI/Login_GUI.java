@@ -30,11 +30,12 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JPasswordField;
 
 public class Login_GUI extends JFrame {
 
 	private JTextField textNumeroScheda;
-	private JTextField textField;
+	private JPasswordField pin_field;
 
 	public JTextField getTextNumeroScheda() {
 		return textNumeroScheda;
@@ -88,11 +89,8 @@ public class Login_GUI extends JFrame {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(191, 109, 40, 16);
 		this.getContentPane().add(lblNewLabel);
+	 
 
-		textField = new JTextField();
-		textField.setBounds(233, 104, 95, 26);
-		this.getContentPane().add(textField);
-		textField.setColumns(10);
 
 		JButton btnLogin = new JButton("LOGIN");
 		btnLogin.setIcon(null);
@@ -108,9 +106,14 @@ public class Login_GUI extends JFrame {
 		btnRecuperaPin.setBackground(Color.GREEN);
 		btnRecuperaPin.setBounds(171, 153, 104, 36);
 		getContentPane().add(btnRecuperaPin);
+		
+		pin_field = new JPasswordField();
+		pin_field.setBounds(233, 103, 176, 26);
+		pin_field.setEchoChar('\u25cf'); 
+		getContentPane().add(pin_field);
 		this.setBackground(new Color(153, 0, 0));
 		this.setBounds(100, 100, 535, 229);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+ 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		btnLogin.addActionListener(new ActionListener() {
 
@@ -120,7 +123,8 @@ public class Login_GUI extends JFrame {
 				try {
 					String numScheda = textNumeroScheda.getText();
 
-					String pino = textField.getText();
+					@SuppressWarnings("deprecation")
+					String pino = pin_field.getText();
 
 			int  scheda = Integer.parseInt(numScheda);
 					int pin = Integer.parseInt(pino);
