@@ -7,6 +7,11 @@ public class Scheda {
  	private int idScheda;
 	private int pin;
 	
+	/**
+	 * costruttore scheda con idscheda e pin. Viene Usato dopo che l'utente, effettua il login
+	 * @param idScheda
+	 * @param pin
+	 */
 	public Scheda(int idScheda, int pin) {
 		super();
 		this.idScheda = idScheda;
@@ -18,7 +23,12 @@ public class Scheda {
 	public void setPin(int pin) {
 		this.pin = pin;
 	}
-	//Costruttore Creazione Scheda
+	
+	/**
+	 * Costruttore per creare la scheda
+	 * @param punti_totali
+	 * @param massimale_res
+	 */
 	public Scheda( double punti_totali, double massimale_res) {
 		super();
  		this.punti_totali = punti_totali;

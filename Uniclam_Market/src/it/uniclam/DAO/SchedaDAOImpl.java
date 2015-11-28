@@ -2,6 +2,7 @@ package it.uniclam.DAO;
 
 import it.uniclam.db.DBUtility;
 import it.uniclam.entity.Scheda;
+import it.uniclam.entity.Utente;
 import it.uniclam.mail.EmailUtility;
 
 import java.sql.ResultSet;
@@ -224,9 +225,6 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 		}
 		rs.close();
-
-
-
 		return massimale_residuo;
 	}
 	
@@ -247,8 +245,8 @@ public class SchedaDAOImpl implements SchedaDAO {
 			email = rs.getString("utente_email");
 
 		}
-		//rs.close();
-		
+		rs.close();
+ 		
 		java.sql.Statement s1 = DBUtility.getStatement();
 		String sql1 = " Select nome,cognome from utente where email='"+email +"' ";
 		
@@ -263,6 +261,27 @@ public class SchedaDAOImpl implements SchedaDAO {
 		
 
 		return utente;
+	}
+
+	@Override
+	public Utente checkUser(int idScheda) throws SQLException {
+		// TODO Auto-generated method stub
+		Utente u = null;
+		java.sql.Statement s = DBUtility.getStatement();
+		String sql = "	select u.nome, u.cognome from utente u,scheda s where idscheda= '"+idScheda+"' and s.utente_email=u.email";
+
+		ResultSet rs = s.executeQuery(sql);
+
+		while(rs.next()) {
+ 
+			u=new Utente(rs.getString("u.nome"),rs.getString("u.cognome"));
+		 
+		}
+		rs.close();
+		return u;
+		
+	 
+		
 	}
 
 }

@@ -165,8 +165,11 @@ public class PersonalPage_GUI extends JFrame{
 		lblUserEmail.setBounds(360, 7, 173, 16);
 		getContentPane().add(lblUserEmail);
 		try {
-			name=((SchedaDAOImpl) SchedaDAOImpl.getInstance()).checkUtente(getScheda());
-			lblUserEmail.setText(""+name);
+			
+			Utente a =SchedaDAOImpl.getInstance().checkUser(getScheda());
+			
+			//name=((SchedaDAOImpl) SchedaDAOImpl.getInstance()).checkUtente(getScheda());
+			lblUserEmail.setText(""+a.getNome()+" "+a.getCognome());
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

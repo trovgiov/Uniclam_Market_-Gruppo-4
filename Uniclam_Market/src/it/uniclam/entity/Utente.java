@@ -6,6 +6,15 @@ private String cognome;
 private String email;
 private String telefono;
 private double massimale;
+
+/**
+ * Costruttore utente per la registrazione
+ * @param nome
+ * @param cognome
+ * @param email
+ * @param telefono
+ * @param massimale
+ */
 public Utente(String nome, String cognome, String email, String telefono,
 		double massimale) {
 	super();
@@ -29,6 +38,16 @@ public Utente(String email) {
 }
 
 
+/**
+ * costruttore Pagina Personale
+ * @param nome
+ * @param cognome
+ */
+public Utente(String nome, String cognome) {
+	super();
+	this.nome = nome;
+	this.cognome = cognome;
+}
 
 public Utente(String nome, String cognome, String email) {
 	super();

@@ -96,34 +96,17 @@ public class Server {
 
 		
 		else if(operation.contentEquals(LOGIN_UTENTE)) {
-			
-String numeroscheda=parts[1];
-String pino= parts[2];
-
-numscheda=Integer.parseInt(numeroscheda);
-pin=Integer.parseInt(pino);
-			
-			//ho scheda e pin
-			
-			
 			String response="login_Ok";
 			
 			out.println(response);
 			
 			
-			
-		//	UtenteDAOImpl.getInstance().getUtente(numscheda);
-
-			
-			
- 			
 			}
 		 
 		
  			
 		}
-		// String[] parts = r.split("/");
-
+ 
  
 	}
 
