@@ -3,31 +3,60 @@ package it.uniclam.GUI;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+
 import java.awt.Color;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import it.uniclam.DAO.SchedaDAOImpl;
 import it.uniclam.entity.Utente;
 
 import java.awt.Font;
+
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
+
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import javax.swing.JTextField;
 
 public class PersonalPage_GUI extends JFrame{
 
 	private JFrame frame;
-
+   private int scheda;
+   private int pin;
 	
-	/**
+   double mass_res=0;
+ 	/**
 	 * Create the application.
 	 */
-	public PersonalPage_GUI() {
+	public PersonalPage_GUI(int i, int j) {
 		
+		this.scheda=i;
+		this.pin=j;
 		initialize();
+		
+	}
+
+	public int getScheda() {
+		return scheda;
+	}
+
+	public void setScheda(int scheda) {
+		this.scheda = scheda;
+	}
+
+	public int getPin() {
+		return pin;
+	}
+
+	public void setPin(int pin) {
+		this.pin = pin;
 	}
 
 	/**
@@ -62,7 +91,7 @@ public class PersonalPage_GUI extends JFrame{
 		JLabel lblIlMassimaleResiduo = new JLabel("Il massimale residuo è di €: ");
 		lblIlMassimaleResiduo.setForeground(new Color(255, 204, 153));
 		lblIlMassimaleResiduo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIlMassimaleResiduo.setBounds(68, 60, 296, 16);
+		lblIlMassimaleResiduo.setBounds(68, 60, 250, 17);
 		this.getContentPane().add(lblIlMassimaleResiduo);
 		
 		JButton btnCambiaEmail = new JButton("Cambia la tua email di accesso");
@@ -114,6 +143,33 @@ public class PersonalPage_GUI extends JFrame{
 		lblVer.setBounds(6, 308, 479, 16);
 		this.getContentPane().add(lblVer);
 		
+		JLabel lblMasRes = new JLabel("");
+		lblMasRes.setForeground(Color.WHITE);
+		lblMasRes.setBounds(308, 60, 125, 16);
+		getContentPane().add(lblMasRes);
+		try {
+			mass_res=SchedaDAOImpl.getInstance().checkMassimale(getScheda());
+			lblMasRes.setText(""+mass_res);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		btnEffettuaSpesa.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				
+				JOptionPane.showMessageDialog(null, "Scheda : "+getScheda()+"\n Pin : "+getPin());
+				
+			}
+		});
+		
+		
+		
+		
 		
 		//Pulsante di uscita
 		btnEsci.addActionListener(new ActionListener() {
@@ -127,5 +183,4 @@ public class PersonalPage_GUI extends JFrame{
 		});
 	
 	}
-	
 }

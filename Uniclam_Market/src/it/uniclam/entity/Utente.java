@@ -28,6 +28,15 @@ public Utente(String email) {
 	this.email = email;
 }
 
+
+
+public Utente(String nome, String cognome, String email) {
+	super();
+	this.nome = nome;
+	this.cognome = cognome;
+	this.email = email;
+}
+
 public String getCognome() {
 	return cognome;
 }

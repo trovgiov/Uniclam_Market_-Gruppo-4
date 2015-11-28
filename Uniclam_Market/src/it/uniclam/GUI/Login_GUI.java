@@ -3,6 +3,7 @@ package it.uniclam.GUI;
 import it.uniclam.DAO.SchedaDAOImpl;
 import it.uniclam.DAO.UtenteDAOImpl;
 import it.uniclam.UniclamMarket.Server;
+import it.uniclam.entity.Scheda;
 import it.uniclam.mail.EmailUtility;
 
 import java.awt.EventQueue;
@@ -34,6 +35,14 @@ public class Login_GUI extends JFrame {
 
 	private JTextField textNumeroScheda;
 	private JTextField textField;
+
+	public JTextField getTextNumeroScheda() {
+		return textNumeroScheda;
+	}
+
+	public void setTextNumeroScheda(JTextField textNumeroScheda) {
+		this.textNumeroScheda = textNumeroScheda;
+	}
 
 	/**
 	 * Create the application.
@@ -113,7 +122,7 @@ public class Login_GUI extends JFrame {
 
 					String pino = textField.getText();
 
-					int scheda = Integer.parseInt(numScheda);
+			int  scheda = Integer.parseInt(numScheda);
 					int pin = Integer.parseInt(pino);
 					//
 					boolean result;
@@ -135,11 +144,30 @@ public class Login_GUI extends JFrame {
 
 						String line = in.readLine();
 						System.out.println(line);
+ 
 						
-						PersonalPage_GUI personalwindow = new PersonalPage_GUI();
-						personalwindow.setVisible(true);
+						if(line.contentEquals("login_Ok")){
+							
+							Scheda card = new Scheda (scheda,pin);
+							
+							
+							
+							
+							//GUI
+							PersonalPage_GUI personalwindow = new PersonalPage_GUI(card.getIdScheda(),card.getPin());
+							personalwindow.setVisible(true);
+	 						
+ 							
+							
+							
+						}
 						
-						s.close();
+						
+						
+						
+						
+ 						
+					 
 						
 
 						

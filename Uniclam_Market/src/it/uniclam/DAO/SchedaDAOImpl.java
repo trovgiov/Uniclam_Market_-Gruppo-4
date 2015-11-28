@@ -144,12 +144,12 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 	}
 
-	
+
 	//Funziona Extra per il recupero pin
-	
+
 	@Override
 	public void recovery_pin(String email) throws SQLException,
-			AddressException, MessagingException {
+	AddressException, MessagingException {
 
 		int pin = 0;
 		int idscheda = 0;
@@ -178,6 +178,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 					idscheda = rs2.getInt("scheda_idScheda");
 
 				}
+				rs2.close();
 
 				// Creo il messaggio
 				String oggetto = "Recupero Numero Scheda e Pin - Uniclam Market";
@@ -206,6 +207,27 @@ public class SchedaDAOImpl implements SchedaDAO {
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public double checkMassimale(int idscheda) throws SQLException {
+		double massimale_residuo=0;
+
+
+		java.sql.Statement s = DBUtility.getStatement();
+		String sql = " Select massimale_res from scheda where idScheda='" + idscheda + "'  ";
+
+		ResultSet rs = s.executeQuery(sql);
+
+		while (rs.next()) {
+			massimale_residuo = rs.getDouble("massimale_res");
+
+		}
+		rs.close();
+
+
+
+		return massimale_residuo;
 	}
 
 }

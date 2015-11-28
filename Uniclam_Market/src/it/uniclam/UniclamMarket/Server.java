@@ -22,6 +22,8 @@ public class Server {
 
 	public static String INSERT_UTENTE = "req_insert_utente";
 	public static String LOGIN_UTENTE="req_login";
+	public static String PERSONAL_PAGE="req_Persona_Page";
+
 	public static String HOST = "localhost";
 	public static int port = 8888;
 
@@ -43,7 +45,8 @@ public class Server {
 		BufferedReader in = new BufferedReader(isr);
  
 
- 
+ int numscheda=0;
+ int pin=0;
 		String r = in.readLine();
 		String[] parts = r.split("/");
 
@@ -94,15 +97,30 @@ public class Server {
 		
 		else if(operation.contentEquals(LOGIN_UTENTE)) {
 			
+String numeroscheda=parts[1];
+String pino= parts[2];
+
+numscheda=Integer.parseInt(numeroscheda);
+pin=Integer.parseInt(pino);
+			
+			//ho scheda e pin
 			
 			
 			String response="login_Ok";
 			
 			out.println(response);
 			
+			
+			
+		//	UtenteDAOImpl.getInstance().getUtente(numscheda);
+
+			
+			
+ 			
 			}
-			
-			
+		 
+		
+ 			
 		}
 		// String[] parts = r.split("/");
 

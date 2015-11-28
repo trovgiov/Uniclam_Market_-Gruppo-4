@@ -136,6 +136,51 @@ public class UtenteDAOImpl implements UtenteDAO {
 		return login_succed;
 	}
 
+	@Override
+	public Utente getUtente(int numscheda) throws SQLException {
+		// TODO Auto-generated method stub
+		String nome = null,cognome = null,mail = null;
+		Utente u = null;
+		
+		
+		java.sql.Statement s = DBUtility.getStatement();
+ 		String sql = " select utente_email from scheda where idscheda='" +numscheda+ "'";
+
+		try {
+			ResultSet rs = s.executeQuery(sql);
+
+			while (rs.next()) {
+
+				String email=rs.getString("utente_email");
+				
+				java.sql.Statement s1 = DBUtility.getStatement();
+
+		 		String sql1 = " select nome,cognome from utente email='" +email+ "'";
+				ResultSet rs1 = s.executeQuery(sql1);
+
+ while (rs1.next()){
+	 
+	   u.setNome(rs.getString("nome"));
+	   u.setCognome(rs.getString("cognome"));
+	 
+ }
+			}
+			 
+			
+ 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+return u;
+		
+		
+		
+		
+		
+ 	}
+
 
 
 }
