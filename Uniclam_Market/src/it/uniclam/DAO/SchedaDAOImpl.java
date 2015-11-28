@@ -175,7 +175,6 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 				while (rs2.next()) {
 					pin = rs2.getInt("pin");
-
 					idscheda = rs2.getInt("scheda_idScheda");
 
 				}

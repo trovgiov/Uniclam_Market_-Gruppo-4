@@ -54,7 +54,7 @@ public class Login_GUI extends JFrame {
 		JLabel lblAutenticazioneNelSistema = new JLabel(
 				"AUTENTICAZIONE NEL SISTEMA");
 		lblAutenticazioneNelSistema
-				.setHorizontalAlignment(SwingConstants.CENTER);
+		.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAutenticazioneNelSistema.setIcon(null);
 		lblAutenticazioneNelSistema.setFont(new Font("Lucida Grande",
 				Font.BOLD, 15));
@@ -135,8 +135,16 @@ public class Login_GUI extends JFrame {
 
 						String line = in.readLine();
 						System.out.println(line);
-
+						
+						PersonalPage_GUI personalwindow = new PersonalPage_GUI();
+						personalwindow.setVisible(true);
+						
 						s.close();
+						
+
+						
+					
+						
 					} else {
 						JOptionPane.showMessageDialog(Login_GUI.this,
 								"User O Password errate");
@@ -150,7 +158,7 @@ public class Login_GUI extends JFrame {
 					JOptionPane.showMessageDialog(Login_GUI.this,
 							"Error in communication with server!", "Error",
 							JOptionPane.ERROR_MESSAGE);
-					
+
 				}
 			}
 		});
@@ -161,12 +169,12 @@ public class Login_GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				String email_recover=JOptionPane.showInputDialog("Inserisca la mail per il recupero pin");
-			 try {
-				SchedaDAOImpl.getInstance().recovery_pin(email_recover);
-			} catch (SQLException | MessagingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+				try {
+					SchedaDAOImpl.getInstance().recovery_pin(email_recover);
+				} catch (SQLException | MessagingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 	}
