@@ -229,5 +229,40 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 		return massimale_residuo;
 	}
+	
+	@Override
+	public String checkUtente(int idscheda) throws SQLException {
+		String email = null;
+		String nome = null;
+		String cognome = null;
+		String utente = null;
+		
+
+		java.sql.Statement s = DBUtility.getStatement();
+		String sql = " Select utente_email from scheda where idScheda='" + idscheda + "'  ";
+
+		ResultSet rs = s.executeQuery(sql);
+
+		while (rs.next()) {
+			email = rs.getString("utente_email");
+
+		}
+		//rs.close();
+		
+		java.sql.Statement s1 = DBUtility.getStatement();
+		String sql1 = " Select nome,cognome from utente where email='"+email +"' ";
+		
+		ResultSet rs1 = s1.executeQuery(sql1);
+		while (rs1.next()) {
+			nome = rs1.getString("nome");
+			cognome = rs1.getString("cognome");
+			utente = nome + " " + cognome;
+		}
+		
+		rs1.close();
+		
+
+		return utente;
+	}
 
 }

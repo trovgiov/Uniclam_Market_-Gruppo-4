@@ -32,6 +32,7 @@ public class PersonalPage_GUI extends JFrame{
    private int pin;
 	
    double mass_res=0;
+   String name = null;
  	/**
 	 * Create the application.
 	 */
@@ -64,34 +65,34 @@ public class PersonalPage_GUI extends JFrame{
 	 */
 	private void initialize() {
 		//frame = new JFrame();
-		this.setBounds(100, 100, 500, 351);
+		this.setBounds(100, 100, 539, 351);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		setTitle("UNICLAM MARKET - PAGINA PERSONALE");
 		this.getContentPane().setBackground(new Color(102, 0, 0));
 		this.getContentPane().setLayout(null);
 		
-		JLabel lblBenvenutoNellaTua = new JLabel("BENVENUTO NELLA TUA PAGINA PERSONALE");
+		JLabel lblBenvenutoNellaTua = new JLabel("BENVENUTO NELLA TUA PAGINA PERSONALE,");
 		lblBenvenutoNellaTua.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBenvenutoNellaTua.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 14));
 		lblBenvenutoNellaTua.setForeground(new Color(255, 255, 255));
-		lblBenvenutoNellaTua.setBounds(16, 6, 455, 17);
+		lblBenvenutoNellaTua.setBounds(-3, 6, 392, 17);
 		this.getContentPane().add(lblBenvenutoNellaTua);
 		
 		JButton btnEffettuaSpesa = new JButton("Effettua la spesa");
 		btnEffettuaSpesa.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		btnEffettuaSpesa.setBounds(61, 92, 165, 38);
+		btnEffettuaSpesa.setBounds(40, 89, 165, 38);
 		this.getContentPane().add(btnEffettuaSpesa);
 		
 		JSeparator separator = new JSeparator();
 		separator.setForeground(new Color(153, 102, 0));
-		separator.setBounds(26, 23, 445, 12);
+		separator.setBounds(40, 23, 445, 12);
 		this.getContentPane().add(separator);
 		
 		JLabel lblIlMassimaleResiduo = new JLabel("Il massimale residuo è di €: ");
 		lblIlMassimaleResiduo.setForeground(new Color(255, 204, 153));
 		lblIlMassimaleResiduo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIlMassimaleResiduo.setBounds(68, 60, 250, 17);
+		lblIlMassimaleResiduo.setBounds(85, 64, 250, 17);
 		this.getContentPane().add(lblIlMassimaleResiduo);
 		
 		JButton btnCambiaEmail = new JButton("Cambia la tua email di accesso");
@@ -100,7 +101,7 @@ public class PersonalPage_GUI extends JFrame{
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(Color.WHITE);
-		separator_1.setBounds(26, 158, 445, 12);
+		separator_1.setBounds(40, 159, 445, 12);
 		this.getContentPane().add(separator_1);
 		
 		JLabel lblAreaSpesa = new JLabel("Area spesa");
@@ -119,33 +120,33 @@ public class PersonalPage_GUI extends JFrame{
 		this.getContentPane().add(lblAreaDatiPersonali);
 		
 		JButton btnCancellati = new JButton("Cancellati dal sistema");
-		btnCancellati.setBounds(294, 198, 165, 29);
+		btnCancellati.setBounds(320, 199, 165, 29);
 		this.getContentPane().add(btnCancellati);
 		
 		JButton btnModificaMassimale = new JButton("Modifica il massimale");
 		btnModificaMassimale.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		btnModificaMassimale.setBounds(294, 92, 165, 38);
+		btnModificaMassimale.setBounds(320, 92, 165, 38);
 		this.getContentPane().add(btnModificaMassimale);
 		
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setForeground(new Color(153, 102, 0));
-		separator_2.setBounds(26, 254, 442, 12);
+		separator_2.setBounds(43, 254, 442, 12);
 		this.getContentPane().add(separator_2);
 		
 		JButton btnEsci = new JButton("Esci");
-		btnEsci.setBounds(410, 264, 61, 29);
+		btnEsci.setBounds(424, 266, 61, 29);
 		this.getContentPane().add(btnEsci);
 		
 		JLabel lblVer = new JLabel("Ver. 1.0 - © Tutti i diritti riservati - Developed by Giovanni Trovini ed Enea Marinelli");
 		lblVer.setHorizontalAlignment(SwingConstants.CENTER);
 		lblVer.setForeground(SystemColor.scrollbar);
 		lblVer.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		lblVer.setBounds(6, 308, 479, 16);
+		lblVer.setBounds(26, 307, 479, 16);
 		this.getContentPane().add(lblVer);
 		
 		JLabel lblMasRes = new JLabel("");
 		lblMasRes.setForeground(Color.WHITE);
-		lblMasRes.setBounds(308, 60, 125, 16);
+		lblMasRes.setBounds(325, 64, 125, 16);
 		getContentPane().add(lblMasRes);
 		try {
 			mass_res=SchedaDAOImpl.getInstance().checkMassimale(getScheda());
@@ -154,6 +155,25 @@ public class PersonalPage_GUI extends JFrame{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		
+		//Label Utente
+		
+		JLabel lblUserEmail = new JLabel("");
+		lblUserEmail.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		lblUserEmail.setForeground(new Color(255, 255, 255));
+		lblUserEmail.setBounds(360, 7, 173, 16);
+		getContentPane().add(lblUserEmail);
+		try {
+			name=((SchedaDAOImpl) SchedaDAOImpl.getInstance()).checkUtente(getScheda());
+			lblUserEmail.setText(""+name);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		//Button Effettua Spesa
 		
 		btnEffettuaSpesa.addActionListener(new ActionListener() {
 			
@@ -167,10 +187,7 @@ public class PersonalPage_GUI extends JFrame{
 			}
 		});
 		
-		
-		
-		
-		
+
 		//Pulsante di uscita
 		btnEsci.addActionListener(new ActionListener() {
 			

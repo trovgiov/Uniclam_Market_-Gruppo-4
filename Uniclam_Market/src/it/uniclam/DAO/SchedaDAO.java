@@ -14,5 +14,6 @@ public interface SchedaDAO {
  	public int[] generatePin(String m) throws SQLException;
  	public void recovery_pin(String email) throws SQLException, AddressException, MessagingException;
  	public double checkMassimale(int idscheda) throws SQLException;
+	String checkUtente(int idscheda) throws SQLException;
  
  }
