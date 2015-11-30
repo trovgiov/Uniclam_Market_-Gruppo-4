@@ -34,7 +34,8 @@ public class PersonalPage_GUI extends JFrame{
 	
    double mass_res=0;
    String name = null;
-	String email = null;
+   String email = null;
+ 
 
  	/**
 	 * Create the application.
@@ -86,7 +87,8 @@ public class PersonalPage_GUI extends JFrame{
 		btnEffettuaSpesa.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 		btnEffettuaSpesa.setBounds(40, 89, 165, 38);
 		this.getContentPane().add(btnEffettuaSpesa);
-		
+ 
+
 		JSeparator separator = new JSeparator();
 		separator.setForeground(new Color(153, 102, 0));
 		separator.setBounds(40, 23, 445, 12);
@@ -212,17 +214,18 @@ public class PersonalPage_GUI extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				//JOptionPane.showMessageDialog(null, email);
-				UtenteDAOImpl.getInstance().deleteUtente(email);
-				/*int scelta = JOptionPane.showConfirmDialog(PersonalPage_GUI.this, "Sei sicuro di volerti cancellare dal sistema?","Eliminazione Account", JOptionPane.YES_NO_OPTION);
-				switch(scelta)
+				JOptionPane.showMessageDialog(null, email.length()); 
+					UtenteDAOImpl.getInstance().deleteUtente(email);
+
+				//int scelta = JOptionPane.showConfirmDialog(PersonalPage_GUI.this, "Sei sicuro di volerti cancellare dal sistema?","Eliminazione Account", JOptionPane.YES_NO_OPTION);
+				/*(switch(scelta)
 				{
 				case JOptionPane.YES_OPTION: 
-					
-					JOptionPane.showMessageDialog(null, "Ci dispiace per la tua scelta e speriamo di rivederti presto!");
+ 					JOptionPane.showMessageDialog(null, "Ci dispiace per la tua scelta e speriamo di rivederti presto!");
 				case JOptionPane.NO_OPTION:
 					break;
-				}*/
-				
+				}
+				*/
 			}
 		});
 		

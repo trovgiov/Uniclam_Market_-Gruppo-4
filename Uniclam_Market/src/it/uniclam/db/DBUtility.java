@@ -1,6 +1,7 @@
 package it.uniclam.db;
 
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import com.mysql.jdbc.Connection;
@@ -48,9 +49,14 @@ public class DBUtility {
 
 	}
 	
+	public static PreparedStatement getPreparedStatement(String sql) throws SQLException{
+		return getDBConnection().prepareStatement(sql);
+	}
+	
+	
 	public static Statement getStatement() throws SQLException{
 		
-		return (Statement) DriverManager.getConnection(URL, USER, PASSWORD).createStatement();
+		return (Statement) getDBConnection().createStatement();
 	}
 	
 

@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.JOptionPane;
+
 import com.mysql.jdbc.Connection;
 
 import it.uniclam.db.DBUtility;
@@ -88,13 +90,15 @@ public class UtenteDAOImpl implements UtenteDAO {
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
-		String deleteSQL = "DELETE utente WHERE email = ?";
+		JOptionPane.showMessageDialog(null,"Dentro la f"+ email.length()); 
+
+		String deleteSQL ="DELETE utente WHERE email= '"+email+"'";
 
 		try {
 		 
-			preparedStatement = dbConnection.prepareStatement(deleteSQL);
+			preparedStatement = DBUtility.getPreparedStatement(deleteSQL);
 
-			preparedStatement.setString(1, email);
+			//.setString(1, email);
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
