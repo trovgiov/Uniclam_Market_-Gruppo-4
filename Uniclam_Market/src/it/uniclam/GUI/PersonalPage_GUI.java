@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import it.uniclam.DAO.SchedaDAOImpl;
+import it.uniclam.DAO.UtenteDAOImpl;
 import it.uniclam.entity.Utente;
 
 import java.awt.Font;
@@ -33,6 +34,8 @@ public class PersonalPage_GUI extends JFrame{
 	
    double mass_res=0;
    String name = null;
+	String email = null;
+
  	/**
 	 * Create the application.
 	 */
@@ -167,7 +170,7 @@ public class PersonalPage_GUI extends JFrame{
 		try {
 			
 			Utente a =SchedaDAOImpl.getInstance().checkUser(getScheda());
-			
+			email=a.getEmail();
 			//name=((SchedaDAOImpl) SchedaDAOImpl.getInstance()).checkUtente(getScheda());
 			lblUserEmail.setText(""+a.getNome()+" "+a.getCognome());
 		} catch (SQLException e1) {
@@ -201,6 +204,28 @@ public class PersonalPage_GUI extends JFrame{
 				System.exit(0);
 			}
 		});
+		
+		//Pulsante Cancellazione utente
+		btnCancellati.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				//JOptionPane.showMessageDialog(null, email);
+				UtenteDAOImpl.getInstance().deleteUtente(email);
+				/*int scelta = JOptionPane.showConfirmDialog(PersonalPage_GUI.this, "Sei sicuro di volerti cancellare dal sistema?","Eliminazione Account", JOptionPane.YES_NO_OPTION);
+				switch(scelta)
+				{
+				case JOptionPane.YES_OPTION: 
+					
+					JOptionPane.showMessageDialog(null, "Ci dispiace per la tua scelta e speriamo di rivederti presto!");
+				case JOptionPane.NO_OPTION:
+					break;
+				}*/
+				
+			}
+		});
+		
 	
 	}
 }

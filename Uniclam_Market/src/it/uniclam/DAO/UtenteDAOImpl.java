@@ -88,8 +88,9 @@ public class UtenteDAOImpl implements UtenteDAO {
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
-		try {
 		String deleteSQL = "DELETE utente WHERE email = ?";
+
+		try {
 		 
 			preparedStatement = dbConnection.prepareStatement(deleteSQL);
 
