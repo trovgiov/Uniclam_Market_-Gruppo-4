@@ -43,12 +43,7 @@ public Utente(String email) {
  * @param nome
  * @param cognome
  */
-public Utente(String nome, String cognome) {
-	super();
-	this.nome = nome;
-	this.cognome = cognome;
-}
-
+ 
 public Utente(String nome, String cognome, String email) {
 	super();
 	this.nome = nome;

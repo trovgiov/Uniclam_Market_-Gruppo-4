@@ -269,14 +269,14 @@ public class SchedaDAOImpl implements SchedaDAO {
 		// TODO Auto-generated method stub
 		Utente u = null;
 		java.sql.Statement s = DBUtility.getStatement();
-		String sql = "	select u.nome, u.cognome from utente u,scheda s where idscheda= '"
+		String sql = "	select u.nome, u.cognome,u.email from utente u,scheda s where idscheda= '"
 				+ idScheda + "' and s.utente_email=u.email";
 
 		ResultSet rs = s.executeQuery(sql);
 
 		while (rs.next()) {
 
-			u = new Utente(rs.getString("u.nome"), rs.getString("u.cognome"));
+			u = new Utente(rs.getString("u.nome"), rs.getString("u.cognome"),rs.getString("u.email"));
 
 		}
 		rs.close();
