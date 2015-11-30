@@ -101,7 +101,7 @@ public class PersonalPage_GUI extends JFrame{
 		this.getContentPane().add(lblIlMassimaleResiduo);
 		
 		JButton btnCambiaEmail = new JButton("Cambia la tua email di accesso");
-		btnCambiaEmail.setBounds(25, 199, 238, 29);
+		btnCambiaEmail.setBounds(40, 199, 238, 38);
 		this.getContentPane().add(btnCambiaEmail);
 		
 		JSeparator separator_1 = new JSeparator();
@@ -125,13 +125,17 @@ public class PersonalPage_GUI extends JFrame{
 		this.getContentPane().add(lblAreaDatiPersonali);
 		
 		JButton btnCancellati = new JButton("Cancellati dal sistema");
-		btnCancellati.setBounds(320, 199, 165, 29);
+		btnCancellati.setBounds(320, 199, 165, 38);
 		this.getContentPane().add(btnCancellati);
 		
-		JButton btnModificaMassimale = new JButton("Modifica il massimale");
-		btnModificaMassimale.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		btnModificaMassimale.setBounds(320, 92, 165, 38);
-		this.getContentPane().add(btnModificaMassimale);
+		JButton btnStoricoSpese = new JButton("Storico Spese");
+		btnStoricoSpese.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnStoricoSpese.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		btnStoricoSpese.setBounds(320, 92, 165, 38);
+		this.getContentPane().add(btnStoricoSpese);
 		
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setForeground(new Color(153, 102, 0));
@@ -139,7 +143,7 @@ public class PersonalPage_GUI extends JFrame{
 		this.getContentPane().add(separator_2);
 		
 		JButton btnEsci = new JButton("Esci");
-		btnEsci.setBounds(424, 266, 61, 29);
+		btnEsci.setBounds(424, 267, 61, 38);
 		this.getContentPane().add(btnEsci);
 		
 		JLabel lblVer = new JLabel("Ver. 1.0 - © Tutti i diritti riservati - Developed by Giovanni Trovini ed Enea Marinelli");
@@ -213,22 +217,56 @@ public class PersonalPage_GUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				//JOptionPane.showMessageDialog(null, email);
-				JOptionPane.showMessageDialog(null, email.length()); 
-					UtenteDAOImpl.getInstance().deleteUtente(email);
+ 				 
 
-				//int scelta = JOptionPane.showConfirmDialog(PersonalPage_GUI.this, "Sei sicuro di volerti cancellare dal sistema?","Eliminazione Account", JOptionPane.YES_NO_OPTION);
-				/*(switch(scelta)
+				int scelta = JOptionPane.showConfirmDialog(PersonalPage_GUI.this, "Sei sicuro di volerti cancellare dal sistema?","Eliminazione Account", JOptionPane.YES_NO_OPTION);
+				switch(scelta)
 				{
 				case JOptionPane.YES_OPTION: 
+					try {
+						UtenteDAOImpl.getInstance().deleteUtente(email);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
  					JOptionPane.showMessageDialog(null, "Ci dispiace per la tua scelta e speriamo di rivederti presto!");
 				case JOptionPane.NO_OPTION:
 					break;
 				}
-				*/
+				
 			}
 		});
 		
+		btnCambiaEmail.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+				String new_mail=JOptionPane.showInputDialog(("Inserisci la nuova mail "));
+				{
+					if(new_mail.matches(emailPattern)){
+						try {
+							UtenteDAOImpl.getInstance().updateUtente(email,new_mail);
+							JOptionPane.showMessageDialog(PersonalPage_GUI.this, "Email modificata correttamente !!!");
+
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
+					}
+					else {
+						JOptionPane.showMessageDialog(PersonalPage_GUI.this, "Email inserita non valida !!!");
+					}
+					
+					
+					
+				}
+				
+			}
+		});
 	
 	}
 }

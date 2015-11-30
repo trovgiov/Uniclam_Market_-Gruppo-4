@@ -70,35 +70,36 @@ public class UtenteDAOImpl implements UtenteDAO {
 	}
 
 	@Override
-	public void updateUtente(Utente u,String mail) throws SQLException {
+	public void updateUtente(String mail,String new_mail) throws SQLException {
 		// TODO Auto-generated method stub
-		Connection dbConnection = null;
-		java.sql.PreparedStatement preparedStatement = null;
+	
 
 
 		Statement s = DBUtility.getStatement();
- 		String updateQuery = "UPDATE utente SET email ='"
-				+mail + "'   WHERE email = '"
-				+ u.getEmail() + "' ";
-		int n = s.executeUpdate(updateQuery);
+ 		String updateQuery = "UPDATE utente SET email = '"+new_mail+"'   WHERE email = '"+ mail + "' ";
+		
+ 
+ 		
+ 		int n = s.executeUpdate(updateQuery);
 
 	}
 
 	@Override
-	public void deleteUtente(String email) {
+	public void deleteUtente(String email)throws SQLException {
 		// TODO Auto-generated method stub
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
-		JOptionPane.showMessageDialog(null,"Dentro la f"+ email.length()); 
-
-		String deleteSQL ="DELETE utente WHERE email= '"+email+"'";
+ 
+	 
+		String deleteSQL ="DELETE from utente WHERE email='"+email+"'";
+ 
 
 		try {
 		 
 			preparedStatement = DBUtility.getPreparedStatement(deleteSQL);
 
-			//.setString(1, email);
+			//preparedStatement.setString(1, email);
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
