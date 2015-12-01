@@ -227,6 +227,8 @@ System.out.println(req);
 
 					String line = Login_GUI.in.readLine();
 					
+					
+					
 					Login_GUI.out.println(line);
 
 				}
