@@ -77,11 +77,17 @@ public class UtenteDAOImpl implements UtenteDAO {
 
 		Statement s = DBUtility.getStatement();
  		String updateQuery = "UPDATE utente SET email = '"+new_mail+"'   WHERE email = '"+ mail + "' ";
-		
+		try{
  
  		
  		int n = s.executeUpdate(updateQuery);
-
+		}
+		
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		s.close();
 	}
 
 	@Override
@@ -106,7 +112,19 @@ public class UtenteDAOImpl implements UtenteDAO {
 			System.err.println(e.getMessage());
 		}
 
+		
+		finally {
 
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+
+		}
+		
 	}
 
 
@@ -136,8 +154,7 @@ public class UtenteDAOImpl implements UtenteDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
+ 
 
 		return login_succed;
 	}

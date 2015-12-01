@@ -45,6 +45,9 @@ public class Login_GUI extends JFrame {
 		this.textNumeroScheda = textNumeroScheda;
 	}
 
+	public static BufferedReader in;
+	public static PrintWriter out;
+
 	/**
 	 * Create the application.
 	 */
@@ -64,7 +67,7 @@ public class Login_GUI extends JFrame {
 		JLabel lblAutenticazioneNelSistema = new JLabel(
 				"AUTENTICAZIONE NEL SISTEMA");
 		lblAutenticazioneNelSistema
-		.setHorizontalAlignment(SwingConstants.CENTER);
+				.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAutenticazioneNelSistema.setIcon(null);
 		lblAutenticazioneNelSistema.setFont(new Font("Lucida Grande",
 				Font.BOLD, 15));
@@ -89,8 +92,6 @@ public class Login_GUI extends JFrame {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(191, 109, 40, 16);
 		this.getContentPane().add(lblNewLabel);
-	 
-
 
 		JButton btnLogin = new JButton("LOGIN");
 		btnLogin.setIcon(null);
@@ -106,14 +107,14 @@ public class Login_GUI extends JFrame {
 		btnRecuperaPin.setBackground(Color.GREEN);
 		btnRecuperaPin.setBounds(171, 153, 104, 36);
 		getContentPane().add(btnRecuperaPin);
-		
+
 		pin_field = new JPasswordField();
 		pin_field.setBounds(233, 103, 176, 26);
-		pin_field.setEchoChar('\u25cf'); 
+		pin_field.setEchoChar('\u25cf');
 		getContentPane().add(pin_field);
 		this.setBackground(new Color(153, 0, 0));
 		this.setBounds(100, 100, 535, 229);
- 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		btnLogin.addActionListener(new ActionListener() {
 
@@ -121,78 +122,59 @@ public class Login_GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
-					String numScheda = textNumeroScheda.getText();
 
-					@SuppressWarnings("deprecation")
-					String pino = pin_field.getText();
-
-			int  scheda = Integer.parseInt(numScheda);
-					int pin = Integer.parseInt(pino);
-					//
-					boolean result;
-					result = UtenteDAOImpl.getInstance().login(scheda, pin);
-
-					if (result == true) {
-
+					if (Login_GUI.in == null || Login_GUI.out == null) {
+						// apro socket
 						Socket s = new Socket("localhost", 8888);
 
-						BufferedReader in = new BufferedReader(
-								new InputStreamReader(s.getInputStream()));
-						PrintWriter out = new PrintWriter(s.getOutputStream(),
-								true);
+						in = new BufferedReader(new InputStreamReader(s
+								.getInputStream()));
+						out = new PrintWriter(s.getOutputStream(), true);
 
-						String req = Server.LOGIN_UTENTE + "/" + scheda + "/"
-								+ pin;
+						// Leggo i valori inseriti
+						String numScheda = textNumeroScheda.getText();
+						int numcard = Integer.parseInt(numScheda);
 
+						@SuppressWarnings("deprecation")
+						String pino = pin_field.getText();
+						int pin = Integer.parseInt(pino);
+						
+						// Invio la richiesta al server
+						
+						String req = Server.LOGIN_UTENTE + "/"+numScheda
+								+ "/"+pino + "\n";
+						System.out.println("Richiesta "+req);
 						out.println(req);
-
 						String line = in.readLine();
-						System.out.println(line);
  
-						
-						if(line.contentEquals("login_Ok")){
-							
-							Scheda card = new Scheda (scheda,pin);
-							
-							
-							
-							
-							//GUI
-							PersonalPage_GUI personalwindow = new PersonalPage_GUI(card.getIdScheda(),card.getPin());
-							personalwindow.setVisible(true);
-	 						
- 							
-							
-							
-						}
-						
-						
-						
-						
-						
- 						
-					 
-						
 
-						
-					
-						
-					} else {
-						JOptionPane.showMessageDialog(Login_GUI.this,
-								"User O Password errate");
+						if (line.contentEquals("login_Ok")) {
+							Scheda card = new Scheda(numcard, pin);
+ 
+							PersonalPage_GUI personalwindow = new PersonalPage_GUI(
+									card.getIdScheda(), card.getPin(),s);
+							personalwindow.setVisible(true);
+
+						} else {
+							JOptionPane.showMessageDialog(null, "Login Errato");
+						}
 
 					}
-
-				}
-
-				catch (IOException | SQLException ioe) {
+				} catch (IOException ioe) {
 
 					JOptionPane.showMessageDialog(Login_GUI.this,
 							"Error in communication with server!", "Error",
 							JOptionPane.ERROR_MESSAGE);
-
 				}
+
+				//
+
+				// GUI
+				/*	 
+	 						*/
+
 			}
+
 		});
 
 		btnRecuperaPin.addActionListener(new ActionListener() {
@@ -200,7 +182,8 @@ public class Login_GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				String email_recover=JOptionPane.showInputDialog("Inserisca la mail per il recupero pin");
+				String email_recover = JOptionPane
+						.showInputDialog("Inserisca la mail per il recupero pin");
 				try {
 					SchedaDAOImpl.getInstance().recovery_pin(email_recover);
 				} catch (SQLException | MessagingException e1) {

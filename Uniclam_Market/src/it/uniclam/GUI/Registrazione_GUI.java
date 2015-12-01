@@ -128,7 +128,8 @@ public class Registrazione_GUI extends JFrame {
 		this.getContentPane().add(lblNewLabel);
 
 		JButton btnRegistrati = new JButton("REGISTRATI");
-		btnRegistrati.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 13));
+		btnRegistrati.setFont(new Font("Lucida Grande",
+				Font.BOLD | Font.ITALIC, 13));
 		btnRegistrati.setBounds(335, 310, 123, 43);
 		this.getContentPane().add(btnRegistrati);
 		setVisible(true);
@@ -164,7 +165,7 @@ public class Registrazione_GUI extends JFrame {
 
 						String req = Server.INSERT_UTENTE + "/" + nome + "/"
 								+ cognome + "/" + email + "/" + telefono + "/"
-								+ massimale;
+								+ massimale + "\n";
 
 						out.println(req);
 						System.out.println("Email valida");
@@ -179,11 +180,11 @@ public class Registrazione_GUI extends JFrame {
 
 						if (message.contentEquals("OK")) {
 							JOptionPane
-									.showMessageDialog(
-											Registrazione_GUI.this,
-											"Complimenti. La sua carta è stata attivata."
-													+ "\nA breve riceverà una mail con il numero carta ed il pin, necessario per l'accesso."
-													+ "\nUniclam Market");
+							.showMessageDialog(
+									Registrazione_GUI.this,
+									"Complimenti. La sua carta è stata attivata."
+											+ "\nA breve riceverà una mail con il numero carta ed il pin, necessario per l'accesso."
+											+ "\nUniclam Market");
 
 							/*
 							 * JOptionPane.showMessageDialog(null,
@@ -191,9 +192,7 @@ public class Registrazione_GUI extends JFrame {
 							 * "Numero Carta : " + cardnumber + "\n" + "Pin : "
 							 * + pin + "\n");
 							 */
-							
 
-					 
 							String subject = "Registrazione Sistema Uniclam Market";
 
 							String message2 = "Benvenuto nel nostro sistema, gentile "
@@ -225,8 +224,10 @@ public class Registrazione_GUI extends JFrame {
 									+ ".\n\n"
 									+ "Saluti - Uniclam Market ";
 
-							EmailUtility.sendEmail(EmailUtility.HOST, EmailUtility.PASSWORD, EmailUtility.USER,
-									EmailUtility.PASSWORD, email, subject, message2);
+							EmailUtility.sendEmail(EmailUtility.HOST,
+									EmailUtility.PASSWORD, EmailUtility.USER,
+									EmailUtility.PASSWORD, email, subject,
+									message2);
 
 						}
 
