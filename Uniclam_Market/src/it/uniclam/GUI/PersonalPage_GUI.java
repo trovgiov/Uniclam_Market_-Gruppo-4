@@ -46,7 +46,7 @@ public class PersonalPage_GUI extends JFrame {
 	/**
 	 * Create the application.
 	 */
-	public PersonalPage_GUI(int i, int j, Socket s) {
+	public PersonalPage_GUI(int i, int j,Socket s) {
 
 		this.scheda = i;
 		this.pin = j;
@@ -177,6 +177,8 @@ public class PersonalPage_GUI extends JFrame {
 		lblMasRes.setBounds(325, 64, 125, 16);
 		getContentPane().add(lblMasRes);
 		try {
+			
+			
 			mass_res = SchedaDAOImpl.getInstance().checkMassimale(getScheda());
 			lblMasRes.setText("" + mass_res);
 		} catch (SQLException e1) {
@@ -239,7 +241,7 @@ public class PersonalPage_GUI extends JFrame {
 					
 					if(operation.contentEquals("spesa_creata")){
 						
-						Spesa_GUI spesawindow = new Spesa_GUI(idspesa);
+						Spesa_GUI spesawindow = new Spesa_GUI(idspesa,s);
                         spesawindow.setVisible(true);
 						
 		 

@@ -30,6 +30,8 @@ public class Server {
 	public static String PERSONAL_PAGE="req_Persona_Page";
 	public static String CREA_SPESA="req_Creazione_Spesa";
 	public static String MASSIMALE="req_massimale";
+	public static String INSERT_PRODUCTS="req_inserimentoProdotti";
+
 
 	public static String SPESA_CREATA="response_spesa_creata";
 
@@ -153,11 +155,32 @@ public class Server {
 				
 				
 				 String response="spesa_creata"+"/"+idspesa;
-				out.println(response);
+				 out.println(response);
 				
 				
 				
 			} 
+			
+			
+			else if(operation.contentEquals(INSERT_PRODUCTS)){
+				
+				
+				String barcode=parts[1];
+				int idspesa=Integer.parseInt(parts[2]);
+				int quantita=Integer.parseInt(parts[3]);
+				
+				if(SpesaDAOImpl.getInstance().addProducts(barcode, idspesa, quantita)){
+					
+
+					 String response="prodotto inserito";
+					 out.println(response);
+				}
+				else {
+					String response="prodotto non inserito";
+					out.println(response);
+				}
+				
+			}
 			
 			
 			

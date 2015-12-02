@@ -81,7 +81,7 @@ public class Login_GUI extends JFrame {
 		lblNumeroScheda.setBounds(113, 63, 124, 16);
 		this.getContentPane().add(lblNumeroScheda);
 
-		textNumeroScheda = new JTextField();
+		textNumeroScheda = new JTextField("43");
 		textNumeroScheda.setBounds(233, 58, 176, 26);
 		this.getContentPane().add(textNumeroScheda);
 		textNumeroScheda.setColumns(10);
@@ -108,7 +108,7 @@ public class Login_GUI extends JFrame {
 		btnRecuperaPin.setBounds(171, 153, 104, 36);
 		getContentPane().add(btnRecuperaPin);
 
-		pin_field = new JPasswordField();
+		pin_field = new JPasswordField("5573");
 		pin_field.setBounds(233, 103, 176, 26);
 		pin_field.setEchoChar('\u25cf');
 		getContentPane().add(pin_field);

@@ -3,9 +3,12 @@ package it.uniclam.DAO;
 import it.uniclam.db.DBUtility;
 import it.uniclam.entity.Spesa;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Random;
+
+import javax.swing.table.DefaultTableModel;
 
 import com.mysql.jdbc.Connection;
 
@@ -81,5 +84,111 @@ public class SpesaDAOImpl implements SpesaDAO{
 		return idspesa;
 
 	}
+
+
+	@Override
+	public boolean addProducts(String barcode, int idspesa, int quantita) throws SQLException {
+
+		Connection dbConnection = null;
+		java.sql.PreparedStatement preparedStatement = null;
+
+
+		String insertTableSQL = "insert into carrello(prodotto_barcode,spesa_idSpesa,quantita)  VALUES ('"+barcode+"','"+idspesa+"', '"+quantita+"')";
+
+		try {
+			dbConnection = DBUtility.getDBConnection();
+
+			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
+
+
+
+			// execute insert SQL stetement
+			preparedStatement.execute(insertTableSQL);
+
+
+			return true ;
+
+
+
+
+
+
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+
+		} finally {
+
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+
+		}
+		return false;
+
+	}
+
+
+	@Override
+	public DefaultTableModel getData(int idspesa) throws SQLException {
+
+		//Aggiungo le colonne alla tabella
+
+		DefaultTableModel dm = new DefaultTableModel();
+		dm.addColumn("Barcode");
+		dm.addColumn("Quantita");
+		dm.addColumn("Prezzo");
+
+
+		//sql
+		java.sql.Statement s = DBUtility.getStatement();
+
+		String sql = "select p.nome,p.costo,c.quantita from prodotto p, carrello c, spesa s where s.idspesa= '"+idspesa+"' and s.idspesa=c.spesa_idspesa and c.prodotto_barcode=p.barcode";
+
+
+		try{
+			ResultSet rs=s.executeQuery(sql);
+
+
+
+			while(rs.next()){
+
+				String nome=rs.getString("p.nome");
+				Double costo_p=rs.getDouble("p.costo");
+				int quantita_p=rs.getInt("c.quantita");
+
+				String costo=String.valueOf(costo_p);
+				String quantita=String.valueOf(quantita_p);
+
+
+				dm.addRow(new String []{nome,costo,quantita});
+
+			}
+
+
+
+
+		}
+
+		catch(Exception e){
+			e.printStackTrace();
+		}
+
+
+
+
+
+		return dm;
+	}
+
+
+
+
+
+
 
 }
