@@ -22,12 +22,12 @@ public class SpesaDAOImpl implements SpesaDAO{
 		}
 		return dao;
 	}
-	
-	
+
+
 	@Override
 	public int insertSpesa(Spesa c) throws SQLException {
- 
-		
+
+
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
@@ -43,24 +43,24 @@ public class SpesaDAOImpl implements SpesaDAO{
 			dbConnection = DBUtility.getDBConnection();
 
 			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
-             
-  			preparedStatement.setInt(1, idspesa );
 
-  			preparedStatement.setInt(2, c.getIdscheda() );
-  			preparedStatement.setDate(3, (java.sql.Date) c.getData_spesa());
+			preparedStatement.setInt(1, idspesa );
 
- 
- 
+			preparedStatement.setInt(2, c.getIdscheda() );
+			preparedStatement.setDate(3, (java.sql.Date) c.getData_spesa());
+
+
+
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
 
-			
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
+
 			System.out.println("Inserimento Data Spesa Effettuato");
 
 		} catch (SQLException e) {
@@ -82,4 +82,4 @@ public class SpesaDAOImpl implements SpesaDAO{
 
 	}
 
- }
+}

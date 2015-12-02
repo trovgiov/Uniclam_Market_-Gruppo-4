@@ -29,10 +29,8 @@ public class Server {
 	public static String LOGIN_UTENTE="req_login";
 	public static String PERSONAL_PAGE="req_Persona_Page";
 	public static String CREA_SPESA="req_Creazione_Spesa";
+	public static String MASSIMALE="req_massimale";
 
-
-	
-	
 	public static String SPESA_CREATA="response_spesa_creata";
 
 	public static String HOST = "localhost";
@@ -159,7 +157,11 @@ public class Server {
 				
 				
 				
-			} else if (operation.equals("logout")){
+			} 
+			
+			
+			
+			else if (operation.equals("logout")){
 				closeConnection = true;
 				// Altre chiusure necessarie
 			}

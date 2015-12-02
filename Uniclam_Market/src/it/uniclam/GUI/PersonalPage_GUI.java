@@ -46,7 +46,7 @@ public class PersonalPage_GUI extends JFrame {
 	/**
 	 * Create the application.
 	 */
-	public PersonalPage_GUI(int i, int j,Socket s) {
+	public PersonalPage_GUI(int i, int j, Socket s) {
 
 		this.scheda = i;
 		this.pin = j;

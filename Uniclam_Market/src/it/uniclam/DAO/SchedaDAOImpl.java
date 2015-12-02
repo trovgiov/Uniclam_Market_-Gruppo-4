@@ -161,7 +161,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 	@Override
 	public void recovery_pin(String email) throws SQLException,
-			AddressException, MessagingException {
+	AddressException, MessagingException {
 
 		int pin = 0;
 		int idscheda = 0;
@@ -232,16 +232,17 @@ public class SchedaDAOImpl implements SchedaDAO {
 	@Override
 	public double checkMassimale(int idscheda) throws SQLException {
 		double massimale_residuo = 0;
+		//Utente u = null;
 
 		java.sql.Statement s = DBUtility.getStatement();
 
-		String sql = " Select massimale_res from scheda where idScheda='"
-				+ idscheda + "'  ";
+		String sql = " select s.massimale_res, u.nome, u.cognome from scheda s, utente u where s.idScheda = '" +idscheda + "' and s.utente_email = u.email";
 		try {
 			ResultSet rs = s.executeQuery(sql);
 
 			while (rs.next()) {
 				massimale_residuo = rs.getDouble("massimale_res");
+				//u = new Utente(rs.getString("u.nome"), rs.getString("u.cognome"));
 
 			}
 			rs.close();
@@ -258,20 +259,19 @@ public class SchedaDAOImpl implements SchedaDAO {
 		return massimale_residuo;
 	}
 
+
 	@Override
 	public Utente checkUser(int idScheda) throws SQLException {
 		// TODO Auto-generated method stub
 		Utente u = null;
 		java.sql.Statement s = DBUtility.getStatement();
-		String sql = "	select u.nome, u.cognome,u.email from utente u,scheda s where idscheda= '"
-				+ idScheda + "' and s.utente_email=u.email";
+		String sql = "	select u.nome, u.cognome,u.email from utente u,scheda s where idscheda= '" + idScheda + "' and s.utente_email=u.email";
 		try {
 			ResultSet rs = s.executeQuery(sql);
 
 			while (rs.next()) {
 
-				u = new Utente(rs.getString("u.nome"),
-						rs.getString("u.cognome"), rs.getString("u.email"));
+				u = new Utente(rs.getString("u.nome"), rs.getString("u.cognome"), rs.getString("u.email"));
 
 			}
 			rs.close();

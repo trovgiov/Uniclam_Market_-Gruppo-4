@@ -32,7 +32,7 @@ public String getNome() {
 public void setNome(String nome) {
 	this.nome = nome;
 }
-public Utente(String email) {
+public Utente(String email, String string) {
 	super();
 	this.email = email;
 }
@@ -49,6 +49,10 @@ public Utente(String nome, String cognome, String email) {
 	this.nome = nome;
 	this.cognome = cognome;
 	this.email = email;
+}
+
+public Utente(String string) {
+	// TODO Auto-generated constructor stub
 }
 
 public String getCognome() {
