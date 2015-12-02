@@ -116,6 +116,7 @@ public class SpesaDAOImpl implements SpesaDAO{
 		} catch (SQLException e) {
 
 			System.out.println(e.getMessage());
+			return false;
 
 		} finally {
 
@@ -128,26 +129,28 @@ public class SpesaDAOImpl implements SpesaDAO{
 			}
 
 		}
-		return false;
-
+ 
 	}
 
 
 	@Override
 	public DefaultTableModel getData(int idspesa) throws SQLException {
 
+
 		//Aggiungo le colonne alla tabella
 
+ 	
 		DefaultTableModel dm = new DefaultTableModel();
+
 		dm.addColumn("Barcode");
+ 		dm.addColumn("Prezzo");
 		dm.addColumn("Quantita");
-		dm.addColumn("Prezzo");
 
 
 		//sql
 		java.sql.Statement s = DBUtility.getStatement();
 
-		String sql = "select p.nome,p.costo,c.quantita from prodotto p, carrello c, spesa s where s.idspesa= '"+idspesa+"' and s.idspesa=c.spesa_idspesa and c.prodotto_barcode=p.barcode";
+		String sql = "select p.nome,c.quantita,p.costo from prodotto p, carrello c, spesa s where s.idspesa= '"+idspesa+"' and s.idspesa=c.spesa_idspesa and c.prodotto_barcode=p.barcode";
 
 
 		try{
@@ -157,15 +160,18 @@ public class SpesaDAOImpl implements SpesaDAO{
 
 			while(rs.next()){
 
-				String nome=rs.getString("p.nome");
-				Double costo_p=rs.getDouble("p.costo");
-				int quantita_p=rs.getInt("c.quantita");
+				String nome=rs.getString(1);
+				int quantita_p=rs.getInt(2);
 
+				Double costo_p=rs.getDouble(3);
+ 
 				String costo=String.valueOf(costo_p);
 				String quantita=String.valueOf(quantita_p);
-
+  
+			 
 
 				dm.addRow(new String []{nome,costo,quantita});
+				
 
 			}
 
@@ -185,6 +191,111 @@ public class SpesaDAOImpl implements SpesaDAO{
 		return dm;
 	}
 
+
+	@Override
+	public boolean deleteProduct(String barcode, int idspesa)
+			throws SQLException {
+
+		
+		
+		Connection dbConnection = null;
+		java.sql.PreparedStatement preparedStatement = null;
+
+//' " ' "
+		String deleteTableSQL = "delete from carrello where prodotto_barcode='"+barcode+"' and spesa_idspesa= '"+idspesa+"'";
+
+		
+		
+		try {
+			dbConnection = DBUtility.getDBConnection();
+
+			preparedStatement = dbConnection.prepareStatement(deleteTableSQL);
+
+
+
+			// execute insert SQL stetement
+			preparedStatement.execute(deleteTableSQL);
+
+
+			return true ;
+
+
+
+
+
+
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+			return false;
+
+
+		} finally {
+
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+
+		}
+ 
+	}
+
+
+	@Override
+	public double calcoloImporto(int idspesa) throws SQLException {
+		// TODO Auto-generated method stub
+		
+		double importo_finale=0;
+		
+		
+		
+		java.sql.Statement s = DBUtility.getStatement();
+
+		String sql = "select sum(p.costo*c.quantita) importo from prodotto p,carrello c,spesa s where s.idspesa= '"+idspesa+"' and s.idspesa=c.spesa_idspesa and c.prodotto_barcode=p.barcode";
+
+
+		try{
+			ResultSet rs=s.executeQuery(sql);
+
+
+
+			while(rs.next()){
+
+				 importo_finale=rs.getDouble("importo");
+				 
+				
+
+			}
+
+
+
+
+		}
+
+		catch(Exception e){
+			e.printStackTrace();
+		}
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		return importo_finale;
+	}
+		
+		
+		
+		
+	 
 
 
 
