@@ -50,7 +50,7 @@ public class PersonalPage_GUI extends JFrame {
 
 		this.scheda = i;
 		this.pin = j;
-this.s=s;
+		this.s=s;
 		initialize();
 
 	}
@@ -180,8 +180,7 @@ this.s=s;
 			mass_res = SchedaDAOImpl.getInstance().checkMassimale(getScheda());
 			lblMasRes.setText("" + mass_res);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+ 			e1.printStackTrace();
 		}
 
 		// Label Utente
@@ -215,23 +214,38 @@ this.s=s;
 
 					//Socket s = new Socket("localhost", 8888);
 
-					 Login_GUI.in = new BufferedReader(
+					Login_GUI.in = new BufferedReader(
 							new InputStreamReader(s.getInputStream()));
 
-					 Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
+					Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
 
 					String req = Server.CREA_SPESA + "/" + getScheda();
-System.out.println(req);
-					
+					System.out.println(req);
+
 					Login_GUI.out.println(req);
 
 					String line = Login_GUI.in.readLine();
-					
-					
-					
+
+                    String parts[]=line.split("/");
+                    
+                    String operation=parts[0];
+                    String id_spesa=parts[1];
+                    int idspesa=Integer.parseInt(id_spesa);
+                    
+
 					Login_GUI.out.println(line);
 
-				}
+					
+					
+					if(operation.contentEquals("spesa_creata")){
+						
+						Spesa_GUI spesawindow = new Spesa_GUI(idspesa);
+                        spesawindow.setVisible(true);
+						
+		 
+					
+					
+				}}
 
 				catch (IOException ioe) {
 

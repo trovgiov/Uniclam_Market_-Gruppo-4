@@ -151,11 +151,10 @@ public class Server {
  	 			
 				Spesa c = new Spesa (idscheda,data_spesa);
 				
-				JOptionPane.showMessageDialog(null, c.getData_spesa()+ "idscheda : " + c.getIdscheda());
-				SpesaDAOImpl.getInstance().insertSpesa(c);
+ 				int idspesa=SpesaDAOImpl.getInstance().insertSpesa(c);
 				
 				
-				 String response="spesa_creata";
+				 String response="spesa_creata"+"/"+idspesa;
 				out.println(response);
 				
 				

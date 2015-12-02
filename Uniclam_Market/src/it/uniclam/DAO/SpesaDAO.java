@@ -9,7 +9,7 @@ public interface SpesaDAO {
 
 	
  
-	void insertSpesa( Spesa c) throws SQLException;
+	int insertSpesa( Spesa c) throws SQLException;
 
 	
 }
