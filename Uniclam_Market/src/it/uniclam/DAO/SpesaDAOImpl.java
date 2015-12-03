@@ -281,6 +281,15 @@ public class SpesaDAOImpl implements SpesaDAO{
 		}
 
 
+	finally {
+
+		if (s != null) {
+			s.close();
+		}
+
+		 
+
+	}
 		
 		
 		

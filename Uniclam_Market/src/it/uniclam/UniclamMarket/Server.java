@@ -205,9 +205,10 @@ public class Server {
 					
 					if(SpesaDAOImpl.getInstance().deleteProduct(barcode, idspesa)){
 						
-						
-						String response="prodotto eliminato";
-						out.println(response);
+						double importo=	SpesaDAOImpl.getInstance().calcoloImporto(idspesa);
+
+						String response="prodotto eliminato"+"/"+importo;
+ 						out.println(response);
 						
 					}
 					

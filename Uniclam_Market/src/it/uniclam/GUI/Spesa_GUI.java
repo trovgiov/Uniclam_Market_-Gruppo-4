@@ -183,10 +183,13 @@ public class Spesa_GUI extends JFrame {
 
 		JButton btnEliminaProdotto = new JButton("Elimina Prodotto");
 		btnEliminaProdotto.setBounds(619, 154, 186, 28);
+		getContentPane().add(btnEliminaProdotto);
+
 		btnEliminaProdotto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				String barcode = textBarcode.getText();
+				
 				try {
 					Login_GUI.in = new BufferedReader(new InputStreamReader(s
 							.getInputStream()));
@@ -198,14 +201,23 @@ public class Spesa_GUI extends JFrame {
 					Login_GUI.out.println(response);
 
 					String line = Login_GUI.in.readLine();
+					String [] part=line.split("/");
 
-					if (line.contentEquals("prodotto eliminato")) {
+					
+					
+
+					if (part[0].contentEquals("prodotto eliminato")) {
 
 						try {
 							DefaultTableModel dm = new JTableOperation()
 							.getData(idspesa);
 
+							// dm=SpesaDAOImpl.getInstance().getData(idspesa);
+
 							table.setModel(dm);
+
+							lbl_importofinale.setText(part[1]);
+
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -218,6 +230,10 @@ public class Spesa_GUI extends JFrame {
 
 					}
 
+					
+					
+					
+
 				} catch (IOException ioe) {
 
 					JOptionPane.showMessageDialog(Spesa_GUI.this,
@@ -227,8 +243,7 @@ public class Spesa_GUI extends JFrame {
 
 			}
 		});
-		getContentPane().add(btnEliminaProdotto);
-
+ 
 		JLabel lblIdSpesa = new JLabel(
 				"La sua spesa è registrata con il codice : ");
 		lblIdSpesa.setBounds(88, 128, 269, 16);
@@ -263,7 +278,7 @@ public class Spesa_GUI extends JFrame {
 		lblVer.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		this.getContentPane().add(lblVer);
 
-		textQuantità = new JTextField();
+		textQuantità = new JTextField("1");
 		textQuantità.setBounds(555, 80, 72, 28);
 		getContentPane().add(textQuantità);
 		textQuantità.setColumns(10);
