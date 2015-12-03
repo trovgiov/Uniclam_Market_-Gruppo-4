@@ -33,6 +33,8 @@ public class Server {
 	public static String MASSIMALE="req_massimale";
 	public static String INSERT_PRODUCTS="req_inserimentoProdotti";
 	public static String DELETE_PRODUCTS="req_delete_Prodotti";
+	public static String UPDATE_PRODUCTS="req_update_Prodotti";
+
 
 
 

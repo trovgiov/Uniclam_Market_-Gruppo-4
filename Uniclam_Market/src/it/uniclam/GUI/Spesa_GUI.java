@@ -73,12 +73,12 @@ public class Spesa_GUI extends JFrame {
 	private void initialize() {
 		this.setTitle("UNICLAM MARKET - Effettua la tua spesa");
 		this.getContentPane().setBackground(new Color(102, 0, 0));
-		this.setBounds(100, 100, 780, 612);
+		this.setBounds(100, 100, 852, 720);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 
 		JTextPane txtpnBenvenutoNelNostro = new JTextPane();
-		txtpnBenvenutoNelNostro.setBounds(34, 6, 728, 48);
+		txtpnBenvenutoNelNostro.setBounds(34, 6, 812, 48);
 		txtpnBenvenutoNelNostro.setForeground(new Color(255, 255, 255));
 		txtpnBenvenutoNelNostro.setBackground(new Color(102, 0, 0));
 		txtpnBenvenutoNelNostro.setToolTipText("\\");
@@ -90,38 +90,38 @@ public class Spesa_GUI extends JFrame {
 		this.getContentPane().add(txtpnBenvenutoNelNostro);
 
 		JLabel lblProdotto = new JLabel("Prodotto:");
-		lblProdotto.setBounds(48, 86, 72, 16);
+		lblProdotto.setBounds(88, 86, 72, 16);
 		lblProdotto.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		lblProdotto.setForeground(new Color(255, 255, 255));
 		lblProdotto.setHorizontalAlignment(SwingConstants.CENTER);
 		this.getContentPane().add(lblProdotto);
 
 		textBarcode = new JTextField();
-		textBarcode.setBounds(132, 79, 186, 28);
+		textBarcode.setBounds(186, 80, 186, 28);
 		textBarcode.setBackground(Color.LIGHT_GRAY);
 		this.getContentPane().add(textBarcode);
 		textBarcode.setColumns(10);
 
 		JLabel lblQuantit = new JLabel("Quantità: ");
-		lblQuantit.setBounds(374, 86, 72, 16);
+		lblQuantit.setBounds(471, 86, 72, 16);
 		lblQuantit.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		lblQuantit.setHorizontalAlignment(SwingConstants.CENTER);
 		lblQuantit.setForeground(Color.WHITE);
 		this.getContentPane().add(lblQuantit);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(6, 55, 768, 12);
+		separator.setBounds(6, 55, 840, 12);
 		this.getContentPane().add(separator);
 
 		JButton btnAggiungiAlCarrello = new JButton("Aggiungi al Carrello");
-		btnAggiungiAlCarrello.setBounds(551, 83, 186, 24);
+		btnAggiungiAlCarrello.setBounds(48, 156, 186, 24);
 		getContentPane().add(btnAggiungiAlCarrello);
 
 		JLabel lbl_importofinale = new JLabel("");
 		lbl_importofinale.setFont(new Font("Lucida Grande", Font.BOLD
 				| Font.ITALIC, 15));
 		lbl_importofinale.setForeground(new Color(255, 255, 51));
-		lbl_importofinale.setBounds(458, 462, 61, 16);
+		lbl_importofinale.setBounds(471, 530, 93, 16);
 		getContentPane().add(lbl_importofinale);
 
 		btnAggiungiAlCarrello.addActionListener(new ActionListener() {
@@ -182,7 +182,7 @@ public class Spesa_GUI extends JFrame {
 		});
 
 		JButton btnEliminaProdotto = new JButton("Elimina Prodotto");
-		btnEliminaProdotto.setBounds(551, 107, 186, 28);
+		btnEliminaProdotto.setBounds(619, 154, 186, 28);
 		btnEliminaProdotto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -231,45 +231,45 @@ public class Spesa_GUI extends JFrame {
 
 		JLabel lblIdSpesa = new JLabel(
 				"La sua spesa è registrata con il codice : ");
-		lblIdSpesa.setBounds(49, 114, 269, 16);
+		lblIdSpesa.setBounds(88, 128, 269, 16);
 		lblIdSpesa.setFont(new Font("Lucida Grande", Font.ITALIC, 13));
 		lblIdSpesa.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIdSpesa.setForeground(Color.WHITE);
 		getContentPane().add(lblIdSpesa);
 
 		JLabel lblsetIDspesa = new JLabel("");
-		lblsetIDspesa.setBounds(336, 114, 61, 16);
+		lblsetIDspesa.setBounds(369, 128, 61, 16);
 		lblsetIDspesa.setForeground(new Color(255, 255, 255));
 		lblsetIDspesa.setText("" + getIdspesa());
 		getContentPane().add(lblsetIDspesa);
 
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(6, 490, 756, 12);
+		separator_1.setBounds(6, 558, 840, 12);
 		getContentPane().add(separator_1);
 
 		JButton btnConferma = new JButton("Conferma e paga");
-		btnConferma.setBounds(152, 508, 166, 47);
+		btnConferma.setBounds(152, 582, 166, 47);
 		getContentPane().add(btnConferma);
 
 		JButton btnEsci = new JButton("Annulla ed esci");
-		btnEsci.setBounds(458, 508, 166, 47);
+		btnEsci.setBounds(458, 582, 166, 47);
 		getContentPane().add(btnEsci);
 
 		JLabel lblVer = new JLabel(
 				"Ver. 1.0 - © Tutti i diritti riservati - Developed by Giovanni Trovini ed Enea Marinelli");
-		lblVer.setBounds(152, 568, 450, 16);
+		lblVer.setBounds(174, 663, 450, 16);
 		lblVer.setHorizontalAlignment(SwingConstants.CENTER);
 		lblVer.setForeground(SystemColor.scrollbar);
 		lblVer.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		this.getContentPane().add(lblVer);
 
 		textQuantità = new JTextField();
-		textQuantità.setBounds(447, 80, 72, 28);
+		textQuantità.setBounds(555, 80, 72, 28);
 		getContentPane().add(textQuantità);
 		textQuantità.setColumns(10);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(46, 147, 691, 292);
+		scrollPane.setBounds(46, 194, 789, 293);
 		getContentPane().add(scrollPane);
 
 		table = new JTable();
@@ -279,8 +279,12 @@ public class Spesa_GUI extends JFrame {
 		lblNewLabel.setForeground(new Color(255, 255, 51));
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC,
 				15));
-		lblNewLabel.setBounds(269, 461, 177, 16);
+		lblNewLabel.setBounds(286, 530, 177, 16);
 		getContentPane().add(lblNewLabel);
+		
+		JButton btnModificaQuantit = new JButton("Modifica quantità");
+		btnModificaQuantit.setBounds(346, 154, 186, 28);
+		getContentPane().add(btnModificaQuantit);
 
 		// Pulsante Annulla ed Esci
 		btnEsci.addActionListener(new ActionListener() {

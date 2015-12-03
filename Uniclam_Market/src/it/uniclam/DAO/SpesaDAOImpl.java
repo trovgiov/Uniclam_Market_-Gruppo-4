@@ -291,6 +291,60 @@ public class SpesaDAOImpl implements SpesaDAO{
 		
 		return importo_finale;
 	}
+
+
+	@Override
+	public boolean updateProduct(String barcode,int quantita, int idspesa) throws SQLException {
+
+
+		Connection dbConnection = null;
+		java.sql.PreparedStatement preparedStatement = null;
+
+//' " ' "
+		String updateTableSQL = "update carrello set quantita ='"+quantita+"' where prodotto_barcode='"+barcode+"' and spesa_idSpesa='"+idspesa+"'";
+
+		
+		
+		try {
+			dbConnection = DBUtility.getDBConnection();
+
+			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
+
+
+
+			// execute insert SQL stetement
+			preparedStatement.execute(updateTableSQL);
+
+
+			return true ;
+
+
+
+
+
+
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+			return false;
+
+
+		} finally {
+
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+
+		}
+		
+		
+		
+		
+	}
 		
 		
 		
