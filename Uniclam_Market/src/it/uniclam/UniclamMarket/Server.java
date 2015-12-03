@@ -221,6 +221,29 @@ public class Server {
 
 				
 				
+				else if(operation.contentEquals(UPDATE_PRODUCTS)){
+					
+					String barcode=parts[1];
+					int quantita=Integer.parseInt(parts[2]);
+					int idspesa=Integer.parseInt(parts[3]);
+					
+					
+					if(SpesaDAOImpl.getInstance().updateProduct(barcode, quantita, idspesa)){
+						
+						
+						double importo=	SpesaDAOImpl.getInstance().calcoloImporto(idspesa);
+						String response="prodotto aggiornato"+"/"+importo;
+ 						out.println(response);
+						
+					}
+					else{
+						String response="prodotto non aggiornato";
+						out.println(response);
+						
+					}
+					
+					
+				}
 				 
 				else if (operation.equals("logout")){
 					closeConnection = true;

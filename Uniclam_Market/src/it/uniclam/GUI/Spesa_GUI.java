@@ -189,7 +189,7 @@ public class Spesa_GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				String barcode = textBarcode.getText();
-				
+
 				try {
 					Login_GUI.in = new BufferedReader(new InputStreamReader(s
 							.getInputStream()));
@@ -200,11 +200,14 @@ public class Spesa_GUI extends JFrame {
 
 					Login_GUI.out.println(response);
 
+
+
+
 					String line = Login_GUI.in.readLine();
 					String [] part=line.split("/");
 
-					
-					
+
+
 
 					if (part[0].contentEquals("prodotto eliminato")) {
 
@@ -230,9 +233,9 @@ public class Spesa_GUI extends JFrame {
 
 					}
 
-					
-					
-					
+
+
+
 
 				} catch (IOException ioe) {
 
@@ -243,7 +246,7 @@ public class Spesa_GUI extends JFrame {
 
 			}
 		});
- 
+
 		JLabel lblIdSpesa = new JLabel(
 				"La sua spesa è registrata con il codice : ");
 		lblIdSpesa.setBounds(88, 128, 269, 16);
@@ -296,11 +299,83 @@ public class Spesa_GUI extends JFrame {
 				15));
 		lblNewLabel.setBounds(286, 530, 177, 16);
 		getContentPane().add(lblNewLabel);
-		
+
 		JButton btnModificaQuantit = new JButton("Modifica quantità");
 		btnModificaQuantit.setBounds(346, 154, 186, 28);
 		getContentPane().add(btnModificaQuantit);
 
+		
+		btnModificaQuantit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				String barcode=textBarcode.getText();
+				String quantita=textQuantità.getText();
+				
+				try {
+					Login_GUI.in = new BufferedReader(new InputStreamReader(s
+							.getInputStream()));
+					Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
+
+					String response = Server.UPDATE_PRODUCTS + "/" + barcode
+							+ "/" + quantita + "/"+idspesa;
+
+					Login_GUI.out.println(response);
+
+
+
+
+					String line = Login_GUI.in.readLine();
+					String [] part=line.split("/");
+
+
+
+
+					if (part[0].contentEquals("prodotto aggiornato")) {
+
+						try {
+							DefaultTableModel dm = new JTableOperation()
+							.getData(idspesa);
+
+							// dm=SpesaDAOImpl.getInstance().getData(idspesa);
+
+							table.setModel(dm);
+
+							lbl_importofinale.setText(part[1]);
+
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+
+					else {
+						JOptionPane.showMessageDialog(Spesa_GUI.this,
+								"prodotto non aggiornato");
+
+					}
+
+
+
+
+
+				} catch (IOException ioe) {
+
+					JOptionPane.showMessageDialog(Spesa_GUI.this,
+							"Error in communication with server!", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
+			}
+				
+				
+				
+				
+				
+		
+		});
 		// Pulsante Annulla ed Esci
 		btnEsci.addActionListener(new ActionListener() {
 
