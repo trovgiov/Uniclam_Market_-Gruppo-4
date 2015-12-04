@@ -1,5 +1,6 @@
 package it.uniclam.GUI;
 
+import it.uniclam.Controller.ControllerUtente;
 import it.uniclam.UniclamMarket.Client;
 import it.uniclam.UniclamMarket.Server;
 import it.uniclam.mail.EmailUtility;
@@ -140,114 +141,25 @@ public class Registrazione_GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				try {
 
-					String nome = txtNome.getText();
-					String cognome = textCognome.getText();
-					String email = textEmail.getText();
 
-					String telefono = textTelefono.getText();
-					String massimale = textMassimale.getText();
+				String nome = txtNome.getText();
+				String cognome = textCognome.getText();
+				String email = textEmail.getText();
 
-					String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+				String telefono = textTelefono.getText();
+				String massimale = textMassimale.getText();
 
-					// Controllo se i campi sono stati riempiti correttamente
-					if (email.matches(emailPattern) && nome.length() != 0
-							&& cognome.length() != 0 && telefono.length() != 0
-							&& massimale.length() != 0) {
+				String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-						Socket s = new Socket("localhost", 8888);
+				//Passo alla funzione di Controller
+ 
 
-						BufferedReader in = new BufferedReader(
-								new InputStreamReader(s.getInputStream()));
-						PrintWriter out = new PrintWriter(s.getOutputStream(),
-								true);
+	 
+	                ControllerUtente.registrazioneUtente(nome, cognome, email, massimale, telefono, emailPattern);
 
-						String req = Server.INSERT_UTENTE + "/" + nome + "/"
-								+ cognome + "/" + email + "/" + telefono + "/"
-								+ massimale + "\n";
+ 
 
-						out.println(req);
-						System.out.println("Email valida");
-						System.out.println("Inviato: " + req);
-
-						String line = in.readLine();
-						String parts[] = line.split("/");
-						String message = parts[0];
-						String pin = parts[2];
-						String cardnumber = parts[1];
-						System.out.println(line);
-
-						if (message.contentEquals("OK")) {
-							JOptionPane
-							.showMessageDialog(
-									Registrazione_GUI.this,
-									"Complimenti. La sua carta è stata attivata."
-											+ "\nA breve riceverà una mail con il numero carta ed il pin, necessario per l'accesso."
-											+ "\nUniclam Market");
-
-							/*
-							 * JOptionPane.showMessageDialog(null,
-							 * "Dati per l'autenticazione \n" +
-							 * "Numero Carta : " + cardnumber + "\n" + "Pin : "
-							 * + pin + "\n");
-							 */
-
-							String subject = "Registrazione Sistema Uniclam Market";
-
-							String message2 = "Benvenuto nel nostro sistema, gentile "
-									+ nome
-									+ " "
-									+ cognome
-									+ " \n\n"
-									+ "Le comunichiamo che la sua carta fedelta' e' stata attivata !!!"
-									+ " \n\n"
-									+ "Riepilogo Dati: "
-									+ " \n"
-									+ "Dati anagrafici : "
-									+ nome
-									+ " "
-									+ cognome
-									+ "\n"
-									+ "telefono : "
-									+ telefono
-									+ "\n"
-									+ "email : "
-									+ email
-									+ "\n\n"
-									+ "Ecco i suoi dati di accesso da conservare per l'accesso al sistema "
-									+ "\n"
-									+ "Numero Carta :  "
-									+ cardnumber
-									+ "\nPin: "
-									+ pin
-									+ ".\n\n"
-									+ "Saluti - Uniclam Market ";
-
-							EmailUtility.sendEmail(EmailUtility.HOST,
-									EmailUtility.PASSWORD, EmailUtility.USER,
-									EmailUtility.PASSWORD, email, subject,
-									message2);
-
-						}
-
-					} else {
-						JOptionPane.showMessageDialog(Registrazione_GUI.this,
-								"Errore inserimento campi");
-					}
-
-				} catch (IOException ioe) {
-
-					JOptionPane.showMessageDialog(Registrazione_GUI.this,
-							"Error in communication with server!", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} catch (AddressException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (MessagingException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 		});
 	}

@@ -1,5 +1,7 @@
 package it.uniclam.GUI;
 
+import it.uniclam.Controller.ControllerLogin;
+import it.uniclam.Controller.ControllerUtente;
 import it.uniclam.DAO.SchedaDAOImpl;
 import it.uniclam.DAO.UtenteDAOImpl;
 import it.uniclam.UniclamMarket.Server;
@@ -67,7 +69,7 @@ public class Login_GUI extends JFrame {
 		JLabel lblAutenticazioneNelSistema = new JLabel(
 				"AUTENTICAZIONE NEL SISTEMA");
 		lblAutenticazioneNelSistema
-				.setHorizontalAlignment(SwingConstants.CENTER);
+		.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAutenticazioneNelSistema.setIcon(null);
 		lblAutenticazioneNelSistema.setFont(new Font("Lucida Grande",
 				Font.BOLD, 15));
@@ -116,62 +118,29 @@ public class Login_GUI extends JFrame {
 		this.setBounds(100, 100, 535, 229);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		
+		
+		/**
+		 * ActionListener per il Login
+		 */
+		
 		btnLogin.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				try {
+				String numScheda = textNumeroScheda.getText();
 
-					if (Login_GUI.in == null || Login_GUI.out == null) {
-						// apro socket
-						Socket s = new Socket("localhost", 8888);
+				@SuppressWarnings("deprecation")
+				String pino = pin_field.getText();
 
-						in = new BufferedReader(new InputStreamReader(s
-								.getInputStream()));
-						out = new PrintWriter(s.getOutputStream(), true);
 
-						// Leggo i valori inseriti
-						String numScheda = textNumeroScheda.getText();
-						int numcard = Integer.parseInt(numScheda);
-
-						@SuppressWarnings("deprecation")
-						String pino = pin_field.getText();
-						int pin = Integer.parseInt(pino);
-						
-						// Invio la richiesta al server
-						
-						String req = Server.LOGIN_UTENTE + "/"+numScheda
-								+ "/"+pino + "\n";
-						System.out.println("Richiesta "+req);
-						out.println(req);
-						String line = in.readLine();
+				ControllerLogin.authenticate(numScheda, pino);				 
  
+				
+				
+				
 
-						if (line.contentEquals("login_Ok")) {
-							Scheda card = new Scheda(numcard, pin);
- 
-							PersonalPage_GUI personalwindow = new PersonalPage_GUI(
-									card.getIdScheda(), card.getPin(),s);
-							personalwindow.setVisible(true);
-
-						} else {
-							JOptionPane.showMessageDialog(null, "Login Errato");
-						}
-
-					}
-				} catch (IOException ioe) {
-
-					JOptionPane.showMessageDialog(Login_GUI.this,
-							"Error in communication with server!", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
-
-				//
-
-				// GUI
-				/*	 
-	 						*/
 
 			}
 
