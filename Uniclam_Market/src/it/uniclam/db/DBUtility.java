@@ -9,14 +9,13 @@ import com.mysql.jdbc.Statement;
 
 public class DBUtility {
 
- 
-	public static final String DRIVERNAME="com.mysql.jdbc.Driver";
-	public static final String USER="sql497212";
-	public static final String PASSWORD="SSzldHpRKz";
-	public static final String URL="jdbc:mysql://sql4.freesqldatabase.com:3306/sql497212";
- 
-	static{
-		
+	public static final String DRIVERNAME = "com.mysql.jdbc.Driver";
+	public static final String USER = "sql497212";
+	public static final String PASSWORD = "SSzldHpRKz";
+	public static final String URL = "jdbc:mysql://sql4.freesqldatabase.com:3306/sql497212";
+
+	static {
+
 		try {
 			Class.forName(DRIVERNAME);
 		} catch (ClassNotFoundException e) {
@@ -24,19 +23,16 @@ public class DBUtility {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	//Insert
+
+	// Insert
 	public static Connection getDBConnection() {
 
 		Connection dbConnection = null;
 
-	
-
 		try {
 
-			dbConnection = (Connection) DriverManager.getConnection(
-                            URL, USER,PASSWORD);
+			dbConnection = (Connection) DriverManager.getConnection(URL, USER,
+					PASSWORD);
 			return dbConnection;
 
 		} catch (SQLException e) {
@@ -48,17 +44,15 @@ public class DBUtility {
 		return dbConnection;
 
 	}
-	
-	public static PreparedStatement getPreparedStatement(String sql) throws SQLException{
+
+	public static PreparedStatement getPreparedStatement(String sql)
+			throws SQLException {
 		return getDBConnection().prepareStatement(sql);
 	}
-	
-	
-	public static Statement getStatement() throws SQLException{
-		
+
+	public static Statement getStatement() throws SQLException {
+
 		return (Statement) getDBConnection().createStatement();
 	}
-	
 
-  
 }

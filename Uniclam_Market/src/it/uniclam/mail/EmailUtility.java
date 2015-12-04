@@ -20,27 +20,29 @@ import javax.mail.internet.MimeMessage;
  *
  */
 public class EmailUtility {
- 
-	public static String HOST="smtp.gmail.com";
-	public static String PORT="587";
-	public static String USER="uniclamarket@gmail.com";
-	public static String PASSWORD="trovinimarinelli";
+
+	public static String HOST = "smtp.gmail.com";
+	public static String PORT = "587";
+	public static String USER = "uniclamarket@gmail.com";
+	public static String PASSWORD = "trovinimarinelli";
+
 	/**
-	 * This methos is used to set  parameters for sending Email
+	 * This methos is used to set parameters for sending Email
+	 * 
 	 * @param host
 	 * @param port
-	 * @param userName : the email of the sender
+	 * @param userName
+	 *            : the email of the sender
 	 * @param password
 	 * @param email
-	 * @param subject : the subject of the email
-	 * @param message : message
+	 * @param subject
+	 *            : the subject of the email
+	 * @param message
+	 *            : message
 	 * @throws AddressException
 	 * @throws MessagingException
 	 */
-	
-	
-	
-	
+
 	public static void sendEmail(String host, String port,
 			final String userName, final String password, String email,
 			String subject, String message) throws AddressException,
@@ -71,7 +73,6 @@ public class EmailUtility {
 		msg.setSubject(subject);
 		msg.setSentDate(new Date());
 		msg.setContent(message, "text/plain");
-
 
 		msg.setContent(message, "text/plain");
 

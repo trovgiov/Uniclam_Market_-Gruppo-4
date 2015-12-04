@@ -43,57 +43,48 @@ public class PersonalPage_GUI extends JFrame {
 	private String email;
 	Socket s;
 
-
 	private double mass_res = 0;
-
-
 
 	/**
 	 * Create the application.
 	 */
-	public PersonalPage_GUI(int i, int j,Socket s,double mas,String nome,String cognome,String email) {
+	public PersonalPage_GUI(int i, int j, Socket s, double mas, String nome,
+			String cognome, String email) {
 
 		this.scheda = i;
 		this.pin = j;
-		this.s=s;
-		this.mass_res=mas;
-		this.nome=nome;
-		this.cognome=cognome;
-		this.email=email;
+		this.s = s;
+		this.mass_res = mas;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.email = email;
 		initialize();
 
 	}
-
 
 	public String getNome() {
 		return nome;
 	}
 
-
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
 
 	public String getCognome() {
 		return cognome;
 	}
 
-
 	public void setCognome(String cognome) {
 		this.cognome = cognome;
 	}
-
 
 	public String getEmail() {
 		return email;
 	}
 
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 	public double getMass_res() {
 		return mass_res;
@@ -185,7 +176,7 @@ public class PersonalPage_GUI extends JFrame {
 		JLabel lblAreaDatiPersonali = new JLabel("Area dati personali");
 		lblAreaDatiPersonali.setForeground(new Color(204, 204, 204));
 		lblAreaDatiPersonali
-		.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
+				.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		lblAreaDatiPersonali.setBackground(new Color(0, 0, 0));
 		lblAreaDatiPersonali.setBounds(26, 168, 125, 16);
 		this.getContentPane().add(lblAreaDatiPersonali);
@@ -225,11 +216,7 @@ public class PersonalPage_GUI extends JFrame {
 		lblMasRes.setBounds(325, 64, 125, 16);
 		getContentPane().add(lblMasRes);
 
-
-
-
-		lblMasRes.setText(""+mass_res);
-
+		lblMasRes.setText("" + mass_res);
 
 		// Label Utente
 
@@ -238,7 +225,7 @@ public class PersonalPage_GUI extends JFrame {
 		lblUserEmail.setForeground(new Color(255, 255, 255));
 		lblUserEmail.setBounds(360, 7, 173, 16);
 		getContentPane().add(lblUserEmail);
-		lblUserEmail.setText(""+nome+ " "+cognome);//+" , "+getEmail());
+		lblUserEmail.setText("" + nome + " " + cognome);// +" , "+getEmail());
 
 		// Button Effettua Spesa
 
@@ -248,8 +235,7 @@ public class PersonalPage_GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-
-				Controller_PersonalPage.effettuaspesa(s, getScheda());
+				Controller_PersonalPage.effettuaspesa(s, scheda, mass_res);
 			}
 		});
 
@@ -258,9 +244,8 @@ public class PersonalPage_GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				
- 				JOptionPane.showMessageDialog(PersonalPage_GUI.this,
+
+				JOptionPane.showMessageDialog(PersonalPage_GUI.this,
 						"Arrivederci!");
 				System.exit(0);
 			}
@@ -278,13 +263,13 @@ public class PersonalPage_GUI extends JFrame {
 						"Sei sicuro di volerti cancellare dal sistema?",
 						"Eliminazione Account", JOptionPane.YES_NO_OPTION);
 				switch (scelta) {
-			
+
 				case JOptionPane.YES_OPTION:
-					 
+
 					Controller_PersonalPage.CancellaUtente(s, email);
 					JOptionPane
-					.showMessageDialog(null,
-							"Ci dispiace per la tua scelta e speriamo di rivederti presto!");
+							.showMessageDialog(null,
+									"Ci dispiace per la tua scelta e speriamo di rivederti presto!");
 				case JOptionPane.NO_OPTION:
 					break;
 				}
@@ -292,20 +277,15 @@ public class PersonalPage_GUI extends JFrame {
 			}
 		});
 
-		
-		
-		
-		
 		btnCambiaEmail.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				 
+
 				String new_mail = JOptionPane
 						.showInputDialog(("Inserisci la nuova mail "));
-		Controller_PersonalPage.ChangeEmail(s, email, new_mail);
-				
+				Controller_PersonalPage.ChangeEmail(s, email, new_mail);
 
 			}
 		});

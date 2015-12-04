@@ -39,7 +39,6 @@ public class UtenteDAOImpl implements UtenteDAO {
 
 			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
 
-
 			preparedStatement.setString(1, u.getNome());
 			preparedStatement.setString(2, u.getCognome());
 			preparedStatement.setString(3, u.getEmail());
@@ -70,19 +69,17 @@ public class UtenteDAOImpl implements UtenteDAO {
 	}
 
 	@Override
-	public void updateUtente(String mail,String new_mail) throws SQLException {
+	public void updateUtente(String mail, String new_mail) throws SQLException {
 		// TODO Auto-generated method stub
-	
-
 
 		Statement s = DBUtility.getStatement();
- 		String updateQuery = "UPDATE utente SET email = '"+new_mail+"'   WHERE email = '"+ mail + "' ";
-		try{
- 
- 		
- 		int n = s.executeUpdate(updateQuery);
+		String updateQuery = "UPDATE utente SET email = '" + new_mail
+				+ "'   WHERE email = '" + mail + "' ";
+		try {
+
+			int n = s.executeUpdate(updateQuery);
 		}
-		
+
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -91,28 +88,25 @@ public class UtenteDAOImpl implements UtenteDAO {
 	}
 
 	@Override
-	public void deleteUtente(String email)throws SQLException {
+	public void deleteUtente(String email) throws SQLException {
 		// TODO Auto-generated method stub
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
- 
-	 
-		String deleteSQL ="DELETE from utente WHERE email='"+email+"'";
- 
+
+		String deleteSQL = "DELETE from utente WHERE email='" + email + "'";
 
 		try {
-		 
+
 			preparedStatement = DBUtility.getPreparedStatement(deleteSQL);
 
-			//preparedStatement.setString(1, email);
+			// preparedStatement.setString(1, email);
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
 
-		
 		finally {
 
 			if (preparedStatement != null) {
@@ -124,43 +118,34 @@ public class UtenteDAOImpl implements UtenteDAO {
 			}
 
 		}
-		
+
 	}
-
-
-
 
 	@Override
 	public boolean login(int id, int pin) throws SQLException {
 		// TODO Auto-generated method stub
-		 
 
 		boolean login_succed = false;
- 
+
 		java.sql.Statement s = DBUtility.getStatement();
- 		String sql = " select scheda_idScheda,pin from login where scheda_idScheda='" +id+ "' and pin= '"+pin+"' ";
+		String sql = " select scheda_idScheda,pin from login where scheda_idScheda='"
+				+ id + "' and pin= '" + pin + "' ";
 
 		try {
 			ResultSet rs = s.executeQuery(sql);
 
 			if (rs.next()) {
 
-			login_succed=true ;
+				login_succed = true;
 
 			}
-			 
- 
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
- 
 
 		return login_succed;
 	}
-
-	
-	 
-
 
 }

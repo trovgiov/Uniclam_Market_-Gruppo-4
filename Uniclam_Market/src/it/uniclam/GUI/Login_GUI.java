@@ -69,7 +69,7 @@ public class Login_GUI extends JFrame {
 		JLabel lblAutenticazioneNelSistema = new JLabel(
 				"AUTENTICAZIONE NEL SISTEMA");
 		lblAutenticazioneNelSistema
-		.setHorizontalAlignment(SwingConstants.CENTER);
+				.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAutenticazioneNelSistema.setIcon(null);
 		lblAutenticazioneNelSistema.setFont(new Font("Lucida Grande",
 				Font.BOLD, 15));
@@ -118,12 +118,10 @@ public class Login_GUI extends JFrame {
 		this.setBounds(100, 100, 535, 229);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		
-		
 		/**
 		 * ActionListener per il Login
 		 */
-		
+
 		btnLogin.addActionListener(new ActionListener() {
 
 			@Override
@@ -134,13 +132,7 @@ public class Login_GUI extends JFrame {
 				@SuppressWarnings("deprecation")
 				String pino = pin_field.getText();
 
-
-				ControllerLogin.authenticate(numScheda, pino);				 
- 
-				
-				
-				
-
+				ControllerLogin.authenticate(numScheda, pino);
 
 			}
 

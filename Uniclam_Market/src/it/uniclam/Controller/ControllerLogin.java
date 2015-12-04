@@ -15,48 +15,44 @@ import javax.swing.JOptionPane;
 public class ControllerLogin {
 	public static BufferedReader in;
 	public static PrintWriter out;
-	
-	
-	public static void authenticate(String numscheda,String pino){
-		
-		
+
+	public static void authenticate(String numscheda, String pino) {
+
 		try {
 
 			if (ControllerLogin.in == null || ControllerLogin.out == null) {
 				// apro socket
 				Socket s = new Socket("localhost", 8888);
 
-				in = new BufferedReader(new InputStreamReader(s
-						.getInputStream()));
+				in = new BufferedReader(new InputStreamReader(
+						s.getInputStream()));
 				out = new PrintWriter(s.getOutputStream(), true);
 
-				 
-				
 				// Invio la richiesta al server
-				
-				String req = Server.LOGIN_UTENTE + "/"+numscheda
-						+ "/"+pino + "\n";
-				System.out.println("Richiesta "+req);
+
+				String req = Server.LOGIN_UTENTE + "/" + numscheda + "/" + pino
+						+ "\n";
+				System.out.println("Richiesta " + req);
 				out.println(req);
 				String line = in.readLine();
 
+				int numcard = Integer.parseInt(numscheda);
+				int pin = Integer.parseInt(pino);
 
-				int numcard=Integer.parseInt(numscheda);
-				int pin=Integer.parseInt(pino);
-				
-				String parts[]=line.split("/");
-				
+				String parts[] = line.split("/");
+
 				if (parts[0].contentEquals("login_Ok")) {
 					Scheda card = new Scheda(numcard, pin);
-					
-					double mas_res=Double.parseDouble(parts[1]);
-					
- 					String nome=parts[2];
-					String cognome=parts[3];
-					String email=parts[4];
+
+					double mas_res = Double.parseDouble(parts[1]);
+
+					String nome = parts[2];
+					String cognome = parts[3];
+					String email = parts[4];
 
 					PersonalPage_GUI personalwindow = new PersonalPage_GUI(
-							card.getIdScheda(), card.getPin(),s,mas_res,nome,cognome,email);
+							card.getIdScheda(), card.getPin(), s, mas_res,
+							nome, cognome, email);
 					personalwindow.setVisible(true);
 
 				} else {
@@ -71,7 +67,5 @@ public class ControllerLogin {
 					JOptionPane.ERROR_MESSAGE);
 		}
 
-		
-		
 	}
 }

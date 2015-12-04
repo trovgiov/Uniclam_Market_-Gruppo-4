@@ -59,20 +59,22 @@ public class Spesa_GUI extends JFrame {
 	private JTextField textQuantità;
 	Socket s;
 	private JTable table;
+	private double mass_residuo;
+	double importo_finale;
 
 	/**
 	 * Create the application.
 	 */
-	public Spesa_GUI(int id, Socket s) {
+	public Spesa_GUI(int id, Socket s, double mass_res) {
 		this.idspesa = id;
 		this.s = s;
+		this.mass_residuo = mass_res;
 		initialize();
 	}
 
-	
 	public static BufferedReader in;
 	public static PrintWriter out;
-	
+
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -90,9 +92,9 @@ public class Spesa_GUI extends JFrame {
 		txtpnBenvenutoNelNostro.setToolTipText("\\");
 		txtpnBenvenutoNelNostro.setEditable(false);
 		txtpnBenvenutoNelNostro
-		.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+				.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		txtpnBenvenutoNelNostro
-		.setText("Benvenuto nel nostro supermercato!\nPuoi aggiungere i prodotti che vuoi al carrello, utilizzando il lettore di codice a barre prelevato dalla sua base di carica. ");
+				.setText("Benvenuto nel nostro supermercato!\nPuoi aggiungere i prodotti che vuoi al carrello, utilizzando il lettore di codice a barre prelevato dalla sua base di carica. ");
 		this.getContentPane().add(txtpnBenvenutoNelNostro);
 
 		JLabel lblProdotto = new JLabel("Prodotto:");
@@ -127,7 +129,7 @@ public class Spesa_GUI extends JFrame {
 		lbl_importofinale.setFont(new Font("Lucida Grande", Font.BOLD
 				| Font.ITALIC, 15));
 		lbl_importofinale.setForeground(new Color(255, 255, 51));
-		lbl_importofinale.setBounds(471, 530, 93, 16);
+		lbl_importofinale.setBounds(552, 530, 93, 16);
 		getContentPane().add(lbl_importofinale);
 
 		btnAggiungiAlCarrello.addActionListener(new ActionListener() {
@@ -140,49 +142,9 @@ public class Spesa_GUI extends JFrame {
 
 				// table.setVisible(true);
 
-				try {
-					Login_GUI.in = new BufferedReader(new InputStreamReader(s
-							.getInputStream()));
-					Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
-
-					String response = Server.INSERT_PRODUCTS + "/" + barcode
-							+ "/" + idspesa + "/" + quantita;
-
-					Login_GUI.out.println(response);
-
-					String line = Login_GUI.in.readLine();
-					String part[] = line.split("/");
-
-					if (part[0].contentEquals("prodotto inserito")) {
-
-						try {
-							DefaultTableModel dm = new JTableOperation()
-									.getData(idspesa);
-
-							// dm=SpesaDAOImpl.getInstance().getData(idspesa);
-
-							table.setModel(dm);
-
-							lbl_importofinale.setText(part[1]);
-
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-
-					else {
-						JOptionPane.showMessageDialog(Spesa_GUI.this,
-								"prodotto non inserito");
-
-					}
-
-				} catch (IOException ioe) {
-
-					JOptionPane.showMessageDialog(Spesa_GUI.this,
-							"Error in communication with server!", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				importo_finale = ControllerSpesa.AddProduct(s, barcode,
+						quantita, idspesa, table);
+				lbl_importofinale.setText("" + importo_finale);
 
 			}
 		});
@@ -196,60 +158,10 @@ public class Spesa_GUI extends JFrame {
 
 				String barcode = textBarcode.getText();
 
-				try {
-					Login_GUI.in = new BufferedReader(new InputStreamReader(s
-							.getInputStream()));
-					Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
+				importo_finale = ControllerSpesa.DeleteProduct(s, barcode,
+						idspesa, table);
 
-					String response = Server.DELETE_PRODUCTS + "/" + barcode
-							+ "/" + idspesa;
-
-					Login_GUI.out.println(response);
-
-
-
-
-					String line = Login_GUI.in.readLine();
-					String [] part=line.split("/");
-
-
-
-
-					if (part[0].contentEquals("prodotto eliminato")) {
-
-						try {
-							DefaultTableModel dm = new JTableOperation()
-									.getData(idspesa);
-
-							// dm=SpesaDAOImpl.getInstance().getData(idspesa);
-
-							table.setModel(dm);
-
-							lbl_importofinale.setText(part[1]);
-
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-
-					else {
-						JOptionPane.showMessageDialog(Spesa_GUI.this,
-								"prodotto non eliminato");
-
-					}
-
-
-
-
-
-				} catch (IOException ioe) {
-
-					JOptionPane.showMessageDialog(Spesa_GUI.this,
-							"Error in communication with server!", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
-
+				lbl_importofinale.setText("" + importo_finale);
 			}
 		});
 
@@ -271,12 +183,16 @@ public class Spesa_GUI extends JFrame {
 		separator_1.setBounds(6, 558, 840, 12);
 		getContentPane().add(separator_1);
 
-		JButton btnConferma = new JButton("Conferma e paga");
-		btnConferma.setBounds(152, 582, 166, 47);
-		getContentPane().add(btnConferma);
+		JButton btnAvanti = new JButton("Avanti >");
+		btnAvanti.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnAvanti.setBounds(384, 582, 166, 47);
+		getContentPane().add(btnAvanti);
 
 		JButton btnEsci = new JButton("Annulla ed esci");
-		btnEsci.setBounds(458, 582, 166, 47);
+		btnEsci.setBounds(206, 582, 166, 47);
 		getContentPane().add(btnEsci);
 
 		JLabel lblVer = new JLabel(
@@ -299,17 +215,30 @@ public class Spesa_GUI extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 
-		JLabel lblNewLabel = new JLabel("IMPORTO FINALE : €");
+		JLabel lblNewLabel = new JLabel("IMPORTO FINALE :       €");
 		lblNewLabel.setForeground(new Color(255, 255, 51));
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC,
 				15));
-		lblNewLabel.setBounds(286, 530, 177, 16);
+		lblNewLabel.setBounds(346, 530, 186, 16);
 		getContentPane().add(lblNewLabel);
 
 		JButton btnModificaQuantit = new JButton("Modifica quantità");
 		btnModificaQuantit.setBounds(346, 154, 186, 28);
 		getContentPane().add(btnModificaQuantit);
 
+		JLabel lblMassimaleResiduo = new JLabel("MASSIMALE RESIDUO : €");
+		lblMassimaleResiduo.setForeground(new Color(255, 255, 0));
+		lblMassimaleResiduo.setFont(new Font("Lucida Grande", Font.BOLD
+				| Font.ITALIC, 15));
+		lblMassimaleResiduo.setBounds(347, 502, 196, 16);
+		getContentPane().add(lblMassimaleResiduo);
+
+		JLabel lbl_masRes = new JLabel("" + mass_residuo);
+		lbl_masRes.setForeground(new Color(255, 255, 51));
+		lbl_masRes.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC,
+				15));
+		lbl_masRes.setBounds(552, 502, 93, 16);
+		getContentPane().add(lbl_masRes);
 
 		btnModificaQuantit.addActionListener(new ActionListener() {
 
@@ -317,112 +246,51 @@ public class Spesa_GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				String barcode=textBarcode.getText();
-				String quantita=textQuantità.getText();
+				String barcode = textBarcode.getText();
+				String quantita = textQuantità.getText();
 
-				try {
-					Login_GUI.in = new BufferedReader(new InputStreamReader(s
-							.getInputStream()));
-					Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
-
-					String response = Server.UPDATE_PRODUCTS + "/" + barcode
-							+ "/" + quantita + "/"+idspesa;
-
-					Login_GUI.out.println(response);
-
-
-
-
-					String line = Login_GUI.in.readLine();
-					String [] part=line.split("/");
-
-
-
-
-					if (part[0].contentEquals("prodotto aggiornato")) {
-
-						try {
-							DefaultTableModel dm = new JTableOperation()
-									.getData(idspesa);
-
-							// dm=SpesaDAOImpl.getInstance().getData(idspesa);
-
-							table.setModel(dm);
-
-							lbl_importofinale.setText(part[1]);
-
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-
-					else {
-						JOptionPane.showMessageDialog(Spesa_GUI.this,
-								"prodotto non aggiornato");
-
-					}
-
-
-
-
-
-				} catch (IOException ioe) {
-
-					JOptionPane.showMessageDialog(Spesa_GUI.this,
-							"Error in communication with server!", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				importo_finale = ControllerSpesa.UpdateProduct(s, barcode,
+						quantita, idspesa, table);
+				lbl_importofinale.setText("" + importo_finale);
 
 			}
 
+		});
 
+		btnAvanti.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
 
+				JOptionPane.showMessageDialog(null, "l'Importo finale e' "
+						+ importo_finale + "/n Il massimale residuo e' "
+						+ mass_residuo);
 
-
+			}
 		});
 		// Pulsante Annulla ed Esci
 		btnEsci.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 
-				
-				/*
-				 * switch (scelta) {
-			
-				case JOptionPane.YES_OPTION:
-					 
-					Controller_PersonalPage.CancellaUtente(s, email);
-					JOptionPane
-					.showMessageDialog(null,
-							"Ci dispiace per la tua scelta e speriamo di rivederti presto!");
-				case JOptionPane.NO_OPTION:
-					break;
-				}
-
-			}
-				 */
-				
 				int scelta = JOptionPane.showConfirmDialog(Spesa_GUI.this,
 						"Sei di voler annullare la spesa e uscire?", "",
 						JOptionPane.YES_NO_OPTION);
 				switch (scelta) {
-				case JOptionPane.YES_OPTION:
-				{
+				case JOptionPane.YES_OPTION: {
 					try {
+						JOptionPane.showMessageDialog(null,
+								"Il suo massimale residuo e' " + mass_residuo);
+
 						ControllerSpesa.cancellaSpesa(s, idspesa);
-						//PersonalPage_GUI = new Per
+						// PersonalPage_GUI = new Per
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
 					break;
-
-
-
 
 				case JOptionPane.NO_OPTION:
 					break;
@@ -432,7 +300,6 @@ public class Spesa_GUI extends JFrame {
 		});
 
 	}
-
 
 	public int getIdspesa() {
 		return idspesa;

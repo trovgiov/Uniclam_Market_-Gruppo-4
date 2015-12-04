@@ -142,7 +142,6 @@ public class Registrazione_GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-
 				String nome = txtNome.getText();
 				String cognome = textCognome.getText();
 				String email = textEmail.getText();
@@ -152,13 +151,10 @@ public class Registrazione_GUI extends JFrame {
 
 				String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-				//Passo alla funzione di Controller
- 
+				// Passo alla funzione di Controller
 
-	 
-	                ControllerUtente.registrazioneUtente(nome, cognome, email, massimale, telefono, emailPattern);
-
- 
+				ControllerUtente.registrazioneUtente(nome, cognome, email,
+						massimale, telefono, emailPattern);
 
 			}
 		});
