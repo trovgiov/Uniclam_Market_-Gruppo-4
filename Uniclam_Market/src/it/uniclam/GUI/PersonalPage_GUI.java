@@ -9,6 +9,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import it.uniclam.Controller.Controller_PersonalPage;
 import it.uniclam.DAO.SchedaDAOImpl;
 import it.uniclam.DAO.UtenteDAOImpl;
 import it.uniclam.UniclamMarket.Server;
@@ -37,22 +38,69 @@ public class PersonalPage_GUI extends JFrame {
 	private JFrame frame;
 	private int scheda;
 	private int pin;
-
-	double mass_res = 0;
-	String name = null;
-	String email = null;
+	private String nome;
+	private String cognome;
+	private String email;
 	Socket s;
+
+
+	private double mass_res = 0;
+
+
 
 	/**
 	 * Create the application.
 	 */
-	public PersonalPage_GUI(int i, int j,Socket s) {
+	public PersonalPage_GUI(int i, int j,Socket s,double mas,String nome,String cognome,String email) {
 
 		this.scheda = i;
 		this.pin = j;
 		this.s=s;
+		this.mass_res=mas;
+		this.nome=nome;
+		this.cognome=cognome;
+		this.email=email;
 		initialize();
 
+	}
+
+
+	public String getNome() {
+		return nome;
+	}
+
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+
+	public String getCognome() {
+		return cognome;
+	}
+
+
+	public void setCognome(String cognome) {
+		this.cognome = cognome;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+	public double getMass_res() {
+		return mass_res;
+	}
+
+	public void setMass_res(double mass_res) {
+		this.mass_res = mass_res;
 	}
 
 	public Socket getS() {
@@ -176,14 +224,12 @@ public class PersonalPage_GUI extends JFrame {
 		lblMasRes.setForeground(Color.WHITE);
 		lblMasRes.setBounds(325, 64, 125, 16);
 		getContentPane().add(lblMasRes);
-		try {
-			
-			
-			mass_res = SchedaDAOImpl.getInstance().checkMassimale(getScheda());
-			lblMasRes.setText("" + mass_res);
-		} catch (SQLException e1) {
- 			e1.printStackTrace();
-		}
+
+
+
+
+		lblMasRes.setText(""+mass_res);
+
 
 		// Label Utente
 
@@ -192,17 +238,7 @@ public class PersonalPage_GUI extends JFrame {
 		lblUserEmail.setForeground(new Color(255, 255, 255));
 		lblUserEmail.setBounds(360, 7, 173, 16);
 		getContentPane().add(lblUserEmail);
-		try {
-
-			Utente a = SchedaDAOImpl.getInstance().checkUser(getScheda());
-			email = a.getEmail();
-			// name=((SchedaDAOImpl)
-			// SchedaDAOImpl.getInstance()).checkUtente(getScheda());
-			lblUserEmail.setText("" + a.getNome() + " " + a.getCognome());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		lblUserEmail.setText(""+nome+ " "+cognome);//+" , "+getEmail());
 
 		// Button Effettua Spesa
 
@@ -212,49 +248,8 @@ public class PersonalPage_GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				try {
 
-					//Socket s = new Socket("localhost", 8888);
-
-					Login_GUI.in = new BufferedReader(
-							new InputStreamReader(s.getInputStream()));
-
-					Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
-
-					String req = Server.CREA_SPESA + "/" + getScheda();
-					System.out.println(req);
-
-					Login_GUI.out.println(req);
-
-					String line = Login_GUI.in.readLine();
-
-                    String parts[]=line.split("/");
-                    
-                    String operation=parts[0];
-                    String id_spesa=parts[1];
-                    int idspesa=Integer.parseInt(id_spesa);
-                    
-
-					Login_GUI.out.println(line);
-
-					
-					
-					if(operation.contentEquals("spesa_creata")){
-						
-						Spesa_GUI spesawindow = new Spesa_GUI(idspesa,s);
-                        spesawindow.setVisible(true);
-						
-		 
-					
-					
-				}}
-
-				catch (IOException ioe) {
-
-					JOptionPane.showMessageDialog(PersonalPage_GUI.this,
-							"Error in communication with server!", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				Controller_PersonalPage.effettuaspesa(s, getScheda());
 			}
 		});
 
@@ -263,14 +258,15 @@ public class PersonalPage_GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				JOptionPane.showMessageDialog(PersonalPage_GUI.this,
+				
+				
+ 				JOptionPane.showMessageDialog(PersonalPage_GUI.this,
 						"Arrivederci!");
 				System.exit(0);
 			}
 		});
 
-		// Pulsante Cancellazione utente
+		// Pulsante Cancellazione utente ok
 		btnCancellati.addActionListener(new ActionListener() {
 
 			@Override
@@ -282,13 +278,10 @@ public class PersonalPage_GUI extends JFrame {
 						"Sei sicuro di volerti cancellare dal sistema?",
 						"Eliminazione Account", JOptionPane.YES_NO_OPTION);
 				switch (scelta) {
+			
 				case JOptionPane.YES_OPTION:
-					try {
-						UtenteDAOImpl.getInstance().deleteUtente(email);
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					 
+					Controller_PersonalPage.CancellaUtente(s, email);
 					JOptionPane
 					.showMessageDialog(null,
 							"Ci dispiace per la tua scelta e speriamo di rivederti presto!");
@@ -299,35 +292,20 @@ public class PersonalPage_GUI extends JFrame {
 			}
 		});
 
+		
+		
+		
+		
 		btnCambiaEmail.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
+				 
 				String new_mail = JOptionPane
 						.showInputDialog(("Inserisci la nuova mail "));
-				{
-					if (new_mail.matches(emailPattern)) {
-						try {
-							UtenteDAOImpl.getInstance().updateUtente(email,
-									new_mail);
-							JOptionPane.showMessageDialog(
-									PersonalPage_GUI.this,
-									"Email modificata correttamente !!!");
-
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-
-					} else {
-						JOptionPane.showMessageDialog(PersonalPage_GUI.this,
-								"Email inserita non valida !!!");
-					}
-
-				}
+		Controller_PersonalPage.ChangeEmail(s, email, new_mail);
+				
 
 			}
 		});

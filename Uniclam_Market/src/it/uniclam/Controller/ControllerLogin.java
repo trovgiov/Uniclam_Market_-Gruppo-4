@@ -44,11 +44,19 @@ public class ControllerLogin {
 				int numcard=Integer.parseInt(numscheda);
 				int pin=Integer.parseInt(pino);
 				
-				if (line.contentEquals("login_Ok")) {
+				String parts[]=line.split("/");
+				
+				if (parts[0].contentEquals("login_Ok")) {
 					Scheda card = new Scheda(numcard, pin);
+					
+					double mas_res=Double.parseDouble(parts[1]);
+					
+ 					String nome=parts[2];
+					String cognome=parts[3];
+					String email=parts[4];
 
 					PersonalPage_GUI personalwindow = new PersonalPage_GUI(
-							card.getIdScheda(), card.getPin(),s);
+							card.getIdScheda(), card.getPin(),s,mas_res,nome,cognome,email);
 					personalwindow.setVisible(true);
 
 				} else {

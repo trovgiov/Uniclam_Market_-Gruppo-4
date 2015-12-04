@@ -26,7 +26,8 @@ import javax.swing.JOptionPane;
 public class Server {
 
 	public static final String CALCOLAIMPORTO = "req_calcoloimporto";
-	public static String INSERT_UTENTE = "req_insert_utente";
+	public static final String ELIMINAUTENTE = "req_eliminautente";
+ 	public static String INSERT_UTENTE = "req_insert_utente";
 	public static String LOGIN_UTENTE="req_login";
 	public static String PERSONAL_PAGE="req_Persona_Page";
 	public static String CREA_SPESA="req_Creazione_Spesa";
@@ -34,7 +35,10 @@ public class Server {
 	public static String INSERT_PRODUCTS="req_inserimentoProdotti";
 	public static String DELETE_PRODUCTS="req_delete_Prodotti";
 	public static String UPDATE_PRODUCTS="req_update_Prodotti";
+	public static String CHANGE_EMAIL="req_change_email";
 
+	public static  String UTENTE_ELIMINATO = "send_utenteEliminato";
+	public static  String EMAIL_CHANGED = "send_email_changed";
 
 
 
@@ -128,7 +132,12 @@ public class Server {
 					if(result){
 
 
-						String response="login_Ok\n\n";
+						
+						Double mas_res=SchedaDAOImpl.getInstance().checkMassimale(numscheda);
+						Utente a = SchedaDAOImpl.getInstance().checkUser(numscheda);
+
+						String response="login_Ok"+"/"+mas_res+"/"+a.getNome()+"/"+a.getCognome()+"/"+a.getEmail();
+						
 						out.println(response);
 
 
@@ -245,6 +254,33 @@ public class Server {
 					
 				}
 				 
+				
+				else if(operation.contentEquals(ELIMINAUTENTE)){
+					
+					
+					
+					UtenteDAOImpl.getInstance().deleteUtente(parts[1]);
+					String response=Server.UTENTE_ELIMINATO;
+						out.println(response);
+						
+					 
+					
+				}
+				
+				
+				
+				else if(operation.contentEquals(Server.CHANGE_EMAIL)){
+					
+					//email parts 1 // new email parts[2]
+					
+					UtenteDAOImpl.getInstance().updateUtente(parts[1],parts[2]);
+					
+					String response=Server.EMAIL_CHANGED;
+					out.println(response);
+					
+					
+					
+				}
 				else if (operation.equals("logout")){
 					closeConnection = true;
 					// Altre chiusure necessarie
