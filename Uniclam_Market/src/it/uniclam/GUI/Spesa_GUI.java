@@ -32,6 +32,8 @@ import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import it.uniclam.Controller.ControllerSpesa;
+import it.uniclam.Controller.Controller_PersonalPage;
 import it.uniclam.DAO.SpesaDAOImpl;
 import it.uniclam.DAO.UtenteDAOImpl;
 import it.uniclam.UniclamMarket.Server;
@@ -67,6 +69,10 @@ public class Spesa_GUI extends JFrame {
 		initialize();
 	}
 
+	
+	public static BufferedReader in;
+	public static PrintWriter out;
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -151,7 +157,7 @@ public class Spesa_GUI extends JFrame {
 
 						try {
 							DefaultTableModel dm = new JTableOperation()
-							.getData(idspesa);
+									.getData(idspesa);
 
 							// dm=SpesaDAOImpl.getInstance().getData(idspesa);
 
@@ -213,7 +219,7 @@ public class Spesa_GUI extends JFrame {
 
 						try {
 							DefaultTableModel dm = new JTableOperation()
-							.getData(idspesa);
+									.getData(idspesa);
 
 							// dm=SpesaDAOImpl.getInstance().getData(idspesa);
 
@@ -304,16 +310,16 @@ public class Spesa_GUI extends JFrame {
 		btnModificaQuantit.setBounds(346, 154, 186, 28);
 		getContentPane().add(btnModificaQuantit);
 
-		
+
 		btnModificaQuantit.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 				String barcode=textBarcode.getText();
 				String quantita=textQuantità.getText();
-				
+
 				try {
 					Login_GUI.in = new BufferedReader(new InputStreamReader(s
 							.getInputStream()));
@@ -337,7 +343,7 @@ public class Spesa_GUI extends JFrame {
 
 						try {
 							DefaultTableModel dm = new JTableOperation()
-							.getData(idspesa);
+									.getData(idspesa);
 
 							// dm=SpesaDAOImpl.getInstance().getData(idspesa);
 
@@ -369,12 +375,12 @@ public class Spesa_GUI extends JFrame {
 				}
 
 			}
-				
-				
-				
-				
-				
-		
+
+
+
+
+
+
 		});
 		// Pulsante Annulla ed Esci
 		btnEsci.addActionListener(new ActionListener() {
@@ -382,23 +388,51 @@ public class Spesa_GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				int scelta = JOptionPane.showConfirmDialog(Spesa_GUI.this,
-						"Sei di voler annullare la spesa e uscire?", "",
-						JOptionPane.YES_NO_OPTION);
-				switch (scelta) {
+				
+				/*
+				 * switch (scelta) {
+			
 				case JOptionPane.YES_OPTION:
-					System.exit(0);
-					;
-
+					 
+					Controller_PersonalPage.CancellaUtente(s, email);
+					JOptionPane
+					.showMessageDialog(null,
+							"Ci dispiace per la tua scelta e speriamo di rivederti presto!");
 				case JOptionPane.NO_OPTION:
 					break;
 				}
 
 			}
+				 */
+				
+				int scelta = JOptionPane.showConfirmDialog(Spesa_GUI.this,
+						"Sei di voler annullare la spesa e uscire?", "",
+						JOptionPane.YES_NO_OPTION);
+				switch (scelta) {
+				case JOptionPane.YES_OPTION:
+				{
+					try {
+						ControllerSpesa.cancellaSpesa(s, idspesa);
+						//PersonalPage_GUI = new Per
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+					break;
 
+
+
+
+				case JOptionPane.NO_OPTION:
+					break;
+
+				}
+			}
 		});
 
 	}
+
 
 	public int getIdspesa() {
 		return idspesa;

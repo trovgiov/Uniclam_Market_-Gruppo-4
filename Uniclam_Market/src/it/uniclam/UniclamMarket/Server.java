@@ -27,7 +27,8 @@ public class Server {
 
 	public static final String CALCOLAIMPORTO = "req_calcoloimporto";
 	public static final String ELIMINAUTENTE = "req_eliminautente";
- 	public static String INSERT_UTENTE = "req_insert_utente";
+	public static final String CANCELLA_SPESA = "req_cancellaspesa";
+	public static String INSERT_UTENTE = "req_insert_utente";
 	public static String LOGIN_UTENTE="req_login";
 	public static String PERSONAL_PAGE="req_Persona_Page";
 	public static String CREA_SPESA="req_Creazione_Spesa";
@@ -39,6 +40,7 @@ public class Server {
 
 	public static  String UTENTE_ELIMINATO = "send_utenteEliminato";
 	public static  String EMAIL_CHANGED = "send_email_changed";
+	public static String SPESA_CANCELLATA = "send_spesa_cancellata";
 
 
 
@@ -132,12 +134,12 @@ public class Server {
 					if(result){
 
 
-						
+
 						Double mas_res=SchedaDAOImpl.getInstance().checkMassimale(numscheda);
 						Utente a = SchedaDAOImpl.getInstance().checkUser(numscheda);
 
 						String response="login_Ok"+"/"+mas_res+"/"+a.getNome()+"/"+a.getCognome()+"/"+a.getEmail();
-						
+
 						out.println(response);
 
 
@@ -185,18 +187,18 @@ public class Server {
 
 					if(SpesaDAOImpl.getInstance().addProducts(barcode, idspesa, quantita)){
 
- 
-						
+
+
 						double importo=SpesaDAOImpl.getInstance().calcoloImporto(idspesa);
-						
+
 
 						String response="prodotto inserito"+"/"+importo;
 						out.println(response);
-						
-					 
-						
- 						
-						
+
+
+
+
+
 					}
 					else {
 						String response="prodotto non inserito";
@@ -208,79 +210,90 @@ public class Server {
 				else if(operation.contentEquals(DELETE_PRODUCTS))
 				{
 
-					
+
 					String barcode=parts[1];
 					int idspesa=Integer.parseInt(parts[2]);
-					
+
 					if(SpesaDAOImpl.getInstance().deleteProduct(barcode, idspesa)){
-						
+
 						double importo=	SpesaDAOImpl.getInstance().calcoloImporto(idspesa);
 
 						String response="prodotto eliminato"+"/"+importo;
- 						out.println(response);
-						
+						out.println(response);
+
 					}
-					
+
 					else{
 						String response="prodotto non eliminato";
 						out.println(response);
 					}
-					
+
 				}
 
-				
-				
+
+
 				else if(operation.contentEquals(UPDATE_PRODUCTS)){
-					
+
 					String barcode=parts[1];
 					int quantita=Integer.parseInt(parts[2]);
 					int idspesa=Integer.parseInt(parts[3]);
-					
-					
+
+
 					if(SpesaDAOImpl.getInstance().updateProduct(barcode, quantita, idspesa)){
-						
-						
+
+
 						double importo=	SpesaDAOImpl.getInstance().calcoloImporto(idspesa);
 						String response="prodotto aggiornato"+"/"+importo;
- 						out.println(response);
-						
+						out.println(response);
+
 					}
 					else{
 						String response="prodotto non aggiornato";
 						out.println(response);
-						
+
 					}
-					
-					
+
+
 				}
-				 
-				
+
+
 				else if(operation.contentEquals(ELIMINAUTENTE)){
-					
-					
-					
+
+
+
 					UtenteDAOImpl.getInstance().deleteUtente(parts[1]);
 					String response=Server.UTENTE_ELIMINATO;
-						out.println(response);
-						
-					 
-					
+					out.println(response);
+
+
+
 				}
-				
-				
-				
+
+
+
 				else if(operation.contentEquals(Server.CHANGE_EMAIL)){
-					
+
 					//email parts 1 // new email parts[2]
-					
+
 					UtenteDAOImpl.getInstance().updateUtente(parts[1],parts[2]);
-					
+
 					String response=Server.EMAIL_CHANGED;
 					out.println(response);
-					
-					
-					
+
 				}
+
+				else if(operation.contentEquals(CANCELLA_SPESA)){
+					
+					int idSpesa = Integer.parseInt(parts[1]);
+					
+					SpesaDAOImpl.getInstance().cancellaSpesa(idSpesa);
+					
+					String response=Server.SPESA_CANCELLATA;
+					out.println(response);
+
+				}
+
+
 				else if (operation.equals("logout")){
 					closeConnection = true;
 					// Altre chiusure necessarie

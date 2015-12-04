@@ -16,6 +16,6 @@ public interface SpesaDAO {
 	public DefaultTableModel getData(int idspesa) throws SQLException;
 	public boolean deleteProduct(String barcode,int idspesa)throws SQLException;
 	public	double calcoloImporto(int idspesa) throws SQLException;
- 	boolean updateProduct(String barcode, int quantita, int idspesa)
-			throws SQLException;
+	boolean updateProduct(String barcode, int quantita, int idspesa) throws SQLException;
+	public boolean cancellaSpesa(int idSpesa) throws SQLException;
 }

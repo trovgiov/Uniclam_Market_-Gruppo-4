@@ -129,7 +129,7 @@ public class SpesaDAOImpl implements SpesaDAO{
 			}
 
 		}
- 
+
 	}
 
 
@@ -139,11 +139,11 @@ public class SpesaDAOImpl implements SpesaDAO{
 
 		//Aggiungo le colonne alla tabella
 
- 	
+
 		DefaultTableModel dm = new DefaultTableModel();
 
 		dm.addColumn("Barcode");
- 		dm.addColumn("Prezzo");
+		dm.addColumn("Prezzo");
 		dm.addColumn("Quantita");
 
 
@@ -164,14 +164,14 @@ public class SpesaDAOImpl implements SpesaDAO{
 				int quantita_p=rs.getInt(2);
 
 				Double costo_p=rs.getDouble(3);
- 
+
 				String costo=String.valueOf(costo_p);
 				String quantita=String.valueOf(quantita_p);
-  
-			 
+
+
 
 				dm.addRow(new String []{nome,costo,quantita});
-				
+
 
 			}
 
@@ -196,16 +196,16 @@ public class SpesaDAOImpl implements SpesaDAO{
 	public boolean deleteProduct(String barcode, int idspesa)
 			throws SQLException {
 
-		
-		
+
+
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
-//' " ' "
+		//' " ' "
 		String deleteTableSQL = "delete from carrello where prodotto_barcode='"+barcode+"' and spesa_idspesa= '"+idspesa+"'";
 
-		
-		
+
+
 		try {
 			dbConnection = DBUtility.getDBConnection();
 
@@ -241,18 +241,18 @@ public class SpesaDAOImpl implements SpesaDAO{
 			}
 
 		}
- 
+
 	}
 
 
 	@Override
 	public double calcoloImporto(int idspesa) throws SQLException {
 		// TODO Auto-generated method stub
-		
+
 		double importo_finale=0;
-		
-		
-		
+
+
+
 		java.sql.Statement s = DBUtility.getStatement();
 
 		String sql = "select sum(p.costo*c.quantita) importo from prodotto p,carrello c,spesa s where s.idspesa= '"+idspesa+"' and s.idspesa=c.spesa_idspesa and c.prodotto_barcode=p.barcode";
@@ -265,9 +265,9 @@ public class SpesaDAOImpl implements SpesaDAO{
 
 			while(rs.next()){
 
-				 importo_finale=rs.getDouble("importo");
-				 
-				
+				importo_finale=rs.getDouble("importo");
+
+
 
 			}
 
@@ -281,23 +281,23 @@ public class SpesaDAOImpl implements SpesaDAO{
 		}
 
 
-	finally {
+		finally {
 
-		if (s != null) {
-			s.close();
+			if (s != null) {
+				s.close();
+			}
+
+
+
 		}
 
-		 
 
-	}
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
 		return importo_finale;
 	}
 
@@ -309,11 +309,11 @@ public class SpesaDAOImpl implements SpesaDAO{
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
-//' " ' "
+		//' " ' "
 		String updateTableSQL = "update carrello set quantita ='"+quantita+"' where prodotto_barcode='"+barcode+"' and spesa_idSpesa='"+idspesa+"'";
 
-		
-		
+
+
 		try {
 			dbConnection = DBUtility.getDBConnection();
 
@@ -349,16 +349,64 @@ public class SpesaDAOImpl implements SpesaDAO{
 			}
 
 		}
-		
-		
-		
-		
+
+
+
+
 	}
-		
-		
-		
-		
-	 
+
+
+	@Override
+	public boolean cancellaSpesa(int idSpesa) throws SQLException {
+
+		Connection dbConnection = null;
+		java.sql.PreparedStatement preparedStatement = null;
+		java.sql.PreparedStatement preparedStatement2 = null;
+
+		//'"+idspesa+"'
+		String deleteSpesaSQL = "DELETE FROM carrello WHERE spesa_idSpesa  = '"+idSpesa+"'";
+		String deleteSQL2 = "DELETE FROM spesa WHERE idSpesa = '"+idSpesa+"'";
+
+
+
+		try {
+			dbConnection = DBUtility.getDBConnection();
+
+			preparedStatement = dbConnection.prepareStatement(deleteSpesaSQL);
+			preparedStatement2 = dbConnection.prepareStatement(deleteSQL2);
+
+
+
+			// execute insert SQL stetement
+			preparedStatement.execute(deleteSpesaSQL);
+			preparedStatement.execute(deleteSQL2);
+
+
+			return true ;
+
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+			return false;
+
+
+		} finally {
+
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+
+		}
+	}
+
+
+
+
+
 
 
 
