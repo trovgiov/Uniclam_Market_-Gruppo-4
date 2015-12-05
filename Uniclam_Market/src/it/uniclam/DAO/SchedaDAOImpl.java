@@ -5,8 +5,11 @@ import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Utente;
 import it.uniclam.mail.EmailUtility;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.mail.MessagingException;
@@ -161,7 +164,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 	@Override
 	public void recovery_pin(String email) throws SQLException,
-			AddressException, MessagingException {
+	AddressException, MessagingException {
 
 		int pin = 0;
 		int idscheda = 0;
@@ -232,22 +235,74 @@ public class SchedaDAOImpl implements SchedaDAO {
 	@Override
 	public double checkMassimale(int idscheda) throws SQLException {
 		double massimale_residuo = 0;
-		// Utente u = null;
+		double massimale_totale=0;
+		int month_spesa=0;
+		int month_today=0;
+
+		Date data_spesaSQL=null;                     //  DATA SPESA SQL
+		java.util.Date today = new java.util.Date(); //DATA DI OGGI	IN JAVA UTIL
 
 		java.sql.Statement s = DBUtility.getStatement();
+		java.sql.Statement s1 = DBUtility.getStatement();
+		java.sql.Statement s2 = DBUtility.getStatement();
 
-		String sql = " select s.massimale_res, u.nome, u.cognome from scheda s, utente u where s.idScheda = '"
-				+ idscheda + "' and s.utente_email = u.email";
+
+		String sql = " select s.massimale_res, u.massimale_tot from scheda s, utente u where s.idScheda = '"+idscheda+"' and s.utente_email = u.email";
 		try {
+
 			ResultSet rs = s.executeQuery(sql);
 
 			while (rs.next()) {
-				massimale_residuo = rs.getDouble("massimale_res");
-				// u = new Utente(rs.getString("u.nome"),
-				// rs.getString("u.cognome"));
+				massimale_residuo = rs.getDouble("s.massimale_res");
+				massimale_totale=rs.getDouble("u.massimale_tot");
 
 			}
+
+			System.out.println("Massimale tot "+massimale_totale+" Massimale residuo : "+massimale_residuo);
+
+
+			String sql1 = " select data_spesa from spesa where scheda_idscheda= '"+idscheda+"' ORDER BY data_spesa DESC ";
+
+			ArrayList<Date> dataspesa = new ArrayList<Date>();
+
+
+			ResultSet rs1 = s1.executeQuery(sql1);
+
+			while (rs1.next()) {
+
+				data_spesaSQL = rs1.getDate("data_spesa");
+
+				dataspesa.add(data_spesaSQL);
+
+			}
+
+
+			// prendo il primo record della tabella : equivale alla data dell'ultima spesa
+			Date data_ultimaSpesaSQL = dataspesa.get(1);
+			System.out.println("data ultima spesa : "+data_ultimaSpesaSQL);
+
+			// ho la data spesa nel formato java util
+
+			java.util.Date data_Spesa = new java.util.Date(data_ultimaSpesaSQL.getTime());
+
+			month_spesa = data_Spesa.getMonth(); // prendo il mese della data spesa
+			month_today= today.getMonth();      // prendo il mese della data odierna
+
+			if(month_spesa>month_today){
+
+				massimale_residuo=massimale_totale;
+
+				// ' " ' "
+				String updateTableSQL = "update scheda set massimale_res = '"+massimale_residuo+"' where idscheda='"+idscheda+"'";
+
+				int n = s2.executeUpdate(updateTableSQL);
+
+			}
+
 			rs.close();
+
+			rs1.close();	
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -256,10 +311,22 @@ public class SchedaDAOImpl implements SchedaDAO {
 			if (s != null) {
 				s.close();
 			}
+			if (s1 != null) {
+				s.close();
+			}
+			if (s2 != null) {
+				s.close();
+			}
 		}
 
+		System.out.println("mese : "+month_spesa + ""+" Mese oggi : "+month_today);
+
 		return massimale_residuo;
+
+
 	}
+
+
 
 	@Override
 	public Utente checkUser(int idScheda) throws SQLException {
