@@ -209,7 +209,7 @@ public class Spesa_GUI extends JFrame {
 		textQuantità.setColumns(10);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(46, 194, 789, 293);
+		scrollPane.setBounds(30, 193, 789, 293);
 		getContentPane().add(scrollPane);
 
 		table = new JTable();
@@ -219,7 +219,7 @@ public class Spesa_GUI extends JFrame {
 		lblNewLabel.setForeground(new Color(255, 255, 51));
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC,
 				15));
-		lblNewLabel.setBounds(346, 530, 186, 16);
+		lblNewLabel.setBounds(340, 531, 186, 16);
 		getContentPane().add(lblNewLabel);
 
 		JButton btnModificaQuantit = new JButton("Modifica quantità");
@@ -230,14 +230,14 @@ public class Spesa_GUI extends JFrame {
 		lblMassimaleResiduo.setForeground(new Color(255, 255, 0));
 		lblMassimaleResiduo.setFont(new Font("Lucida Grande", Font.BOLD
 				| Font.ITALIC, 15));
-		lblMassimaleResiduo.setBounds(347, 502, 196, 16);
+		lblMassimaleResiduo.setBounds(313, 503, 196, 16);
 		getContentPane().add(lblMassimaleResiduo);
 
 		JLabel lbl_masRes = new JLabel("" + mass_residuo);
 		lbl_masRes.setForeground(new Color(255, 255, 51));
 		lbl_masRes.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC,
 				15));
-		lbl_masRes.setBounds(552, 502, 93, 16);
+		lbl_masRes.setBounds(519, 502, 93, 16);
 		getContentPane().add(lbl_masRes);
 
 		btnModificaQuantit.addActionListener(new ActionListener() {
@@ -257,18 +257,16 @@ public class Spesa_GUI extends JFrame {
 
 		});
 
+		//Pulsante Avanti
 		btnAvanti.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
-				JOptionPane.showMessageDialog(null, "l'Importo finale e' "
-						+ importo_finale + "/n Il massimale residuo e' "
-						+ mass_residuo);
-
+				Riepilogo_GUI windows_GUI = new Riepilogo_GUI(idspesa,s,mass_residuo,importo_finale);
+				windows_GUI.setVisible(true);
 			}
 		});
+
 		// Pulsante Annulla ed Esci
 		btnEsci.addActionListener(new ActionListener() {
 
@@ -298,6 +296,7 @@ public class Spesa_GUI extends JFrame {
 				}
 			}
 		});
+		
 
 	}
 

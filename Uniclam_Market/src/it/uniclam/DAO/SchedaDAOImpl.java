@@ -288,7 +288,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 			month_spesa = data_Spesa.getMonth(); // prendo il mese della data spesa
 			month_today= today.getMonth();      // prendo il mese della data odierna
 
-			if(month_spesa>month_today){
+			if(month_spesa>month_today || month_spesa<month_today){
 
 				massimale_residuo=massimale_totale;
 

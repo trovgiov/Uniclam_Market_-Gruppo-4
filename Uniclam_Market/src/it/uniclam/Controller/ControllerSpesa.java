@@ -18,6 +18,8 @@ import it.uniclam.entity.JTableOperation;
 
 public class ControllerSpesa {
 
+	private static final int WARNING_MESSAGE = 0;
+
 	public static void cancellaSpesa(Socket s, int idSpesa) throws IOException {
 
 		Login_GUI.in = new BufferedReader(new InputStreamReader(
@@ -31,7 +33,7 @@ public class ControllerSpesa {
 
 		if (line.contentEquals(Server.SPESA_CANCELLATA)) {
 
-			JOptionPane.showMessageDialog(null, "Spesa Cancellata");
+			JOptionPane.showMessageDialog(null, "Spesa Eliminata dal sistema. Arrivederci!");
 
 		} else {
 			JOptionPane.showMessageDialog(null,
@@ -88,7 +90,7 @@ public class ControllerSpesa {
 			}
 
 			else {
-				JOptionPane.showMessageDialog(null, "prodotto non inserito");
+				JOptionPane.showMessageDialog(null, "Prodotto non inserito", "ATTENZIONE", WARNING_MESSAGE, null);
 
 			}
 
