@@ -153,8 +153,10 @@ public class Registrazione_GUI extends JFrame {
 
 				// Passo alla funzione di Controller
 
-				ControllerUtente.registrazioneUtente(nome, cognome, email,
-						massimale, telefono, emailPattern);
+				
+					ControllerUtente.registrazioneUtente(nome, cognome, email,
+							massimale, telefono, emailPattern);
+			
 
 			}
 		});

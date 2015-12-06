@@ -2,6 +2,7 @@ package it.uniclam.Controller;
 
 import it.uniclam.UniclamMarket.Server;
 import it.uniclam.mail.EmailUtility;
+import it.uniclam.mail.SendEmail;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,42 +51,11 @@ public class ControllerUtente {
 											+ "\nA breve riceverà una mail con il numero carta ed il pin, necessario per l'accesso."
 											+ "\nUniclam Market");
 
-					/*
-					 * JOptionPane.showMessageDialog(null,
-					 * "Dati per l'autenticazione \n" + "Numero Carta : " +
-					 * cardnumber + "\n" + "Pin : " + pin + "\n");
-					 */
-
-					String subject = "Registrazione Sistema Uniclam Market";
-
-					String message2 = "Benvenuto nel nostro sistema, gentile "
-							+ nome
-							+ " "
-							+ cognome
-							+ " \n\n"
-							+ "Le comunichiamo che la sua carta fedelta' e' stata attivata !!!"
-							+ " \n\n"
-							+ "Riepilogo Dati: "
-							+ " \n"
-							+ "Dati anagrafici : "
-							+ nome
-							+ " "
-							+ cognome
-							+ "\n"
-							+ "telefono : "
-							+ telefono
-							+ "\n"
-							+ "email : "
-							+ email
-							+ "\n\n"
-							+ "Ecco i suoi dati di accesso da conservare per l'accesso al sistema "
-							+ "\n" + "Numero Carta :  " + cardnumber
-							+ "\nPin: " + pin + ".\n\n"
-							+ "Saluti - Uniclam Market ";
-
-					EmailUtility.sendEmail(EmailUtility.HOST,
-							EmailUtility.PASSWORD, EmailUtility.USER,
-							EmailUtility.PASSWORD, email, subject, message2);
+				
+					
+					
+					SendEmail.Email_User(nome, cognome, telefono, email, cardnumber, pin);
+					 
 
 				}
 
@@ -99,14 +69,33 @@ public class ControllerUtente {
 				JOptionPane.showMessageDialog(null,
 						"Error in communication with server!", "Error",
 						JOptionPane.ERROR_MESSAGE);
-			} catch (AddressException e11) {
-				// TODO Auto-generated catch block
-				e11.printStackTrace();
-			} catch (MessagingException e11) {
-				// TODO Auto-generated catch block
-				e11.printStackTrace();
+			 
 			}
-
+		catch(AddressException a)	{
+			
+			JOptionPane.showMessageDialog(null,
+					"Error with email address", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			
+			
+			
 		}
-	}
+			
+			catch(MessagingException m){
+				JOptionPane.showMessageDialog(null,
+						"Error with mail message", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				
+				
+				
+			}
+			}
+		
+		}
+		
+	
+	
+	
+	
+
 }

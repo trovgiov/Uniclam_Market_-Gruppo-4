@@ -68,4 +68,63 @@ public class ControllerLogin {
 		}
 
 	}
+	
+	
+	
+	public static void forgot_pin(String email){
+		
+		try {
+
+			if (ControllerLogin.in == null || ControllerLogin.out == null) {
+				// apro socket
+				Socket s = new Socket("localhost", 8888);
+
+				in = new BufferedReader(new InputStreamReader(
+						s.getInputStream()));
+				out = new PrintWriter(s.getOutputStream(), true);
+
+				// Invio la richiesta al server
+
+				String req = Server.RECOVERY_PIN + "/"+email ; 
+				System.out.println (req);
+				out.println(req);
+			
+				String line = in.readLine();
+				System.out.println(line);
+
+				if(line.contentEquals(Server.PIN_RECOVERED)){
+					
+					JOptionPane.showMessageDialog(null, "L'email inserita è corretta.\nA breve riceverà una mail con i dati necessari per l'accesso.\nUniclam Market");
+				
+				
+				
+				
+				//leggo qui la mail
+				
+				
+				
+				
+				
+				
+				
+				}
+				else{
+					JOptionPane.showMessageDialog(null,
+							"Email non presente nel nostro sistema", "Errorw",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
+			}
+		} catch (IOException ioe) {
+
+			JOptionPane.showMessageDialog(null,
+					"Error in communication with server!", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+		
+		
+		
+		
+	}
 }

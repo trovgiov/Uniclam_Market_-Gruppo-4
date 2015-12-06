@@ -145,12 +145,13 @@ public class Login_GUI extends JFrame {
 
 				String email_recover = JOptionPane
 						.showInputDialog("Inserisca la mail per il recupero pin");
-				try {
-					SchedaDAOImpl.getInstance().recovery_pin(email_recover);
-				} catch (SQLException | MessagingException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				 
+				ControllerLogin.forgot_pin(email_recover);
+				
+				
+				
+				
+				
 			}
 		});
 	}

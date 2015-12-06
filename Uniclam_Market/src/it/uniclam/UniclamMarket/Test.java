@@ -95,7 +95,7 @@ public class Test {
 
 
 		Double pino=pino();
-		System.out.println("Massimale _ residuo : "+pino);
+		System.out.println("\nMassimale _ residuo : "+pino);
 
 
 	}
@@ -124,7 +124,7 @@ public class Test {
 
 			}
 
-			System.out.println("Massimale tot "+massimale_totale+" Massimale residuo : "+massimale_residuo);
+			System.out.println("\nMassimale tot "+massimale_totale+" Massimale residuo : "+massimale_residuo);
 
 
 			String sql1 = " select data_spesa from spesa where scheda_idscheda= 45 ORDER BY data_spesa DESC ";
@@ -141,11 +141,33 @@ public class Test {
 				dataspesa.add(data_spesaSQL);
 
 			}
+			System.out.println("\nSize arrayList data : " +dataspesa.size());
+			
+			
+			if(dataspesa.size()==0){
+				
+				System.out.println("\n Nessuna data nel db.INIZIALIZZO MASSIMALE RESIDUO A QUELLO TOTALE");
+
+				
+				massimale_residuo=massimale_totale;
+				
+				Statement s3 = DBUtility.getStatement();
+
+				String updateTableSQL = "update scheda set massimale_res = '"+massimale_residuo+"' where idscheda=45";
+
+				int n = s3.executeUpdate(updateTableSQL);
+				
+				
+				return massimale_residuo;
+				
+				
+				
+			}
 
 
 			// prendo il primo record della tabella : equivale alla data dell'ultima spesa
-			Date data_ultimaSpesaSQL = dataspesa.get(1);
-			System.out.println("data ultima spesa : "+data_ultimaSpesaSQL);
+			Date data_ultimaSpesaSQL = dataspesa.get(0);
+			System.out.println("\ndata ultima spesa : "+data_ultimaSpesaSQL);
 
 
 
@@ -161,7 +183,7 @@ public class Test {
 
 
 
-			if(month_spesa>0){
+			if(month_spesa>month_today || month_spesa<month_today){
 
 				massimale_residuo=massimale_totale;
 
@@ -174,7 +196,7 @@ public class Test {
 
 
 
-
+s2.close();
 			}
 			rs.close();
 
@@ -189,10 +211,11 @@ public class Test {
 			}
 		//JOptionPane.showMessageDialog(null, "Mese totale "+month_spesa+" Mese odierno: "+month_today);
 
-		System.out.println("mese : "+month_spesa + ""+" Mese oggi : "+month_today);
+		System.out.println("Mese spesa : "+month_spesa + ""+" Mese oggi : "+month_today);
 
 		return massimale_residuo;
-
+		
+ 
 
 	}
 }

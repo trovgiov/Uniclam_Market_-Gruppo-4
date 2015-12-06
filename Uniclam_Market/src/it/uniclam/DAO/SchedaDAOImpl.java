@@ -1,9 +1,11 @@
 package it.uniclam.DAO;
 
+import it.uniclam.GUI.Login_GUI;
 import it.uniclam.db.DBUtility;
 import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Utente;
 import it.uniclam.mail.EmailUtility;
+import it.uniclam.mail.SendEmail;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -195,23 +197,8 @@ public class SchedaDAOImpl implements SchedaDAO {
 				}
 				rs2.close();
 
-				// Creo il messaggio
-				String oggetto = "Recupero Numero Scheda e Pin - Uniclam Market";
-				String message_recovery = "Salve, come da lei richiesto, ecco i dati necessari per il recupero dei dati di accesso al sistema Uniclam market"
-						+ "\n\n"
-						+ "Numero Carta "
-						+ idscheda
-						+ "\n"
-						+ "Pin : "
-						+ pin
-						+ "\n\n"
-						+ "Se non ha richiesto il recupero del pin, ignori questa mail."
-						+ "\n\n" + "Saluti - Uniclam Market ";
-
-				EmailUtility.sendEmail(EmailUtility.HOST, EmailUtility.PORT,
-						EmailUtility.USER, EmailUtility.PASSWORD, email,
-						oggetto, message_recovery);
-
+ SendEmail.Email_Recovery(idscheda, pin, email);
+				
 			} else {
 				JOptionPane.showMessageDialog(null,
 						"La sua mail non è presente nei nostri sistemi.");
@@ -277,8 +264,29 @@ public class SchedaDAOImpl implements SchedaDAO {
 			}
 
 
+			//caso in cui l'utente non ha mai fatto la spesa. size arrayList delle date è 0
+			if(dataspesa.size()==0){
+
+				System.out.println("\n Nessuna data nel db.INIZIALIZZO MASSIMALE RESIDUO A QUELLO TOTALE");
+
+
+				massimale_residuo=massimale_totale;
+
+				Statement s3 = DBUtility.getStatement();
+
+				String updateTableSQL = "update scheda set massimale_res = '"+massimale_residuo+"' where idscheda=45";
+
+				int n = s3.executeUpdate(updateTableSQL);
+
+
+
+				return massimale_residuo;
+
+			}
+
+
 			// prendo il primo record della tabella : equivale alla data dell'ultima spesa
-			Date data_ultimaSpesaSQL = dataspesa.get(1);
+			Date data_ultimaSpesaSQL = dataspesa.get(0);
 			System.out.println("data ultima spesa : "+data_ultimaSpesaSQL);
 
 			// ho la data spesa nel formato java util

@@ -24,9 +24,9 @@ import javax.swing.JOptionPane;
  */
 public class Server {
 
-	public static final String CALCOLAIMPORTO = "req_calcoloimporto";
-	public static final String ELIMINAUTENTE = "req_eliminautente";
-	public static final String CANCELLA_SPESA = "req_cancellaspesa";
+	public static  String CALCOLAIMPORTO = "req_calcoloimporto";
+	public static  String ELIMINAUTENTE = "req_eliminautente";
+	public static  String CANCELLA_SPESA = "req_cancellaspesa";
 	public static String INSERT_UTENTE = "req_insert_utente";
 	public static String LOGIN_UTENTE = "req_login";
 	public static String PERSONAL_PAGE = "req_Persona_Page";
@@ -36,12 +36,13 @@ public class Server {
 	public static String DELETE_PRODUCTS = "req_delete_Prodotti";
 	public static String UPDATE_PRODUCTS = "req_update_Prodotti";
 	public static String CHANGE_EMAIL = "req_change_email";
+	public static String RECOVERY_PIN="req_recovery_pin";
 
-	public static String UTENTE_ELIMINATO = "send_utenteEliminato";
-	public static String EMAIL_CHANGED = "send_email_changed";
-	public static String SPESA_CANCELLATA = "send_spesa_cancellata";
-
-	public static String SPESA_CREATA = "response_spesa_creata";
+	public static String UTENTE_ELIMINATO = "RES_utenteEliminato";
+	public static String EMAIL_CHANGED = "RES_email_changed";
+	public static String SPESA_CANCELLATA = "RES_spesa_cancellata";
+	public static String PIN_RECOVERED = "RES_pin_recovered";
+    public static String SPESA_CREATA = "RES_spesa_creata";
 
 	public static String HOST = "localhost";
 	public static int port = 8888;
@@ -138,6 +139,22 @@ public class Server {
 						out.println(response);
 					}
 
+				}
+				else if(operation.contentEquals(RECOVERY_PIN)){
+					
+					
+					//String email=parts[1];
+					
+					SchedaDAOImpl.getInstance().recovery_pin(parts[1]);
+					
+					String response=Server.PIN_RECOVERED;
+					out.println(response);
+					
+ 
+					
+					
+					
+					
 				}
 
 				else if (operation.contentEquals(CREA_SPESA)) {
@@ -239,7 +256,7 @@ public class Server {
 					// email parts 1 // new email parts[2]
 
 					UtenteDAOImpl.getInstance()
-							.updateUtente(parts[1], parts[2]);
+					.updateUtente(parts[1], parts[2]);
 
 					String response = Server.EMAIL_CHANGED;
 					out.println(response);

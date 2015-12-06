@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.datatools.connectivity.jdt.DRIVERLIBRARY/MySQL JDBC Driver"/>
-	<classpathentry kind="lib" path="/Users/eneamarinelli/Downloads/Java mail/activation.jar"/>
-	<classpathentry kind="lib" path="/Users/eneamarinelli/Downloads/Java mail/javax.mail.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/emal"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
