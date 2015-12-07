@@ -22,4 +22,5 @@ public interface SchedaDAO {
 	// String checkUtente(int idscheda) throws SQLException;
 	public Utente checkUser(int idScheda) throws SQLException; // Gio
 
+	public int show_points(int idscheda) throws SQLException;
 }

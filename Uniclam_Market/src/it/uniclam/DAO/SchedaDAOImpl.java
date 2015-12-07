@@ -197,8 +197,8 @@ public class SchedaDAOImpl implements SchedaDAO {
 				}
 				rs2.close();
 
- SendEmail.Email_Recovery(idscheda, pin, email);
-				
+				SendEmail.Email_Recovery(idscheda, pin, email);
+
 			} else {
 				JOptionPane.showMessageDialog(null,
 						"La sua mail non è presente nei nostri sistemi.");
@@ -361,6 +361,35 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 		return u;
 
+	}
+
+	@Override
+	public int show_points(int idscheda) throws SQLException {
+
+		int punti=0;
+
+		java.sql.Statement s = DBUtility.getStatement();
+		String sql = "select punti_totali from scheda where idscheda= '"+idscheda+"' ";
+		try {
+			ResultSet rs = s.executeQuery(sql);
+
+			while (rs.next()) {
+
+				punti=rs.getInt("punti_totali");
+
+			}
+			rs.close();
+			s.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
+
+
+		return punti;
 	}
 
 }

@@ -1,7 +1,9 @@
 package it.uniclam.UniclamMarket;
 
 import it.uniclam.db.DBUtility;
+import it.uniclam.entity.Carrello;
 
+import java.awt.Image;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,11 +12,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import com.mysql.jdbc.Connection;
 
 public class Test {
+
+	private static final int DISPOSE_ON_CLOSE = 0;
 
 	@SuppressWarnings({ "deprecation", "unused" })
 
@@ -92,13 +98,11 @@ public class Test {
 
 
 
-
-
 		Double pino=pino();
 		System.out.println("\nMassimale _ residuo : "+pino);
-
-
+		//JOptionPane.showMessageDialog(null, "Prova","title", DISPOSE_ON_CLOSE, icon);
 	}
+
 
 	public static double pino() throws SQLException{
 
@@ -142,26 +146,26 @@ public class Test {
 
 			}
 			System.out.println("\nSize arrayList data : " +dataspesa.size());
-			
-			
+
+
 			if(dataspesa.size()==0){
-				
+
 				System.out.println("\n Nessuna data nel db.INIZIALIZZO MASSIMALE RESIDUO A QUELLO TOTALE");
 
-				
+
 				massimale_residuo=massimale_totale;
-				
+
 				Statement s3 = DBUtility.getStatement();
 
 				String updateTableSQL = "update scheda set massimale_res = '"+massimale_residuo+"' where idscheda=45";
 
 				int n = s3.executeUpdate(updateTableSQL);
-				
-				
+
+
 				return massimale_residuo;
-				
-				
-				
+
+
+
 			}
 
 
@@ -196,7 +200,7 @@ public class Test {
 
 
 
-s2.close();
+				s2.close();
 			}
 			rs.close();
 
@@ -214,9 +218,15 @@ s2.close();
 		System.out.println("Mese spesa : "+month_spesa + ""+" Mese oggi : "+month_today);
 
 		return massimale_residuo;
-		
- 
+
+
 
 	}
+
+
+ 
 }
+
+
+
 

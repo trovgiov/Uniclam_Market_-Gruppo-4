@@ -75,7 +75,7 @@ public class ControllerSpesa {
 
 				try {
 					DefaultTableModel dm = new JTableOperation()
-							.getData(idspesa);
+					.getData(idspesa);
 
 					// dm=SpesaDAOImpl.getInstance().getData(idspesa);
 
@@ -136,7 +136,7 @@ public class ControllerSpesa {
 
 				try {
 					DefaultTableModel dm = new JTableOperation()
-							.getData(idspesa);
+					.getData(idspesa);
 
 					// dm=SpesaDAOImpl.getInstance().getData(idspesa);
 
@@ -187,7 +187,7 @@ public class ControllerSpesa {
 
 				try {
 					DefaultTableModel dm = new JTableOperation()
-							.getData(idspesa);
+					.getData(idspesa);
 
 					// dm=SpesaDAOImpl.getInstance().getData(idspesa);
 
@@ -213,4 +213,197 @@ public class ControllerSpesa {
 		}
 		return importo_finale;
 	}
+
+
+
+	public static String getSpesa(Socket s,int idspesa){
+
+		String error="errore";
+		try {
+			Login_GUI.in = new BufferedReader(new InputStreamReader(
+					s.getInputStream()));
+			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
+
+			String response = Server.SHOW_SPESA + "/" + idspesa ;
+			System.out.println(response);
+
+			Login_GUI.out.println(response);
+
+			String line = Login_GUI.in.readLine();
+			String[] part = line.split("/");
+
+			if (part[0].contentEquals(Server.SPESA_INVIATA)) {
+
+				JOptionPane.showMessageDialog(null, part[1]);
+
+				return part[1];
+
+
+			}
+
+			else {
+				JOptionPane.showMessageDialog(null, "prodotto non eliminato");
+
+			}
+
+		} catch (IOException ioe) {
+
+			JOptionPane.showMessageDialog(null,
+					"Error in communication with server!", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+		return error;
+
+
+
+	}
+
+
+	public static void UpdateMassimale(Socket s,double up_mass,int idspesa){
+
+		try {
+			Login_GUI.in = new BufferedReader(new InputStreamReader(
+					s.getInputStream()));
+			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
+
+			String response = Server.UPDATE_MASSIMALE + "/"+up_mass+"/"+idspesa;
+
+			Login_GUI.out.println(response);
+
+			System.out.println(response);
+
+
+
+
+
+			String line = Login_GUI.in.readLine();
+
+			if (line.contentEquals(Server.MASSIMALE_INSERITO)) {
+
+				System.out.println("Massimale aggiornato");
+
+			}
+			else{
+				System.out.println("Massimale non aggiornato");
+
+			}
+
+		}
+		catch (IOException ioe) {
+
+			JOptionPane.showMessageDialog(null,
+					"Error in communication with server!", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+
+
+
+
+
+
+	}
+
+
+
+	public static int  CalcolaPuntiSpesa(Socket s , int idspesa){
+	
+		int punti_spesa=0;
+		try {
+			Login_GUI.in = new BufferedReader(new InputStreamReader(
+					s.getInputStream()));
+			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
+
+
+			String response = Server.GET_POINTS + "/"+idspesa;
+
+			Login_GUI.out.println(response);
+
+
+			System.out.println(response);
+
+
+
+
+
+			String line = Login_GUI.in.readLine();
+
+
+			String part[] = line.split("/");
+
+			if (part[0].contentEquals(Server.ADD_POINTS)) {
+
+				
+				 punti_spesa=Integer.parseInt(part[1]);
+			 
+			}
+
+			else {
+				JOptionPane.showMessageDialog(null, "Punti non aggiornati", "ATTENZIONE", WARNING_MESSAGE, null);
+
+			}
+
+		} catch (IOException ioe) {
+
+			JOptionPane.showMessageDialog(null,
+					"Error in communication with server!", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		return punti_spesa;
+
+	}
+
+
+
+public static int CalcoloPuntiTotali(Socket s,int idspesa,int punti_spesa){
+	
+	int punti_spesa_aggiornati=0;
+	
+	try {
+		Login_GUI.in = new BufferedReader(new InputStreamReader(
+				s.getInputStream()));
+		Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
+
+
+		String response = Server.UPDATE_POINTS + "/"+idspesa+"/"+punti_spesa;
+
+		Login_GUI.out.println(response);
+
+
+		System.out.println(response);
+
+
+
+
+
+		String line = Login_GUI.in.readLine();
+
+
+		String part[] = line.split("/");
+
+		if (part[0].contentEquals(Server.POINTS_UPDATED)) {
+
+			
+			 punti_spesa_aggiornati=Integer.parseInt(part[1]);
+		 
+		}
+
+		else {
+			JOptionPane.showMessageDialog(null, "Punti non aggiornati", "ATTENZIONE", WARNING_MESSAGE, null);
+
+		}
+
+	} catch (IOException ioe) {
+
+		JOptionPane.showMessageDialog(null,
+				"Error in communication with server!", "Error",
+				JOptionPane.ERROR_MESSAGE);
+	}
+	return punti_spesa_aggiornati;
+
+}
+	
+	
+ 
 }

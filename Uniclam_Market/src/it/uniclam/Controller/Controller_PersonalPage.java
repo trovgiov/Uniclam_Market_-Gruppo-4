@@ -139,5 +139,48 @@ public class Controller_PersonalPage {
 			.showMessageDialog(null, "Email inserita non valida !!!");
 		}
 	}
+	
+	
+	public static int  Show_punti_scheda(Socket s, int idscheda){
+		int punti=0;
+		
+		
+		try {
 
-}
+			Login_GUI.in = new BufferedReader(new InputStreamReader(
+					s.getInputStream()));
+
+			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
+
+			String req = Server.SHOW_POINTS + "/" + idscheda;
+			System.out.println(req);
+
+			Login_GUI.out.println(req);
+
+			String line = Login_GUI.in.readLine();
+			String parts[] = line.split("/");
+			String operation=parts[0];
+			
+			if(operation.contentEquals(Server.POINTS_SHOWED)){
+				
+				 punti=Integer.parseInt(parts[1]);
+				
+				
+			}
+			else {
+				System.out.println("Error");
+			}
+ 		 
+		}
+
+		catch (IOException ioe) {
+
+			JOptionPane.showMessageDialog(null,
+					"Error in communication with server!", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		return punti;
+
+	}
+
+ }

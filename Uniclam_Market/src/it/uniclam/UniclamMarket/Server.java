@@ -1,8 +1,10 @@
 package it.uniclam.UniclamMarket;
 
+import it.uniclam.DAO.SchedaDAO;
 import it.uniclam.DAO.SchedaDAOImpl;
 import it.uniclam.DAO.SpesaDAOImpl;
 import it.uniclam.DAO.UtenteDAOImpl;
+import it.uniclam.entity.Carrello;
 import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Spesa;
 import it.uniclam.entity.Utente;
@@ -12,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JOptionPane;
@@ -24,9 +27,19 @@ import javax.swing.JOptionPane;
  */
 public class Server {
 
-	public static  String CALCOLAIMPORTO = "req_calcoloimporto";
-	public static  String ELIMINAUTENTE = "req_eliminautente";
-	public static  String CANCELLA_SPESA = "req_cancellaspesa";
+	public  static   String POINTS_UPDATED = "RES_points_updated";
+	public static  String UPDATE_POINTS = "req_update_points";
+	public static  String ADD_POINTS = "RES_add_points";
+	public static  String GET_POINTS = "req_get_points";
+	public static   String POINTS_SHOWED = "RES_points_showed";
+	public static   String SHOW_POINTS = "res_show_points";
+	public static   String MASSIMALE_INSERITO = "RES_ massimaleInserito";
+	public static   String UPDATE_MASSIMALE = "req_update_max";
+	public static  String SPESA_INVIATA ="RES_spesa_mostrata";
+	public static  String SHOW_SPESA = "req_show_spesa";
+	public static  String CALCOLAIMPORTO = "req_calcolo_importo";
+	public static  String ELIMINAUTENTE = "req_elimina_utente";
+	public static  String CANCELLA_SPESA = "req_cancella_spesa";
 	public static String INSERT_UTENTE = "req_insert_utente";
 	public static String LOGIN_UTENTE = "req_login";
 	public static String PERSONAL_PAGE = "req_Persona_Page";
@@ -42,7 +55,7 @@ public class Server {
 	public static String EMAIL_CHANGED = "RES_email_changed";
 	public static String SPESA_CANCELLATA = "RES_spesa_cancellata";
 	public static String PIN_RECOVERED = "RES_pin_recovered";
-    public static String SPESA_CREATA = "RES_spesa_creata";
+	public static String SPESA_CREATA = "RES_spesa_creata";
 
 	public static String HOST = "localhost";
 	public static int port = 8888;
@@ -141,20 +154,20 @@ public class Server {
 
 				}
 				else if(operation.contentEquals(RECOVERY_PIN)){
-					
-					
+
+
 					//String email=parts[1];
-					
+
 					SchedaDAOImpl.getInstance().recovery_pin(parts[1]);
-					
+
 					String response=Server.PIN_RECOVERED;
 					out.println(response);
-					
- 
-					
-					
-					
-					
+
+
+
+
+
+
 				}
 
 				else if (operation.contentEquals(CREA_SPESA)) {
@@ -273,11 +286,66 @@ public class Server {
 					out.println(response);
 
 				}
+				else if(operation.contentEquals(UPDATE_MASSIMALE)){
+					
+ 					double upd_mas=Double.parseDouble(parts[1]);
+ 					int idspesa=Integer.parseInt(parts[2]);
+ 					
+ 					int idscheda=SpesaDAOImpl.getInstance().getIdScheda(idspesa);
+ 					
+ 					
+ 					if(SpesaDAOImpl.getInstance().updateMassimale(upd_mas, idscheda)){
+ 						
+ 						String response=Server.MASSIMALE_INSERITO;
+ 						out.println(response);
+ 					}
+ 					else{
+ 						String response="Error";
+ 						out.println(response);
+ 						
+ 					}
+ 					
+ 					
+				}
+			 
+				else if(operation.contentEquals(SHOW_POINTS)){
+					int idscheda=Integer.parseInt(parts[1]);
+					
+					int punti=SchedaDAOImpl.getInstance().show_points(idscheda);
+					
+					String response=Server.POINTS_SHOWED+"/"+punti;
+					out.println(response);
+				}
+				
+				else if(operation.contentEquals(GET_POINTS)){
+					
+					int idspesa=Integer.parseInt(parts[1]);
+					
+					int punti_spesa=SpesaDAOImpl.getInstance().CalcolaPuntiSpesa(idspesa);
+					
+					String response=Server.ADD_POINTS+"/"+punti_spesa;
+					out.println(response);
+					
+				}
+				
+				else if(operation.contentEquals(UPDATE_POINTS)){
+					int idspesa=Integer.parseInt(parts[1]);
+ 					int idscheda=SpesaDAOImpl.getInstance().getIdScheda(idspesa);
+ 					int punti=Integer.parseInt(parts[2]);
+
+					int punti_spesa=SpesaDAOImpl.getInstance().AggiornaPuntiSpesa(idscheda,punti);
+                    
+
+					String response=Server.POINTS_UPDATED+"/"+punti_spesa;
+					out.println(response);
+				}
 
 				else if (operation.equals("logout")) {
 					closeConnection = true;
 					// Altre chiusure necessarie
 				}
+				
+				
 
 			}
 		}

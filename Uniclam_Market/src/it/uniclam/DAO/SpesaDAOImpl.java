@@ -1,10 +1,12 @@
 package it.uniclam.DAO;
 
 import it.uniclam.db.DBUtility;
+import it.uniclam.entity.Carrello;
 import it.uniclam.entity.Spesa;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
@@ -242,7 +244,7 @@ public class SpesaDAOImpl implements SpesaDAO {
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
-		// ' " ' "
+		// ' " " '
 		String updateTableSQL = "update carrello set quantita ='" + quantita
 				+ "' where prodotto_barcode='" + barcode
 				+ "' and spesa_idSpesa='" + idspesa + "'";
@@ -319,4 +321,159 @@ public class SpesaDAOImpl implements SpesaDAO {
 		}
 	}
 
+
+
+	@Override
+	public int getIdScheda(int idspesa) throws SQLException{
+
+		int idscheda=0;
+		java.sql.Statement s = DBUtility.getStatement();
+
+		String sql = "select scheda_idscheda from spesa where idspesa='"+idspesa+"' ";
+		try {
+			ResultSet rs = s.executeQuery(sql);
+
+			while (rs.next()) {
+
+				idscheda=rs.getInt("scheda_idscheda");
+
+
+			}
+
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return idscheda;
+	}
+	@Override
+	public boolean updateMassimale(double mas_res,int idscheda)
+			throws SQLException {
+
+
+		Connection dbConnection = null;
+		java.sql.PreparedStatement preparedStatement = null;
+
+		// ' " " '
+		String updateTableSQL = "update scheda set massimale_res ='" + mas_res
+				+ "' where idscheda='"+idscheda+"' ";
+
+		try {
+			dbConnection = DBUtility.getDBConnection();
+
+			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
+
+			// execute insert SQL stetement
+			preparedStatement.execute(updateTableSQL);
+
+			return true;
+
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+			return false;
+
+		} finally {
+
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+
+			if (dbConnection != null) {
+				dbConnection.close();
+			}
+
+		}
+
+	}
+
+	@Override
+	public int CalcolaPuntiSpesa(int idspesa) throws SQLException {
+		// TODO Auto-generated method stub
+
+
+
+		int punti_spesa=0;
+
+		java.sql.Statement s = DBUtility.getStatement();
+
+		String sql = "select sum(c.quantita * p.punti_prod) AS punti from carrello c, prodotto p, spesa s "
+				+ "where s.idspesa='"+idspesa+"' and s.idspesa=c.spesa_idspesa and c.prodotto_barcode=p.barcode";
+		try {
+			ResultSet rs = s.executeQuery(sql);
+
+			while (rs.next()) {
+
+				punti_spesa = rs.getInt("punti");
+
+			}
+
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		finally {
+
+			if (s != null) {
+				s.close();
+			}
+
+		}
+
+		return punti_spesa;
+	}
+
+	@Override
+	public int AggiornaPuntiSpesa(int idscheda,int punti_spesa) throws SQLException {
+		java.sql.Statement s = DBUtility.getStatement();
+		int punti_totali=0;
+
+
+		Connection dbConnection = null;
+		java.sql.PreparedStatement preparedStatement = null;
+		String sql = "select punti_totali from scheda where idscheda='"+idscheda+"' ";
+		try {
+			ResultSet rs = s.executeQuery(sql);
+
+			while (rs.next()) {
+
+				punti_totali=rs.getInt("punti_totali");
+
+
+			}
+
+			punti_totali=punti_spesa+punti_totali;
+			
+			
+			
+
+
+			String updateTableSQL = "update scheda set punti_totali ='" + punti_totali
+					+ "' where idscheda='"+idscheda+"' ";
+
+			dbConnection = DBUtility.getDBConnection();
+
+			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
+
+			// execute insert SQL stetement
+			preparedStatement.execute(updateTableSQL);
+
+			
+			
+
+
+		}
+ 
+
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return punti_totali;
+
+ 	}
+ 
 }
+

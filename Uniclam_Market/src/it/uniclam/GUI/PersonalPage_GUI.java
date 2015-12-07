@@ -41,7 +41,7 @@ public class PersonalPage_GUI extends JFrame {
 	private String nome;
 	private String cognome;
 	private String email;
-	Socket s;
+ 	Socket s;
 
 	private double mass_res = 0;
 
@@ -49,7 +49,7 @@ public class PersonalPage_GUI extends JFrame {
 	 * Create the application.
 	 */
 	public PersonalPage_GUI(int i, int j, Socket s, double mas, String nome,
-			String cognome, String email) {
+			String cognome, String email ) {
 
 		this.scheda = i;
 		this.pin = j;
@@ -58,7 +58,7 @@ public class PersonalPage_GUI extends JFrame {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.email = email;
-		initialize();
+ 		initialize();
 
 	}
 
@@ -141,7 +141,7 @@ public class PersonalPage_GUI extends JFrame {
 
 		JButton btnEffettuaSpesa = new JButton("Effettua la spesa");
 		btnEffettuaSpesa.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		btnEffettuaSpesa.setBounds(40, 89, 165, 38);
+		btnEffettuaSpesa.setBounds(170, 109, 165, 38);
 		this.getContentPane().add(btnEffettuaSpesa);
 
 		JSeparator separator = new JSeparator();
@@ -153,7 +153,7 @@ public class PersonalPage_GUI extends JFrame {
 				"Il massimale residuo è di €: ");
 		lblIlMassimaleResiduo.setForeground(new Color(255, 204, 153));
 		lblIlMassimaleResiduo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIlMassimaleResiduo.setBounds(85, 64, 250, 17);
+		lblIlMassimaleResiduo.setBounds(86, 47, 250, 17);
 		this.getContentPane().add(lblIlMassimaleResiduo);
 
 		JButton btnCambiaEmail = new JButton("Cambia la tua email di accesso");
@@ -185,15 +185,6 @@ public class PersonalPage_GUI extends JFrame {
 		btnCancellati.setBounds(320, 199, 165, 38);
 		this.getContentPane().add(btnCancellati);
 
-		JButton btnStoricoSpese = new JButton("Storico Spese");
-		btnStoricoSpese.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnStoricoSpese.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		btnStoricoSpese.setBounds(320, 92, 165, 38);
-		this.getContentPane().add(btnStoricoSpese);
-
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setForeground(new Color(153, 102, 0));
 		separator_2.setBounds(43, 254, 442, 12);
@@ -213,7 +204,7 @@ public class PersonalPage_GUI extends JFrame {
 
 		JLabel lblMasRes = new JLabel("");
 		lblMasRes.setForeground(Color.WHITE);
-		lblMasRes.setBounds(325, 64, 125, 16);
+		lblMasRes.setBounds(325, 47, 125, 16);
 		getContentPane().add(lblMasRes);
 
 		lblMasRes.setText("" + mass_res);
@@ -226,6 +217,19 @@ public class PersonalPage_GUI extends JFrame {
 		lblUserEmail.setBounds(360, 7, 173, 16);
 		getContentPane().add(lblUserEmail);
 		lblUserEmail.setText("" + nome + " " + cognome);// +" , "+getEmail());
+		
+		JLabel lblITuoiPunti = new JLabel("I tuoi punti fedeltà sono : ");
+		lblITuoiPunti.setHorizontalAlignment(SwingConstants.CENTER);
+		lblITuoiPunti.setForeground(new Color(255, 204, 153));
+		lblITuoiPunti.setBounds(86, 80, 250, 17);
+		getContentPane().add(lblITuoiPunti);
+		
+		
+		int punti=Controller_PersonalPage.Show_punti_scheda(s, scheda);
+		JLabel label_ptTotali = new JLabel(""+punti);
+		label_ptTotali.setForeground(Color.WHITE);
+		label_ptTotali.setBounds(320, 81, 125, 16);
+		getContentPane().add(label_ptTotali);
 
 		// Button Effettua Spesa
 
@@ -236,6 +240,7 @@ public class PersonalPage_GUI extends JFrame {
 				// TODO Auto-generated method stub
 
 				Controller_PersonalPage.effettuaspesa(s, scheda, mass_res);
+				
 			}
 		});
 

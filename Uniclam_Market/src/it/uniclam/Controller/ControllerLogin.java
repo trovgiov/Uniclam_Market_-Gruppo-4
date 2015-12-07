@@ -21,7 +21,7 @@ public class ControllerLogin {
 		try {
 
 			if (ControllerLogin.in == null || ControllerLogin.out == null) {
-				// apro socket
+				// apro socket 
 				Socket s = new Socket("localhost", 8888);
 
 				in = new BufferedReader(new InputStreamReader(
@@ -32,7 +32,8 @@ public class ControllerLogin {
 
 				String req = Server.LOGIN_UTENTE + "/" + numscheda + "/" + pino
 						+ "\n";
-				System.out.println("Richiesta " + req);
+				System.out.println(req);
+				
 				out.println(req);
 				String line = in.readLine();
 
@@ -68,11 +69,11 @@ public class ControllerLogin {
 		}
 
 	}
-	
-	
-	
+
+
+
 	public static void forgot_pin(String email){
-		
+
 		try {
 
 			if (ControllerLogin.in == null || ControllerLogin.out == null) {
@@ -88,25 +89,14 @@ public class ControllerLogin {
 				String req = Server.RECOVERY_PIN + "/"+email ; 
 				System.out.println (req);
 				out.println(req);
-			
+
 				String line = in.readLine();
 				System.out.println(line);
 
 				if(line.contentEquals(Server.PIN_RECOVERED)){
-					
+
 					JOptionPane.showMessageDialog(null, "L'email inserita è corretta.\nA breve riceverà una mail con i dati necessari per l'accesso.\nUniclam Market");
-				
-				
-				
-				
-				//leggo qui la mail
-				
-				
-				
-				
-				
-				
-				
+					
 				}
 				else{
 					JOptionPane.showMessageDialog(null,
@@ -122,9 +112,9 @@ public class ControllerLogin {
 					JOptionPane.ERROR_MESSAGE);
 		}
 
-		
-		
-		
-		
+
+
+
+
 	}
 }

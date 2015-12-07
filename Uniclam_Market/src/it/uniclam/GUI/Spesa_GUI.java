@@ -69,6 +69,7 @@ public class Spesa_GUI extends JFrame {
 		this.idspesa = id;
 		this.s = s;
 		this.mass_residuo = mass_res;
+		
 		initialize();
 	}
 
@@ -262,10 +263,25 @@ public class Spesa_GUI extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Riepilogo_GUI windows_GUI = new Riepilogo_GUI(idspesa,s,mass_residuo,importo_finale);
-				windows_GUI.setVisible(true);
-			}
-		});
+			 
+ 				
+				
+				if(importo_finale<=mass_residuo){
+					Riepilogo_GUI windows=new Riepilogo_GUI(idspesa, s, mass_residuo, importo_finale);
+                    windows.setVisible(true);
+			
+			 
+					
+				}
+			
+				else {
+					JOptionPane.showMessageDialog(null, "Errore massimale");
+				}
+				
+				
+				
+		 
+			}});
 
 		// Pulsante Annulla ed Esci
 		btnEsci.addActionListener(new ActionListener() {
