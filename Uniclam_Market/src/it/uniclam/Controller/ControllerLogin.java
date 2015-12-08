@@ -10,12 +10,17 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class ControllerLogin {
+	private static final int SYSTEM_MESSAGE = 0;
 	public static BufferedReader in;
 	public static PrintWriter out;
-
+	public static Icon email_icon = new ImageIcon("img/email.png");
+	public static Icon error_icon = new ImageIcon("img/error.png");
+	
 	public static void authenticate(String numscheda, String pino) {
 
 		try {
@@ -55,9 +60,11 @@ public class ControllerLogin {
 							card.getIdScheda(), card.getPin(), s, mas_res,
 							nome, cognome, email);
 					personalwindow.setVisible(true);
+					
 
 				} else {
-					JOptionPane.showMessageDialog(null, "Login Errato");
+					JOptionPane.showMessageDialog(null, "Login Errato! \nSe non ricordi i dati puoi usare il tasto di recupero", 
+							"Attenzione!", JOptionPane.ERROR_MESSAGE, error_icon);
 				}
 
 			}
@@ -92,16 +99,17 @@ public class ControllerLogin {
 
 				String line = in.readLine();
 				System.out.println(line);
+				
 
 				if(line.contentEquals(Server.PIN_RECOVERED)){
 
-					JOptionPane.showMessageDialog(null, "L'email inserita è corretta.\nA breve riceverà una mail con i dati necessari per l'accesso.\nUniclam Market");
-					
+					JOptionPane.showMessageDialog(null, "L'email inserita è presente nel sistema.\nA breve riceverà una mail con i dati necessari per l'accesso", 
+							"Email inviata con successo", SYSTEM_MESSAGE, email_icon);
+	
 				}
 				else{
-					JOptionPane.showMessageDialog(null,
-							"Email non presente nel nostro sistema", "Errorw",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "L'email non è presente nel sistema! \nInserisci l'email usata per il primo accesso", 
+							"Email non inviata", JOptionPane.ERROR_MESSAGE, error_icon);
 				}
 
 			}

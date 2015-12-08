@@ -19,6 +19,7 @@ import javax.swing.JTextArea;
 import java.awt.SystemColor;
 
 import javax.swing.JLabel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
@@ -58,21 +59,21 @@ public class Registrazione_GUI extends JFrame {
 		// this = new JFrame();
 		this.setFont(new Font("Adobe Heiti Std", Font.BOLD, 12));
 		this.setTitle("UNICLAM MARKET");
-		this.getContentPane().setBackground(new Color(153, 0, 0));
+		this.getContentPane().setBackground(new Color(102, 0, 0));
 		this.getContentPane().setForeground(Color.GRAY);
-		this.setBounds(100, 100, 478, 395);
+		this.setBounds(100, 100, 478, 425);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 
 		txtNome = new JTextField();
 		txtNome.setForeground(Color.BLACK);
-		txtNome.setBounds(151, 55, 206, 26);
+		txtNome.setBounds(154, 119, 206, 26);
 		this.getContentPane().add(txtNome);
 		txtNome.setColumns(10);
 
 		JLabel lblNome = new JLabel("NOME:");
 		lblNome.setForeground(Color.WHITE);
-		lblNome.setBounds(99, 60, 61, 16);
+		lblNome.setBounds(102, 124, 61, 16);
 		this.getContentPane().add(lblNome);
 		this.getContentPane().add(lblNome);
 
@@ -80,31 +81,31 @@ public class Registrazione_GUI extends JFrame {
 
 		JLabel lblCognome = new JLabel("COGNOME:");
 		lblCognome.setForeground(Color.WHITE);
-		lblCognome.setBounds(73, 104, 77, 16);
+		lblCognome.setBounds(74, 170, 77, 16);
 		this.getContentPane().add(lblCognome);
 
 		textCognome = new JTextField();
-		textCognome.setBounds(151, 99, 206, 26);
+		textCognome.setBounds(152, 165, 206, 26);
 		this.getContentPane().add(textCognome);
 		textCognome.setColumns(10);
 
 		JLabel lblEmail = new JLabel("EMAIL:");
 		lblEmail.setForeground(Color.WHITE);
-		lblEmail.setBounds(101, 148, 51, 16);
+		lblEmail.setBounds(102, 212, 51, 16);
 		this.getContentPane().add(lblEmail);
 
 		textEmail = new JTextField();
-		textEmail.setBounds(151, 143, 206, 26);
+		textEmail.setBounds(152, 207, 206, 26);
 		this.getContentPane().add(textEmail);
 		textEmail.setColumns(10);
 
 		JLabel lblTelfono = new JLabel("TELEFONO:");
 		lblTelfono.setForeground(Color.WHITE);
-		lblTelfono.setBounds(73, 191, 77, 16);
+		lblTelfono.setBounds(74, 253, 77, 16);
 		this.getContentPane().add(lblTelfono);
 
 		textTelefono = new JTextField();
-		textTelefono.setBounds(151, 187, 206, 26);
+		textTelefono.setBounds(152, 249, 206, 26);
 		this.getContentPane().add(textTelefono);
 		textTelefono.setColumns(10);
 
@@ -113,28 +114,31 @@ public class Registrazione_GUI extends JFrame {
 		lblImpostareIlMassimale.setForeground(Color.WHITE);
 		lblImpostareIlMassimale.setFont(new Font("Lucida Grande", Font.PLAIN,
 				15));
-		lblImpostareIlMassimale.setBounds(90, 249, 315, 16);
+		lblImpostareIlMassimale.setBounds(87, 287, 315, 16);
 		this.getContentPane().add(lblImpostareIlMassimale);
 
 		textMassimale = new JTextField();
 		textMassimale.setBackground(Color.LIGHT_GRAY);
-		textMassimale.setBounds(187, 277, 130, 26);
+		textMassimale.setBounds(185, 313, 130, 26);
 		this.getContentPane().add(textMassimale);
 		textMassimale.setColumns(10);
-
-		JLabel lblNewLabel = new JLabel("Registrazione al Sistema");
-		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD, 15));
-		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setBounds(156, 17, 200, 26);
-		this.getContentPane().add(lblNewLabel);
 
 		JButton btnRegistrati = new JButton("REGISTRATI");
 		btnRegistrati.setFont(new Font("Lucida Grande",
 				Font.BOLD | Font.ITALIC, 13));
-		btnRegistrati.setBounds(335, 310, 123, 43);
+		btnRegistrati.setBounds(340, 341, 123, 43);
 		this.getContentPane().add(btnRegistrati);
+
+		Icon header = new ImageIcon("img/reg_sistema.png");
+		JLabel header1 = new JLabel(header);
+		header1.setBounds(19, 8, 444, 104);
+		getContentPane().add(header1);
+
+		Icon personalicon = new ImageIcon("img/personal.png");
+		JLabel personal = new JLabel(personalicon);
+		personal.setBounds(19, 318, 86, 66);
+		getContentPane().add(personal);
 		setVisible(true);
-		this.getContentPane().add(lblNewLabel);
 
 		btnRegistrati.addActionListener(new ActionListener() {
 
@@ -153,10 +157,9 @@ public class Registrazione_GUI extends JFrame {
 
 				// Passo alla funzione di Controller
 
-				
-					ControllerUtente.registrazioneUtente(nome, cognome, email,
-							massimale, telefono, emailPattern);
-			
+				ControllerUtente.registrazioneUtente(nome, cognome, email,
+						massimale, telefono, emailPattern);
+
 
 			}
 		});

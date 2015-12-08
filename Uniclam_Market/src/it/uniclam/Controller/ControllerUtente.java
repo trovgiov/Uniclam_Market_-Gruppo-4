@@ -12,9 +12,13 @@ import java.net.Socket;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class ControllerUtente {
+
+	private static final int SYSTEM_MESSAGE = 0;
 
 	public static void registrazioneUtente(String nome, String cognome,
 			String email, String massimale, String telefono, String emailPattern) {
@@ -36,6 +40,7 @@ public class ControllerUtente {
 				System.out.println("Email valida");
 				System.out.println("Inviato: " + req);
 
+				Icon happy = new ImageIcon("img/happy.png");
 				String line = in.readLine();
 				String parts[] = line.split("/");
 				String message = parts[0];
@@ -44,12 +49,11 @@ public class ControllerUtente {
 				System.out.println(line);
 
 				if (message.contentEquals("OK")) {
-					JOptionPane
-							.showMessageDialog(
-									null,
-									"Complimenti. La sua carta è stata attivata."
-											+ "\nA breve riceverà una mail con il numero carta ed il pin, necessario per l'accesso."
-											+ "\nUniclam Market");
+					JOptionPane.showMessageDialog(null, "Grazie per esserti registrato! La tua carta è stata attivata."
+							+ "\nA breve riceverai una mail con il numero carta ed il pin, necessario per l'accesso."
+							, "Esito registrazione OK", SYSTEM_MESSAGE, happy);
+									
+									
 
 				
 					
@@ -60,8 +64,9 @@ public class ControllerUtente {
 				}
 
 				else {
-					JOptionPane.showMessageDialog(null,
-							"Errore inserimento campi");
+					Icon error = new ImageIcon("img/error.png");
+					JOptionPane.showMessageDialog(null, "Errore! Qualche campo risulta non essere corretto!"
+							, "Errore", SYSTEM_MESSAGE, error);
 				}
 
 			} catch (IOException ioe) {

@@ -13,10 +13,16 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.SQLException;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class Controller_PersonalPage {
-
+	
+	static Icon scary = new ImageIcon("img/scary.png");
+ 	static Icon error = new ImageIcon("img/error.png");
+ 	static Icon email_icon = new ImageIcon("img/email.png");
+ 	
 	public static void effettuaspesa(Socket s, int scheda, double mass_res) {
 
 		try {
@@ -75,12 +81,10 @@ public class Controller_PersonalPage {
 			String line = Login_GUI.in.readLine();
 
 			if (line.contentEquals(Server.UTENTE_ELIMINATO)) {
-				JOptionPane.showMessageDialog(null,
-						"Utente eliminato dal sistema");
+				System.out.println("Utente cancellato correttamente!");
 
 			} else {
-				JOptionPane.showMessageDialog(null,
-						"Utente non eliminato dal sistema");
+				System.out.println("ATTENZIONE Utente non eliminato!");
 
 			}
 
@@ -119,13 +123,13 @@ public class Controller_PersonalPage {
 				if (line.contentEquals(Server.EMAIL_CHANGED)) {
 
 					JOptionPane.showMessageDialog(null,
-							"Email modificata con successo");
+							 "Email modificata con successo ", "Email modificata", JOptionPane.INFORMATION_MESSAGE, email_icon);
 
 				}
 
 				else {
 					JOptionPane.showMessageDialog(null,
-							"Attenzione!! Email non modificata");
+							 "Attenzione! Email non modificata!", "Errore", JOptionPane.INFORMATION_MESSAGE, error);
 
 				}
 

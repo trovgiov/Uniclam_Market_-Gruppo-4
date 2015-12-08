@@ -1,8 +1,10 @@
 package it.uniclam.UniclamMarket;
 
+import it.uniclam.GUI.PersonalPage_GUI;
 import it.uniclam.db.DBUtility;
 import it.uniclam.entity.Carrello;
 
+import java.awt.Font;
 import java.awt.Image;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -14,6 +16,7 @@ import java.util.GregorianCalendar;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import com.mysql.jdbc.Connection;
@@ -21,7 +24,9 @@ import com.mysql.jdbc.Connection;
 public class Test {
 
 	private static final int DISPOSE_ON_CLOSE = 0;
+	private static final int SYSTEM_MESSAGE = 0;
 
+	
 	@SuppressWarnings({ "deprecation", "unused" })
 
 	/*
@@ -96,9 +101,12 @@ public class Test {
 
 	public static void main(String[] args) throws SQLException{
 
-
-
-		Double pino=pino();
+		Icon exit = new ImageIcon("img/sad.png");
+		JOptionPane.showMessageDialog(null,
+				"Ci dispiace per la tua scelta! \nSperiamo di rivederti presto!!", "Account Cancellato correttamente", JOptionPane.INFORMATION_MESSAGE, exit);
+		
+		
+	/*	Double pino=pino();
 		System.out.println("\nMassimale _ residuo : "+pino);
 		//JOptionPane.showMessageDialog(null, "Prova","title", DISPOSE_ON_CLOSE, icon);
 	}
@@ -166,9 +174,9 @@ public class Test {
 
 
 
-			}
+			}*/
 
-
+/*
 			// prendo il primo record della tabella : equivale alla data dell'ultima spesa
 			Date data_ultimaSpesaSQL = dataspesa.get(0);
 			System.out.println("\ndata ultima spesa : "+data_ultimaSpesaSQL);
@@ -220,9 +228,10 @@ public class Test {
 		return massimale_residuo;
 
 
-
+*/
 	}
 
+		
 
  
 }

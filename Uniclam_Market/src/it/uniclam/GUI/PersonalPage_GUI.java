@@ -18,6 +18,8 @@ import it.uniclam.entity.Utente;
 import java.awt.Font;
 
 import javax.swing.SwingConstants;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
 
@@ -42,7 +44,17 @@ public class PersonalPage_GUI extends JFrame {
 	private String cognome;
 	private String email;
  	Socket s;
-
+ 	Icon card_icon = new ImageIcon("img/card.png");
+ 	Icon spesa = new ImageIcon("img/cart.png");
+ 	Icon settings = new ImageIcon("img/settings.png");
+ 	Icon delete = new ImageIcon("img/trash.png");
+ 	Icon exit = new ImageIcon("img/exit.png");
+ 	Icon pers_icon = new ImageIcon("img/personal_area.png");
+ 	Icon money_icon = new ImageIcon("img/money.png");
+ 	Icon scary = new ImageIcon("img/scary.png");
+ 	Icon sad = new ImageIcon("img/sad.png");
+ 	Icon email_icon = new ImageIcon("img/email.png");
+ 	
 	private double mass_res = 0;
 
 	/**
@@ -123,7 +135,7 @@ public class PersonalPage_GUI extends JFrame {
 	 */
 	private void initialize() {
 		// frame = new JFrame();
-		this.setBounds(100, 100, 539, 351);
+		this.setBounds(100, 100, 553, 569);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		setTitle("UNICLAM MARKET - PAGINA PERSONALE");
@@ -131,67 +143,62 @@ public class PersonalPage_GUI extends JFrame {
 		this.getContentPane().setLayout(null);
 
 		JLabel lblBenvenutoNellaTua = new JLabel(
-				"BENVENUTO NELLA TUA PAGINA PERSONALE,");
+				"PAGINA PERSONALE DI");
 		lblBenvenutoNellaTua.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBenvenutoNellaTua.setFont(new Font("Lucida Grande", Font.BOLD
 				| Font.ITALIC, 14));
 		lblBenvenutoNellaTua.setForeground(new Color(255, 255, 255));
-		lblBenvenutoNellaTua.setBounds(-3, 6, 392, 17);
+		lblBenvenutoNellaTua.setBounds(61, 133, 299, 17);
 		this.getContentPane().add(lblBenvenutoNellaTua);
 
+		
 		JButton btnEffettuaSpesa = new JButton("Effettua la spesa");
-		btnEffettuaSpesa.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		btnEffettuaSpesa.setBounds(170, 109, 165, 38);
+		btnEffettuaSpesa.setIcon(spesa);
+		btnEffettuaSpesa.setFont(new Font("Lucida Grande", Font.BOLD, 14));
+		btnEffettuaSpesa.setBounds(166, 298, 220, 79);
 		this.getContentPane().add(btnEffettuaSpesa);
 
 		JSeparator separator = new JSeparator();
 		separator.setForeground(new Color(153, 102, 0));
-		separator.setBounds(40, 23, 445, 12);
+		separator.setBounds(11, 152, 531, 12);
 		this.getContentPane().add(separator);
 
 		JLabel lblIlMassimaleResiduo = new JLabel(
 				"Il massimale residuo è di €: ");
 		lblIlMassimaleResiduo.setForeground(new Color(255, 204, 153));
 		lblIlMassimaleResiduo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIlMassimaleResiduo.setBounds(86, 47, 250, 17);
+		lblIlMassimaleResiduo.setBounds(142, 187, 250, 17);
 		this.getContentPane().add(lblIlMassimaleResiduo);
 
+		
 		JButton btnCambiaEmail = new JButton("Cambia la tua email di accesso");
-		btnCambiaEmail.setBounds(40, 199, 238, 38);
+		btnCambiaEmail.setFont(new Font("Lucida Grande", Font.BOLD, 11));
+		btnCambiaEmail.setIcon(settings);
+		btnCambiaEmail.setBounds(29, 389, 250, 68);
 		this.getContentPane().add(btnCambiaEmail);
 
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(Color.WHITE);
-		separator_1.setBounds(40, 159, 445, 12);
+		separator_1.setBounds(11, 374, 531, 12);
 		this.getContentPane().add(separator_1);
-
-		JLabel lblAreaSpesa = new JLabel("Area spesa");
-		lblAreaSpesa.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
-		lblAreaSpesa.setVerticalAlignment(SwingConstants.TOP);
-		lblAreaSpesa.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAreaSpesa.setForeground(new Color(204, 204, 204));
-		lblAreaSpesa.setBounds(26, 35, 68, 17);
-		this.getContentPane().add(lblAreaSpesa);
-
-		JLabel lblAreaDatiPersonali = new JLabel("Area dati personali");
-		lblAreaDatiPersonali.setForeground(new Color(204, 204, 204));
-		lblAreaDatiPersonali
-				.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
-		lblAreaDatiPersonali.setBackground(new Color(0, 0, 0));
-		lblAreaDatiPersonali.setBounds(26, 168, 125, 16);
-		this.getContentPane().add(lblAreaDatiPersonali);
-
-		JButton btnCancellati = new JButton("Cancellati dal sistema");
-		btnCancellati.setBounds(320, 199, 165, 38);
+		
+		
+		JButton btnCancellati = new JButton("Cancellati \ndal sistema");
+		btnCancellati.setFont(new Font("Lucida Grande", Font.BOLD, 11));
+		btnCancellati.setIcon(delete);
+		btnCancellati.setBounds(316, 389, 210, 68);
 		this.getContentPane().add(btnCancellati);
 
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setForeground(new Color(153, 102, 0));
-		separator_2.setBounds(43, 254, 442, 12);
+		separator_2.setBounds(11, 468, 527, 9);
 		this.getContentPane().add(separator_2);
 
+		
 		JButton btnEsci = new JButton("Esci");
-		btnEsci.setBounds(424, 267, 61, 38);
+		btnEsci.setIcon(exit);
+		btnEsci.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 12));
+		btnEsci.setBounds(456, 476, 86, 43);
 		this.getContentPane().add(btnEsci);
 
 		JLabel lblVer = new JLabel(
@@ -199,12 +206,12 @@ public class PersonalPage_GUI extends JFrame {
 		lblVer.setHorizontalAlignment(SwingConstants.CENTER);
 		lblVer.setForeground(SystemColor.scrollbar);
 		lblVer.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		lblVer.setBounds(26, 307, 479, 16);
+		lblVer.setBounds(29, 520, 479, 16);
 		this.getContentPane().add(lblVer);
 
 		JLabel lblMasRes = new JLabel("");
 		lblMasRes.setForeground(Color.WHITE);
-		lblMasRes.setBounds(325, 47, 125, 16);
+		lblMasRes.setBounds(378, 187, 125, 16);
 		getContentPane().add(lblMasRes);
 
 		lblMasRes.setText("" + mass_res);
@@ -214,22 +221,47 @@ public class PersonalPage_GUI extends JFrame {
 		JLabel lblUserEmail = new JLabel("");
 		lblUserEmail.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		lblUserEmail.setForeground(new Color(255, 255, 255));
-		lblUserEmail.setBounds(360, 7, 173, 16);
+		lblUserEmail.setBounds(304, 133, 173, 16);
 		getContentPane().add(lblUserEmail);
 		lblUserEmail.setText("" + nome + " " + cognome);// +" , "+getEmail());
 		
 		JLabel lblITuoiPunti = new JLabel("I tuoi punti fedeltà sono : ");
 		lblITuoiPunti.setHorizontalAlignment(SwingConstants.CENTER);
 		lblITuoiPunti.setForeground(new Color(255, 204, 153));
-		lblITuoiPunti.setBounds(86, 80, 250, 17);
+		lblITuoiPunti.setBounds(138, 254, 250, 17);
 		getContentPane().add(lblITuoiPunti);
 		
 		
 		int punti=Controller_PersonalPage.Show_punti_scheda(s, scheda);
 		JLabel label_ptTotali = new JLabel(""+punti);
 		label_ptTotali.setForeground(Color.WHITE);
-		label_ptTotali.setBounds(320, 81, 125, 16);
+		label_ptTotali.setBounds(358, 255, 125, 16);
 		getContentPane().add(label_ptTotali);
+		
+		
+		JLabel header = new JLabel(pers_icon);
+		header.setBounds(27, 11, 490, 110);
+		getContentPane().add(header);
+		
+		
+		JLabel money = new JLabel(money_icon);
+		money.setBounds(97, 168, 69, 60);
+		getContentPane().add(money);
+		
+		
+		JLabel card = new JLabel(card_icon);
+		card.setBounds(97, 235, 69, 60);
+		getContentPane().add(card);
+		
+		JSeparator separator_3 = new JSeparator();
+		separator_3.setForeground(new Color(153, 102, 0));
+		separator_3.setBounds(11, 228, 531, 12);
+		getContentPane().add(separator_3);
+		
+		JSeparator separator_4 = new JSeparator();
+		separator_4.setForeground(new Color(153, 102, 0));
+		separator_4.setBounds(11, 289, 531, 12);
+		getContentPane().add(separator_4);
 
 		// Button Effettua Spesa
 
@@ -245,13 +277,14 @@ public class PersonalPage_GUI extends JFrame {
 		});
 
 		// Pulsante di uscita
+		
 		btnEsci.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				JOptionPane.showMessageDialog(PersonalPage_GUI.this,
-						"Arrivederci!");
+						 "Arrivederci!", "Logout", JOptionPane.INFORMATION_MESSAGE, exit);
 				System.exit(0);
 			}
 		});
@@ -263,18 +296,20 @@ public class PersonalPage_GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				int scelta = JOptionPane.showConfirmDialog(
-						PersonalPage_GUI.this,
-						"Sei sicuro di volerti cancellare dal sistema?",
-						"Eliminazione Account", JOptionPane.YES_NO_OPTION);
+				
+				int scelta = JOptionPane.showConfirmDialog(PersonalPage_GUI.this, "Sei sicuro di volerti cancellare dal sistema?", 
+						"Eliminazione Account", JOptionPane.YES_NO_OPTION, JOptionPane.YES_OPTION, scary);
+				
 				switch (scelta) {
 
 				case JOptionPane.YES_OPTION:
 
 					Controller_PersonalPage.CancellaUtente(s, email);
-					JOptionPane
-							.showMessageDialog(null,
-									"Ci dispiace per la tua scelta e speriamo di rivederti presto!");
+					JOptionPane.showMessageDialog(PersonalPage_GUI.this,
+							 "Ci dispiace per la tua scelta! \nSperiamo di rivederti presto!!", "Account Cancellato correttamente", JOptionPane.INFORMATION_MESSAGE, sad);
+					
+					
+				
 				case JOptionPane.NO_OPTION:
 					break;
 				}
@@ -288,8 +323,7 @@ public class PersonalPage_GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				String new_mail = JOptionPane
-						.showInputDialog(("Inserisci la nuova mail "));
+				String new_mail = (String) JOptionPane.showInputDialog(null, "Inserisca la mail per il recupero pin", "Inserire Email", JOptionPane.INFORMATION_MESSAGE,email_icon, null, null);
 				Controller_PersonalPage.ChangeEmail(s, email, new_mail);
 
 			}
