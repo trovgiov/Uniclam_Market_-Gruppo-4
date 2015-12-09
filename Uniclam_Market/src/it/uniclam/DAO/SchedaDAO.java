@@ -23,4 +23,8 @@ public interface SchedaDAO {
 	public Utente checkUser(int idScheda) throws SQLException; // Gio
 
 	public int show_points(int idscheda) throws SQLException;
+	public void UpdateMassimaleResiduo(Scheda s) throws SQLException;
+
+
+
 }

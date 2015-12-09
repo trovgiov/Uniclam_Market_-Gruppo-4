@@ -404,6 +404,57 @@ public static int CalcoloPuntiTotali(Socket s,int idspesa,int punti_spesa){
 
 }
 	
+
+public static void updateMassimale_totale(Socket s,int idspesa, double update_massres){
+	try {
+		Login_GUI.in = new BufferedReader(new InputStreamReader(
+				s.getInputStream()));
+		Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
+
+
+		String response = Server.UPDATE_MASSIMALE_RESIDUO + "/"+idspesa+"/"+update_massres+"/"  +"\n";
+
+		Login_GUI.out.println(response);
+
+
+		System.out.println(response);
+
+
+
+
+
+		String line = Login_GUI.in.readLine();
+
+		System.out.println(line);
+
+
+		if (line.contentEquals(Server.MASSIMALE_RESIDUO_UPDATED)) {
+			
+			
+
+
+			JOptionPane.showMessageDialog(null, "Massimale aggiornato");
+
+		}
+
+		else {
+			JOptionPane.showMessageDialog(null, "Punti non aggiornati", "ATTENZIONE", WARNING_MESSAGE, null);
+
+		}
+
+	} catch (IOException ioe) {
+
+		JOptionPane.showMessageDialog(null,
+				"Error in communication with server!", "Error",
+				JOptionPane.ERROR_MESSAGE);
+	}
 	
+	
+	
+	
+	
+	
+}
+
  
 }

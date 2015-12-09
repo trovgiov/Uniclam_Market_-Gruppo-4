@@ -392,4 +392,26 @@ public class SchedaDAOImpl implements SchedaDAO {
 		return punti;
 	}
 
+	//String updateTableSQL = "update scheda set massimale_res='"+s.getMassimale_res()+"' where idscheda='"+s.getIdScheda()+"'   ";
+
+
+	@Override
+	public void UpdateMassimaleResiduo(Scheda card) throws SQLException {
+		// TODO Auto-generated method stub
+
+
+		Statement s = DBUtility.getStatement();
+		String updateQuery =  "update scheda set massimale_res='"+card.getMassimale_res()+"' where idscheda='"+card.getIdScheda()+"' ";
+		try {
+
+			int n = s.executeUpdate(updateQuery);
+		}
+
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 }

@@ -3,7 +3,9 @@ package it.uniclam.GUI;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+
 import java.awt.Color;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -11,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import it.uniclam.Controller.ControllerSpesa;
+import it.uniclam.entity.Scheda;
 
 import java.awt.Font;
 import java.awt.Image;
@@ -139,7 +142,12 @@ public class Riepilogo_GUI extends JFrame{
 			public void actionPerformed(ActionEvent e) {
  
 			int punti_totali=ControllerSpesa.CalcoloPuntiTotali(s, idspesa, punti_spesa);
-			JOptionPane.showMessageDialog(null,"Punti Spesa Aggiornati "+punti_totali);
+			int idscheda;
+ 
+			ControllerSpesa.updateMassimale_totale(s, idspesa, tot);
+			//aggiorno massimale totale
+			JOptionPane.showMessageDialog(null,"Punti Spesa Aggiornati "+punti_totali
+					+"\nMassimale Residuo e' di : € "+tot);
 			System.exit(0);
 			}
 		});

@@ -38,6 +38,17 @@ public class Scheda {
 		this.massimale_res = massimale_res;
 	}
 
+	/**
+	 * Costruttore per id scheda e massimale residuo
+	 * @param idScheda
+	 * @param massimale_res
+	 */
+	public Scheda(int idScheda, double massimale_res) {
+		super();
+		this.idScheda = idScheda;
+		this.massimale_res = massimale_res;
+	}
+
 	private double punti_totali;
 	private double massimale_res;
 

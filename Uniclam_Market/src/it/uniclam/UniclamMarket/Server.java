@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
  *
  */
 public class Server {
+	public static   String UPDATE_MASSIMALE_RESIDUO = "req_massimale_residuo_aggiornato";
 
 	public  static   String POINTS_UPDATED = "RES_points_updated";
 	public static  String UPDATE_POINTS = "req_update_points";
@@ -56,6 +57,7 @@ public class Server {
 	public static String SPESA_CANCELLATA = "RES_spesa_cancellata";
 	public static String PIN_RECOVERED = "RES_pin_recovered";
 	public static String SPESA_CREATA = "RES_spesa_creata";
+	public static   String MASSIMALE_RESIDUO_UPDATED="RES_massimale_residuo_updated";
 
 	public static String HOST = "localhost";
 	public static int port = 8888;
@@ -338,6 +340,25 @@ public class Server {
 
 					String response=Server.POINTS_UPDATED+"/"+punti_spesa;
 					out.println(response);
+				}
+ 
+				//	SpesaDAOImpl.getInstance().AggiornaMassimaleResiduo(idscheda)
+					
+	else if(operation.contentEquals(Server.UPDATE_MASSIMALE_RESIDUO)){
+					
+					int idspesa=Integer.parseInt(parts[1]);
+ 					int idscheda=SpesaDAOImpl.getInstance().getIdScheda(idspesa);
+					
+ 					double upd_massres=Double.parseDouble(parts[2]);
+ 					
+					Scheda card =new Scheda (idscheda,upd_massres);
+ 					
+ 					SchedaDAOImpl.getInstance().UpdateMassimaleResiduo(card);
+ 						
+ 						String response=Server.MASSIMALE_RESIDUO_UPDATED;
+ 						out.println(response);
+ 				
+ 					
 				}
 
 				else if (operation.equals("logout")) {
