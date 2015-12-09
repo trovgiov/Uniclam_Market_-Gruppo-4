@@ -220,7 +220,7 @@ public class PersonalPage_GUI extends JFrame {
 				// TODO Auto-generated method stub
 
 				Controller_PersonalPage.effettuaspesa(s, scheda, mass_res);
-				
+				PersonalPage_GUI.this.setVisible(false);
 			}
 		});
 
