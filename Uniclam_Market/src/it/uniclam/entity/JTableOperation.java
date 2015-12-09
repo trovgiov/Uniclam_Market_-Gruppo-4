@@ -20,7 +20,7 @@ public class JTableOperation {
 
 		DefaultTableModel dm = new DefaultTableModel();
 
-		dm.addColumn("Barcode");
+		dm.addColumn("Prodotto");
 		dm.addColumn("Prezzo");
 		dm.addColumn("Quantita");
 

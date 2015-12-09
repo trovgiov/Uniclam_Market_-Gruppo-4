@@ -28,6 +28,8 @@ import javax.swing.JRadioButton;
 import javax.swing.border.BevelBorder;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
@@ -69,7 +71,7 @@ public class Spesa_GUI extends JFrame {
 		this.idspesa = id;
 		this.s = s;
 		this.mass_residuo = mass_res;
-		
+
 		initialize();
 	}
 
@@ -79,58 +81,52 @@ public class Spesa_GUI extends JFrame {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	
+	Icon error = new ImageIcon ("img/error.png");
+	Icon scary = new ImageIcon("img/scary.png");
 	private void initialize() {
 		this.setTitle("UNICLAM MARKET - Effettua la tua spesa");
 		this.getContentPane().setBackground(new Color(102, 0, 0));
-		this.setBounds(100, 100, 852, 720);
+		this.setBounds(100, 100, 851, 910);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		JTextPane txtpnBenvenutoNelNostro = new JTextPane();
-		txtpnBenvenutoNelNostro.setBounds(34, 6, 812, 48);
-		txtpnBenvenutoNelNostro.setForeground(new Color(255, 255, 255));
-		txtpnBenvenutoNelNostro.setBackground(new Color(102, 0, 0));
-		txtpnBenvenutoNelNostro.setToolTipText("\\");
-		txtpnBenvenutoNelNostro.setEditable(false);
-		txtpnBenvenutoNelNostro
-				.setFont(new Font("Lucida Grande", Font.BOLD, 13));
-		txtpnBenvenutoNelNostro
-				.setText("Benvenuto nel nostro supermercato!\nPuoi aggiungere i prodotti che vuoi al carrello, utilizzando il lettore di codice a barre prelevato dalla sua base di carica. ");
-		this.getContentPane().add(txtpnBenvenutoNelNostro);
-
 		JLabel lblProdotto = new JLabel("Prodotto:");
-		lblProdotto.setBounds(88, 86, 72, 16);
+		lblProdotto.setBounds(166, 196, 72, 16);
 		lblProdotto.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		lblProdotto.setForeground(new Color(255, 255, 255));
 		lblProdotto.setHorizontalAlignment(SwingConstants.CENTER);
 		this.getContentPane().add(lblProdotto);
 
 		textBarcode = new JTextField();
-		textBarcode.setBounds(186, 80, 186, 28);
+		textBarcode.setBounds(264, 190, 186, 28);
 		textBarcode.setBackground(Color.LIGHT_GRAY);
 		this.getContentPane().add(textBarcode);
 		textBarcode.setColumns(10);
 
 		JLabel lblQuantit = new JLabel("Quantità: ");
-		lblQuantit.setBounds(471, 86, 72, 16);
+		lblQuantit.setBounds(510, 196, 72, 16);
 		lblQuantit.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		lblQuantit.setHorizontalAlignment(SwingConstants.CENTER);
 		lblQuantit.setForeground(Color.WHITE);
 		this.getContentPane().add(lblQuantit);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(6, 55, 840, 12);
+		separator.setBounds(6, 131, 840, 12);
 		this.getContentPane().add(separator);
 
+		Icon add_cart = new ImageIcon("img/add_cart.png");
 		JButton btnAggiungiAlCarrello = new JButton("Aggiungi al Carrello");
-		btnAggiungiAlCarrello.setBounds(48, 156, 186, 24);
+		btnAggiungiAlCarrello.setIcon(add_cart);
+		btnAggiungiAlCarrello.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 13));
+		btnAggiungiAlCarrello.setBounds(34, 246, 217, 58);
 		getContentPane().add(btnAggiungiAlCarrello);
 
 		JLabel lbl_importofinale = new JLabel("");
 		lbl_importofinale.setFont(new Font("Lucida Grande", Font.BOLD
 				| Font.ITALIC, 15));
 		lbl_importofinale.setForeground(new Color(255, 255, 51));
-		lbl_importofinale.setBounds(552, 530, 93, 16);
+		lbl_importofinale.setBounds(475, 669, 93, 16);
 		getContentPane().add(lbl_importofinale);
 
 		btnAggiungiAlCarrello.addActionListener(new ActionListener() {
@@ -150,8 +146,11 @@ public class Spesa_GUI extends JFrame {
 			}
 		});
 
+		Icon delete_prod = new ImageIcon("img/delete_prod.png");
 		JButton btnEliminaProdotto = new JButton("Elimina Prodotto");
-		btnEliminaProdotto.setBounds(619, 154, 186, 28);
+		btnEliminaProdotto.setIcon(delete_prod);
+		btnEliminaProdotto.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 13));
+		btnEliminaProdotto.setBounds(603, 246, 217, 58);
 		getContentPane().add(btnEliminaProdotto);
 
 		btnEliminaProdotto.addActionListener(new ActionListener() {
@@ -168,78 +167,96 @@ public class Spesa_GUI extends JFrame {
 
 		JLabel lblIdSpesa = new JLabel(
 				"La sua spesa è registrata con il codice : ");
-		lblIdSpesa.setBounds(88, 128, 269, 16);
+		lblIdSpesa.setBounds(6, 147, 269, 16);
 		lblIdSpesa.setFont(new Font("Lucida Grande", Font.ITALIC, 13));
 		lblIdSpesa.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIdSpesa.setForeground(Color.WHITE);
 		getContentPane().add(lblIdSpesa);
 
 		JLabel lblsetIDspesa = new JLabel("");
-		lblsetIDspesa.setBounds(369, 128, 61, 16);
+		lblsetIDspesa.setBounds(287, 147, 61, 16);
 		lblsetIDspesa.setForeground(new Color(255, 255, 255));
 		lblsetIDspesa.setText("" + getIdspesa());
 		getContentPane().add(lblsetIDspesa);
 
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(6, 558, 840, 12);
+		separator_1.setBounds(6, 706, 840, 12);
 		getContentPane().add(separator_1);
 
-		JButton btnAvanti = new JButton("Avanti >");
+		Icon next = new ImageIcon("img/next.png");
+		JButton btnAvanti = new JButton("Avanti");
+		btnAvanti.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		btnAvanti.setIcon(next);
 		btnAvanti.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnAvanti.setBounds(384, 582, 166, 47);
+		btnAvanti.setBounds(420, 724, 166, 58);
 		getContentPane().add(btnAvanti);
 
+		Icon exit = new ImageIcon("img/exit_ico.png");
 		JButton btnEsci = new JButton("Annulla ed esci");
-		btnEsci.setBounds(206, 582, 166, 47);
+		btnEsci.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		btnEsci.setIcon(exit);
+		btnEsci.setBounds(221, 725, 166, 58);
 		getContentPane().add(btnEsci);
 
-		JLabel lblVer = new JLabel(
-				"Ver. 1.0 - © Tutti i diritti riservati - Developed by Giovanni Trovini ed Enea Marinelli");
-		lblVer.setBounds(174, 663, 450, 16);
+		JLabel lblVer = new JLabel("Ver. 1.0 - © Tutti i diritti riservati - Developed by Giovanni Trovini ed Enea Marinelli");
+		lblVer.setBounds(206, 798, 450, 16);
 		lblVer.setHorizontalAlignment(SwingConstants.CENTER);
 		lblVer.setForeground(SystemColor.scrollbar);
 		lblVer.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		this.getContentPane().add(lblVer);
 
 		textQuantità = new JTextField("1");
-		textQuantità.setBounds(555, 80, 72, 28);
+		textQuantità.setBounds(594, 190, 72, 28);
 		getContentPane().add(textQuantità);
 		textQuantità.setColumns(10);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(30, 193, 789, 293);
+		scrollPane.setBounds(34, 326, 789, 293);
 		getContentPane().add(scrollPane);
 
 		table = new JTable();
 		scrollPane.setViewportView(table);
 
-		JLabel lblNewLabel = new JLabel("IMPORTO FINALE :       €");
+		JLabel lblNewLabel = new JLabel("IMPORTO FINALE : €");
 		lblNewLabel.setForeground(new Color(255, 255, 51));
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC,
 				15));
-		lblNewLabel.setBounds(340, 531, 186, 16);
+		lblNewLabel.setBounds(306, 669, 186, 16);
 		getContentPane().add(lblNewLabel);
 
+		Icon plus = new ImageIcon("img/quantity.png");
 		JButton btnModificaQuantit = new JButton("Modifica quantità");
-		btnModificaQuantit.setBounds(346, 154, 186, 28);
+		btnModificaQuantit.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 13));
+		btnModificaQuantit.setIcon(plus);
+		btnModificaQuantit.setBounds(318, 246, 217, 58);
 		getContentPane().add(btnModificaQuantit);
 
 		JLabel lblMassimaleResiduo = new JLabel("MASSIMALE RESIDUO : €");
 		lblMassimaleResiduo.setForeground(new Color(255, 255, 0));
 		lblMassimaleResiduo.setFont(new Font("Lucida Grande", Font.BOLD
 				| Font.ITALIC, 15));
-		lblMassimaleResiduo.setBounds(313, 503, 196, 16);
+		lblMassimaleResiduo.setBounds(294, 639, 196, 16);
 		getContentPane().add(lblMassimaleResiduo);
 
 		JLabel lbl_masRes = new JLabel("" + mass_residuo);
 		lbl_masRes.setForeground(new Color(255, 255, 51));
 		lbl_masRes.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC,
 				15));
-		lbl_masRes.setBounds(519, 502, 93, 16);
+		lbl_masRes.setBounds(500, 638, 93, 16);
 		getContentPane().add(lbl_masRes);
+
+		Icon header_spesa = new ImageIcon ("img/header_spesa.png");
+		JLabel label = new JLabel(header_spesa);
+		label.setBounds(6, 6, 840, 138);
+		getContentPane().add(label);
+
+		Icon products = new ImageIcon ("img/barcode.png");
+		JLabel label_1 = new JLabel(products);
+		label_1.setBounds(102, 176, 61, 58);
+		getContentPane().add(label_1);
 
 		btnModificaQuantit.addActionListener(new ActionListener() {
 
@@ -260,27 +277,32 @@ public class Spesa_GUI extends JFrame {
 
 		//Pulsante Avanti
 		btnAvanti.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			 
- 				
-				
+
+
+
 				if(importo_finale<=mass_residuo){
 					Riepilogo_GUI windows=new Riepilogo_GUI(idspesa, s, mass_residuo, importo_finale);
-                    windows.setVisible(true);
-			
-			 
+					windows.setVisible(true);
+
+
+
+				}
+
+				else {
+					
+					JOptionPane.showMessageDialog(null,
+							"ATTENZIONE! Il tuo massimale non ti permette di effettuare una spesa del genere! "
+							+ "\nRimuovi qualche prodotto dal carrello",
+							"Errore Massimale", JOptionPane.INFORMATION_MESSAGE, error);
 					
 				}
-			
-				else {
-					JOptionPane.showMessageDialog(null, "Errore massimale");
-				}
-				
-				
-				
-		 
+
+
+
+
 			}});
 
 		// Pulsante Annulla ed Esci
@@ -288,23 +310,24 @@ public class Spesa_GUI extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 
-				int scelta = JOptionPane.showConfirmDialog(Spesa_GUI.this,
-						"Sei di voler annullare la spesa e uscire?", "",
-						JOptionPane.YES_NO_OPTION);
+				int scelta = JOptionPane.showConfirmDialog(Spesa_GUI.this, "Sei di voler annullare la spesa e uscire?", "Conferma uscita",
+						JOptionPane.YES_NO_OPTION, JOptionPane.YES_OPTION, scary);
+				
 				switch (scelta) {
 				case JOptionPane.YES_OPTION: {
 					try {
-						JOptionPane.showMessageDialog(null,
-								"Il suo massimale residuo e' " + mass_residuo);
+						/*JOptionPane.showMessageDialog(null,
+								"Il suo massimale residuo e' " + mass_residuo);*/
 
 						ControllerSpesa.cancellaSpesa(s, idspesa);
+						System.exit(0);
 						// PersonalPage_GUI = new Per
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
-					break;
+				break;
 
 				case JOptionPane.NO_OPTION:
 					break;
@@ -312,7 +335,7 @@ public class Spesa_GUI extends JFrame {
 				}
 			}
 		});
-		
+
 
 	}
 
