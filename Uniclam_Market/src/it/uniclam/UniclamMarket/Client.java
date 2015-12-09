@@ -47,6 +47,7 @@ public class Client extends JFrame {
 
 	}
 
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */

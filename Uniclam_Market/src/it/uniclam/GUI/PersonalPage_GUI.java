@@ -37,24 +37,13 @@ import javax.swing.JTextField;
 
 public class PersonalPage_GUI extends JFrame {
 
-	private JFrame frame;
-	private int scheda;
+ 	private int scheda;
 	private int pin;
 	private String nome;
 	private String cognome;
 	private String email;
  	Socket s;
- 	Icon card_icon = new ImageIcon("img/card.png");
- 	Icon spesa = new ImageIcon("img/cart.png");
- 	Icon settings = new ImageIcon("img/settings.png");
- 	Icon delete = new ImageIcon("img/trash.png");
- 	Icon exit = new ImageIcon("img/exit.png");
- 	Icon pers_icon = new ImageIcon("img/personal_area.png");
- 	Icon money_icon = new ImageIcon("img/money.png");
- 	Icon scary = new ImageIcon("img/scary.png");
- 	Icon sad = new ImageIcon("img/sad.png");
- 	Icon email_icon = new ImageIcon("img/email.png");
- 	
+  
 	private double mass_res = 0;
 
 	/**
@@ -74,61 +63,18 @@ public class PersonalPage_GUI extends JFrame {
 
 	}
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getCognome() {
-		return cognome;
-	}
-
-	public void setCognome(String cognome) {
-		this.cognome = cognome;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public double getMass_res() {
-		return mass_res;
-	}
-
-	public void setMass_res(double mass_res) {
-		this.mass_res = mass_res;
-	}
-
-	public Socket getS() {
-		return s;
-	}
-
-	public void setS(Socket s) {
-		this.s = s;
-	}
-
-	public int getScheda() {
-		return scheda;
-	}
-
-	public void setScheda(int scheda) {
-		this.scheda = scheda;
-	}
-
-	public int getPin() {
-		return pin;
-	}
-
-	public void setPin(int pin) {
-		this.pin = pin;
-	}
+	// Icone 
+	Icon card_icon = new ImageIcon("img/card.png");
+ 	Icon spesa = new ImageIcon("img/cart.png");
+ 	Icon settings = new ImageIcon("img/settings.png");
+ 	Icon delete = new ImageIcon("img/trash.png");
+ 	Icon exit = new ImageIcon("img/exit.png");
+ 	Icon pers_icon = new ImageIcon("img/personal_area.png");
+ 	Icon money_icon = new ImageIcon("img/money.png");
+ 	Icon scary = new ImageIcon("img/scary.png");
+ 	Icon sad = new ImageIcon("img/sad.png");
+ 	Icon email_icon = new ImageIcon("img/email.png");
+ 	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -170,6 +116,8 @@ public class PersonalPage_GUI extends JFrame {
 		lblIlMassimaleResiduo.setBounds(142, 187, 250, 17);
 		this.getContentPane().add(lblIlMassimaleResiduo);
 
+		
+		
 		
 		JButton btnCambiaEmail = new JButton("Cambia la tua email di accesso");
 		btnCambiaEmail.setFont(new Font("Lucida Grande", Font.BOLD, 11));
