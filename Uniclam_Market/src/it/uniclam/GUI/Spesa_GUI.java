@@ -1,12 +1,12 @@
 package it.uniclam.GUI;
 
- 
+
 import javax.swing.JFrame;
 
 import java.awt.Color;
 
 import javax.swing.JLabel;
- 
+
 
 
 import java.awt.Font;
@@ -21,7 +21,7 @@ import javax.swing.JSeparator;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
- 
+
 
 
 import it.uniclam.Controller.ControllerSpesa;
@@ -38,11 +38,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.awt.event.ActionEvent;
 
- /**
-  * Interfaccia grafica Spesa
-   * @author GiovanniTrovini Enea Marinelli
-  *
-  */
+/**
+ * Interfaccia grafica Spesa
+ * @author GiovanniTrovini Enea Marinelli
+ *
+ */
 @SuppressWarnings("serial")
 public class Spesa_GUI extends JFrame {
 
@@ -59,7 +59,7 @@ public class Spesa_GUI extends JFrame {
 	 */
 
 
- 
+
 
 	public static BufferedReader in;
 
@@ -133,7 +133,7 @@ public class Spesa_GUI extends JFrame {
 		btnEliminaProdotto.setBounds(603, 246, 217, 58);
 		getContentPane().add(btnEliminaProdotto);
 
-		 
+
 
 		JLabel lblIdSpesa = new JLabel(
 				"La sua spesa è registrata con il codice : ");
@@ -242,7 +242,7 @@ public class Spesa_GUI extends JFrame {
 				//Creo Carrello con barcode e quantita
 				Carrello c=new Carrello(barcode, Integer.parseInt(quantita));
 
- 
+
 				ControllerSpesa.AddProduct(s,
 						c,shop , table);
 				lbl_importofinale.setText("" + shop.getImporto_tot());
@@ -250,14 +250,14 @@ public class Spesa_GUI extends JFrame {
 			}
 		});
 
-		
+
 		btnEliminaProdotto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				String barcode = textBarcode.getText();
 
 				Carrello c=new Carrello (barcode);
-				 ControllerSpesa.DeleteProduct(s, c,
+				ControllerSpesa.DeleteProduct(s, c,
 						shop, table);
 
 				lbl_importofinale.setText("" + shop.getImporto_tot());
@@ -273,8 +273,8 @@ public class Spesa_GUI extends JFrame {
 				String quantita = textQuantità.getText();
 
 				Carrello c=new Carrello(barcode,Integer.parseInt(quantita));
-				
-				 ControllerSpesa.UpdateProduct(s,c, shop, table);
+
+				ControllerSpesa.UpdateProduct(s,c, shop, table);
 				lbl_importofinale.setText("" + shop.getImporto_tot());
 
 			}
@@ -290,10 +290,11 @@ public class Spesa_GUI extends JFrame {
 
 
 				if(shop.getImporto_tot()<=card.getMassimale_res()){
+
+					Spesa_GUI.this.setVisible(false);
 					Riepilogo_GUI windows=new Riepilogo_GUI(s,card,shop);
 					windows.setVisible(true);
-
-
+ 
 
 				}
 

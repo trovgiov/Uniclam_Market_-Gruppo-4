@@ -215,8 +215,7 @@ public class PersonalPage_GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				Controller_PersonalPage.effettuaspesa(s,card);
-				PersonalPage_GUI.this.setVisible(false);
-			}
+ 			}
 		});
 
 		// Pulsante di uscita ok

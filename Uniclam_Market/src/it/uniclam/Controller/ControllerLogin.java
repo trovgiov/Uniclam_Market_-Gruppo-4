@@ -70,11 +70,11 @@ public class ControllerLogin {
 
 					card.setMassimale_res(mas_res);
 					Utente u=new Utente(parts[2],parts[3],parts[4]);
-					 
+
 
 					PersonalPage_GUI personalwindow = new PersonalPage_GUI(
 							s,card,u);
-							
+
 					personalwindow.setVisible(true);
 
 
@@ -144,14 +144,14 @@ public class ControllerLogin {
 
 
 	}
-	
-	
+
+
 	// Da Fare
 	public static void logout(Socket s) throws IOException{
-		
-		
+
+
 		//Preparo la richiesta da inviare al server
-		String req = Server.LOGOUT;;
+		String req = Server.LOGOUT;
 
 		System.out.println(req);
 
@@ -166,14 +166,14 @@ public class ControllerLogin {
 
 		String line = Login_GUI.in.readLine();
 		if(line.contentEquals(Server.LOGOUT_OK)){
-			
-			
-			
+
+
+
 			s.close();
-  System.out.println("Socket Closed");			
+			System.out.println("Socket Closed");			
 		}
-		
+
 	}
-	
-	
+
+
 }

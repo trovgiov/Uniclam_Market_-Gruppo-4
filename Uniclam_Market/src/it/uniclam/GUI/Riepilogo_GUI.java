@@ -176,7 +176,9 @@ public class Riepilogo_GUI extends JFrame{
 						"Spesa inoltrata correttamente." + "\nIl tuo massimale residuo è ora: € " + card.getMassimale_res() + 
 						"\nCon questa spesa hai in totale "+card.getPunti_totali() +" punti. \nGrazie per aver scelto Uniclam Market!",
 						"Esito Spesa", JOptionPane.INFORMATION_MESSAGE, confirm);
-
+				
+				Riepilogo_GUI.this.setVisible(false);
+  
 			}
 		});
 
