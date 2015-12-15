@@ -38,6 +38,14 @@ public class Spesa {
 		this.data_spesa = data_spesa;
 	}
 
+	public Spesa(int idspesa) {
+		this.idspesa=idspesa;
+	}
+
+	public Spesa() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getIdspesa() {
 		return idspesa;
 	}

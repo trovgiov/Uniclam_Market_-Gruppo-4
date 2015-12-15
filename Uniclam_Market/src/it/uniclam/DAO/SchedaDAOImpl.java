@@ -1,11 +1,9 @@
 package it.uniclam.DAO;
 
-import it.uniclam.GUI.Login_GUI;
-import it.uniclam.db.DBUtility;
+ import it.uniclam.db.DBUtility;
 import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Utente;
-import it.uniclam.mail.EmailUtility;
-import it.uniclam.mail.SendEmail;
+ import it.uniclam.mail.SendEmail;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -20,6 +18,12 @@ import javax.swing.JOptionPane;
 
 import com.mysql.jdbc.Connection;
 
+
+/**
+ * Implementazione metodi interfaccia SchedaDAO
+ * @author Giovanni Trovini
+ *
+ */
 public class SchedaDAOImpl implements SchedaDAO {
 
 	private SchedaDAOImpl() {
@@ -34,8 +38,17 @@ public class SchedaDAOImpl implements SchedaDAO {
 		return dao;
 	}
 
+	
+	/**
+	 * Si occupa di attivare la tessera fedelta' e inserire i dati nel database.
+	 * 
+	 * @param s
+	 * @param u
+	 * @throws SQLException
+	 */
+	 
 	@Override
-	public void activeCard(Scheda s, String email_Utente) throws SQLException {
+	public void activeCard(Scheda s, Utente u) throws SQLException {
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
@@ -53,17 +66,17 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 			preparedStatement.setDouble(2, s.getMassimale_res());
 
-			preparedStatement.setString(3, email_Utente);
+			preparedStatement.setString(3, u.getEmail());
 
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();
 
-			System.out.println("Inserimento Effettuato");
+			System.out.println("Scheda attivata");
 
 		} catch (SQLException e) {
 
 			System.out.println(e.getMessage());
-
+			throw e; 
 		} finally {
 
 			if (preparedStatement != null) {
@@ -78,22 +91,31 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 	}
 
-	@SuppressWarnings("resource")
+	/**
+	 * Metodo per generare id scheda e pin. Il pin a 4 cifre viene generato casualmente con la funzione random.
+	 * @param u Utente
+	 * @return pin Restituisce il pin univoco appartenente all'utente che ha effettuato la registrazione
+	 * 
+	 *  @throws SQLException
+	 */
+
 	@Override
-	public int[] generatePin(String mail) throws SQLException {
-		// TODO Auto-generated method stub
+	public int[] generatePin(Utente u) throws SQLException {
+
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
-		// Seleziono l'id scheda corrispondente alla mail in ingresso
+		// Seleziono l'id scheda corrispondente alla mail dell'utente in ingresso
 
 		java.sql.Statement s = DBUtility.getStatement();
 		int idScheda = 0;
-		String sql = " Select idScheda from scheda where utente_email='" + mail
+		String sql = " Select idScheda from scheda where utente_email='" + u.getEmail()
 				+ "'  ";
 
 		try {
 			ResultSet rs = s.executeQuery(sql);
+
+			//Assegno alla variabile id scheda, il relativo valore prelevato dal database	
 
 			while (rs.next()) {
 				idScheda = rs.getInt("idScheda");
@@ -101,23 +123,14 @@ public class SchedaDAOImpl implements SchedaDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println(e.getMessage());
+
+			throw e;
 		}
 
-		finally {
 
-			if (s != null) {
-				s.close();
-			}
-
-			if (dbConnection != null) {
-				dbConnection.close();
-			}
-
-		}
-
-		// Crea Pin
+		// Crea Pin con la funzione random
 		Random random = new Random();
 		int j = 3000;
 		int n = 7000 - j;
@@ -125,26 +138,29 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 		String insertTableSQL = "insert into login (pin,scheda_idScheda) VALUES (?,?)";
 
+
+		Connection dbConnection2 = null;
+		java.sql.PreparedStatement preparedStatement2 = null;
+
+
 		try {
-			dbConnection = DBUtility.getDBConnection();
+			dbConnection2 = DBUtility.getDBConnection();
 
-			preparedStatement = dbConnection.prepareStatement(insertTableSQL);
+			preparedStatement2 = dbConnection2.prepareStatement(insertTableSQL);
 
-			preparedStatement.setInt(1, pin);
+			preparedStatement2.setInt(1, pin);
 
-			preparedStatement.setInt(2, idScheda);
+			preparedStatement2.setInt(2, idScheda);
 
 			// execute insert SQL stetement
-			preparedStatement.executeUpdate();
+			preparedStatement2.executeUpdate();
 
 			System.out.println("Inserimento Effettuato");
-			// Utente a = null;
-			// System.out.println(a.getEmail());
 
 		} catch (SQLException e) {
 
 			System.out.println(e.getMessage());
-
+			throw e;
 		} finally {
 
 			if (preparedStatement != null) {
@@ -155,17 +171,42 @@ public class SchedaDAOImpl implements SchedaDAO {
 				dbConnection.close();
 			}
 
+			if (dbConnection2 != null) {
+				dbConnection2.close();
+			}
+
+			if (preparedStatement2 != null) {
+				preparedStatement2.close();
+			}
+
+
+			if (s != null) {
+				s.close();
+			}
+
+
+
 		}
+
+		// creo l'array finale
 		int[] a = { idScheda, pin };
 
 		return a;
 
 	}
+ 
 
-	// Funziona Extra per il recupero pin
+	/**
+	 * Metodo che fornisce una funzione aggiuntiva al progetto.
+	 * Consente di recuperare i dati di accesso al sistema, tramite l'invio di una mail all'indirizzo specificato in fase di registrazione.
+	 * @param u Utente
 
+	 * @throws SQLException
+	 */
+	
 	@Override
-	public void recovery_pin(String email) throws SQLException,
+	public void recovery_pin(Utente u) throws SQLException,
+
 	AddressException, MessagingException {
 
 		int pin = 0;
@@ -174,7 +215,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 		// Controllo se l'email è presente nel db
 
 		java.sql.Statement s = DBUtility.getStatement();
-		String sql = " Select email from utente where email='" + email + "'  ";
+		String sql = " Select email from utente where email='" + u.getEmail() + "'  ";
 
 		try {
 			ResultSet rs = s.executeQuery(sql);
@@ -185,7 +226,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 				java.sql.Statement s1 = DBUtility.getStatement();
 				String sql2 = "select pin,scheda_idScheda from utente u ,scheda s ,login l where u.email='"
-						+ email
+						+ u.getEmail()
 						+ "' and u.email=s.utente_email and s.idscheda=l.scheda_idscheda";
 
 				ResultSet rs2 = s1.executeQuery(sql2);
@@ -197,7 +238,8 @@ public class SchedaDAOImpl implements SchedaDAO {
 				}
 				rs2.close();
 
-				SendEmail.Email_Recovery(idscheda, pin, email);
+
+				SendEmail.Email_Recovery(idscheda, pin, u.getEmail());
 
 			} else {
 				JOptionPane.showMessageDialog(null,
@@ -207,6 +249,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw e ;
 		}
 
 		finally {
@@ -219,22 +262,37 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 	}
 
+	/**
+	 * Metodo che si occupa di controllare e resituire il massimale. Il controllo avviene secondo le caratteristiche progettuali
+	 * Se il mese, in cui l'utente accede al sistema, corrisponde al mese dell'ultima spesa effetuato, il sistema restituisce il massimale reiduo.
+	 * Se il mese, in cui l'utente accede al sistema, corrisponde a un mese diverso dall'ultima spesa, il sistema resetta il massimale residuo a quello totale.
+	 * @param card Scheda
+	 * @return Restituisce il massimale 
+	 * @throws SQLException
+	 */
+
+	@SuppressWarnings("unused")
 	@Override
-	public double checkMassimale(int idscheda) throws SQLException {
+	public double checkMassimale(Scheda card) throws SQLException {
+
 		double massimale_residuo = 0;
 		double massimale_totale=0;
 		int month_spesa=0;
 		int month_today=0;
 
-		Date data_spesaSQL=null;                     //  DATA SPESA SQL
-		java.util.Date today = new java.util.Date(); //DATA DI OGGI	IN JAVA UTIL
+		//  DATA SPESA SQL
+
+		Date data_spesaSQL=null;         
+
+		//DATA DI OGGI	IN JAVA UTIL
+		java.util.Date today = new java.util.Date();  
 
 		java.sql.Statement s = DBUtility.getStatement();
 		java.sql.Statement s1 = DBUtility.getStatement();
 		java.sql.Statement s2 = DBUtility.getStatement();
 
-
-		String sql = " select s.massimale_res, u.massimale_tot from scheda s, utente u where s.idScheda = '"+idscheda+"' and s.utente_email = u.email";
+		// query che seleziona il massimale residuo e quello totale, accedendo alle rispettive tabelle Scheda & Utente
+		String sql = " select s.massimale_res, u.massimale_tot from scheda s, utente u where s.idScheda = '"+card.getIdScheda()+"' and s.utente_email = u.email";
 		try {
 
 			ResultSet rs = s.executeQuery(sql);
@@ -248,12 +306,17 @@ public class SchedaDAOImpl implements SchedaDAO {
 			System.out.println("Massimale tot "+massimale_totale+" Massimale residuo : "+massimale_residuo);
 
 
-			String sql1 = " select data_spesa from spesa where scheda_idscheda= '"+idscheda+"' ORDER BY data_spesa DESC ";
+			// Query che seleziona tutte le date delle spese effettuate,relative all'id scheda corrispondente.
+			// Le date vengono inserite in un arrayList
 
+			String sql1 = " select data_spesa from spesa where scheda_idscheda= '"+card.getIdScheda()+"' ORDER BY data_spesa DESC ";
+
+			//Inizializzo l'arrayList<Date>
 			ArrayList<Date> dataspesa = new ArrayList<Date>();
 
 
 			ResultSet rs1 = s1.executeQuery(sql1);
+
 
 			while (rs1.next()) {
 
@@ -263,8 +326,10 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 			}
 
+			//Ho l'arrayList riempito
 
-			//caso in cui l'utente non ha mai fatto la spesa. size arrayList delle date è 0
+			//CASO IN CUI L'UTENTE NON HA MAI FATTO NESSUNA SPESA. ARRAYLIST<DATE>=0
+
 			if(dataspesa.size()==0){
 
 				System.out.println("\n Nessuna data nel db.INIZIALIZZO MASSIMALE RESIDUO A QUELLO TOTALE");
@@ -284,24 +349,29 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 			}
 
+			//CASO IN CUI L'UTENTE HA GIA' FATTO PRECEDENTI SPESE
 
-			// prendo il primo record della tabella : equivale alla data dell'ultima spesa
+
+			// prendo il primo record delL'ArrayList : equivale alla data dell'ultima spesa
+
 			Date data_ultimaSpesaSQL = dataspesa.get(0);
 			System.out.println("data ultima spesa : "+data_ultimaSpesaSQL);
 
-			// ho la data spesa nel formato java util
+			// Cast DataSQL a Date (java.util.date)
 
 			java.util.Date data_Spesa = new java.util.Date(data_ultimaSpesaSQL.getTime());
 
-			month_spesa = data_Spesa.getMonth(); // prendo il mese della data spesa
-			month_today= today.getMonth();      // prendo il mese della data odierna
+			// prendo il mese della data spesa
+			month_spesa = data_Spesa.getMonth();  
+			// prendo il mese della data odierna
+			month_today= today.getMonth();       
+
 
 			if(month_spesa>month_today || month_spesa<month_today){
 
 				massimale_residuo=massimale_totale;
 
-				// ' " ' "
-				String updateTableSQL = "update scheda set massimale_res = '"+massimale_residuo+"' where idscheda='"+idscheda+"'";
+				String updateTableSQL = "update scheda set massimale_res = '"+massimale_residuo+"' where idscheda='"+card.getIdScheda()+"'";
 
 				int n = s2.executeUpdate(updateTableSQL);
 
@@ -314,6 +384,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw e;
 		} finally {
 
 			if (s != null) {
@@ -336,13 +407,19 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 
 
+	/**
+	 * Metodo che restituisce l'utente (informazioni personali) che ha effettuato il login 
+	 * @param card Scheda
+	 * @return Utente
+	 *  @throws SQLException
+	 */
+
 	@Override
-	public Utente checkUser(int idScheda) throws SQLException {
-		// TODO Auto-generated method stub
+	public Utente checkUser(Scheda card) throws SQLException {
 		Utente u = null;
 		java.sql.Statement s = DBUtility.getStatement();
 		String sql = "	select u.nome, u.cognome,u.email from utente u,scheda s where idscheda= '"
-				+ idScheda + "' and s.utente_email=u.email";
+				+ card.getIdScheda() + "' and s.utente_email=u.email";
 		try {
 			ResultSet rs = s.executeQuery(sql);
 
@@ -355,21 +432,29 @@ public class SchedaDAOImpl implements SchedaDAO {
 			rs.close();
 			s.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw e;
 		}
 
 		return u;
 
 	}
 
+
 	@Override
-	public int show_points(int idscheda) throws SQLException {
+	/**
+	 * Metodo che seleziona , tramite query, i punti totali a partire dall'id scheda.
+	 * Restituisce i punti totali
+	 * @param card Scheda
+	 * @retrun Punti Acquisiti
+	 *  @throws SQLException
+	 */
+	public double show_points(Scheda card) throws SQLException {
 
 		int punti=0;
 
 		java.sql.Statement s = DBUtility.getStatement();
-		String sql = "select punti_totali from scheda where idscheda= '"+idscheda+"' ";
+		String sql = "select punti_totali from scheda where idscheda= '"+card.getIdScheda()+"' ";
 		try {
 			ResultSet rs = s.executeQuery(sql);
 
@@ -381,8 +466,8 @@ public class SchedaDAOImpl implements SchedaDAO {
 			rs.close();
 			s.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw e;
 		}
 
 
@@ -392,10 +477,16 @@ public class SchedaDAOImpl implements SchedaDAO {
 		return punti;
 	}
 
-	//String updateTableSQL = "update scheda set massimale_res='"+s.getMassimale_res()+"' where idscheda='"+s.getIdScheda()+"'   ";
+
 
 
 	@Override
+
+	/**
+	 * Eseguo l'update del massimale residuo e lo inserisco nel db
+	 * @param card
+	 *  @throws SQLException
+	 */
 	public void UpdateMassimaleResiduo(Scheda card) throws SQLException {
 		// TODO Auto-generated method stub
 
@@ -408,10 +499,13 @@ public class SchedaDAOImpl implements SchedaDAO {
 		}
 
 		catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw e;
+
 		}
 
 	}
+
+
 
 }

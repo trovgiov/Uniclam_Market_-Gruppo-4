@@ -1,5 +1,8 @@
 package it.uniclam.mail;
 
+import it.uniclam.entity.Scheda;
+import it.uniclam.entity.Utente;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
@@ -19,39 +22,41 @@ public class SendEmail {
 	 * @throws MessagingException
 	 */
 	
-	public static void Email_User(String nome,String cognome,String telefono,String email,String cardnumber,String pin) throws AddressException, MessagingException{
+	public static void Email_User(Utente u, Scheda s) throws AddressException, MessagingException{
 		
 		
 		String subject = "Registrazione Sistema Uniclam Market";
 
 		String message2 = "Benvenuto nel nostro sistema, gentile "
-				+ nome
+				+ u.getNome()
 				+ " "
-				+ cognome
+				+ u.getCognome()
 				+ " \n\n"
 				+ "Le comunichiamo che la sua carta fedelta' e' stata attivata !!!"
 				+ " \n\n"
-				+ "Riepilogo Dati: "
+				+ "RIEPILOGO DATI "
 				+ " \n"
 				+ "Dati anagrafici : "
-				+ nome
+				+ u.getNome()
 				+ " "
-				+ cognome
+				+ u.getCognome()
 				+ "\n"
 				+ "telefono : "
-				+ telefono
+				+ u.getTelefono()
 				+ "\n"
 				+ "email : "
-				+ email
+				+ u.getEmail()
 				+ "\n\n"
-				+ "Ecco i suoi dati di accesso da conservare per l'accesso al sistema "
-				+ "\n" + "Numero Carta :  " + cardnumber
-				+ "\nPin: " + pin + ".\n\n"
+				+"Le ricordiamo che il massimale da lei impostato e' di euro :  "+u.getMassimale()
+				+"\n\n\n"
+				+ "Ecco i suoi dati  da conservare per l'accesso al sistema "
+				+ "\n\n" + "Numero Carta :  " + s.getIdScheda()
+				+ "\nPin: " + s.getPin() + "\n\n"
 				+ "Saluti - Uniclam Market ";
 
 		EmailUtility.sendEmail(EmailUtility.HOST,
 				EmailUtility.PASSWORD, EmailUtility.USER,
-				EmailUtility.PASSWORD, email, subject, message2);
+				EmailUtility.PASSWORD, u.getEmail(), subject, message2);
 	}
 	
 	

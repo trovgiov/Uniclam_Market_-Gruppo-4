@@ -14,31 +14,51 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import it.uniclam.GUI.Login_GUI;
-import it.uniclam.GUI.Spesa_GUI;
 import it.uniclam.UniclamMarket.Server;
+import it.uniclam.entity.Carrello;
 import it.uniclam.entity.JTableOperation;
+import it.uniclam.entity.Scheda;
+import it.uniclam.entity.Spesa;
 
+
+/**
+ * Controller  spesa
+ * @author GiovanniTrovini
+ *
+ */
 public class ControllerSpesa {
 
-	private static final int WARNING_MESSAGE = 0;
 	static Icon warning = new ImageIcon("img/error.png");
 	static Icon ok = new ImageIcon("img/happy.png");
 
-	public static void cancellaSpesa(Socket s, int idSpesa) throws IOException {
+
+	/**
+	 * Consente l'annullamento della spesa e la relativa cancellazione nel db.
+	 * @param s Socket
+	 * @param shop Spesa
+	 * @throws IOException
+	 */
+	public static void cancellaSpesa(Socket s,Spesa shop) throws IOException {
 
 		Login_GUI.in = new BufferedReader(new InputStreamReader(
 				s.getInputStream()));
 		Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
 
-		String req = Server.CANCELLA_SPESA + "/" + idSpesa;
+		//Preparo la richiesta da mandare al server
+		String req = Server.DELETE_SHOP+"\n";
+		System.out.println("\n"+req);
+
+		//invio la richiesta
 		Login_GUI.out.println(req);
 
-		String line = Login_GUI.in.readLine();
 
-		if (line.contentEquals(Server.SPESA_CANCELLATA)) {
+		String line = Login_GUI.in.readLine();
+		System.out.println("\n"+line);
+
+
+		if (line.contentEquals(Server.SHOP_DELETED)) {
 
 			JOptionPane.showMessageDialog(null, "Spesa Eliminata dal sistema. Arrivederci!", "Conferma eliminazione", JOptionPane.CLOSED_OPTION, ok);
-			/*JOptionPane.showMessageDialog(null, );*/
 
 		} else {
 			JOptionPane.showMessageDialog(null,
@@ -49,18 +69,16 @@ public class ControllerSpesa {
 	}
 
 	/**
-	 * Metodo che aggiunge il prodotto e restituisce l'importo (costo *
+	 * Aggiunge i prodotti e calcola l'importo totale SUM(costo *
 	 * quantità)
-	 * 
-	 * @param s
-	 * @param barcode
-	 * @param quantita
-	 * @param idspesa
-	 * @param table
-	 * @return
+	 * Ogni prodotto viene inserito nella JTable
+	 * @param s Socket
+	 * @param barcode Codice a barre prodotto
+	 * @param quantita Quantità prodotto
+	 * @param idspesa  Id della spesa
+	 * @param table    JTable
 	 */
-	public static double AddProduct(Socket s, String barcode, String quantita,
-			int idspesa, JTable table) {
+	public static void AddProduct(Socket s,Carrello c , Spesa shop, JTable table) {
 
 		double importo_finale = 0;
 		try {
@@ -68,29 +86,36 @@ public class ControllerSpesa {
 					s.getInputStream()));
 			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
 
-			String response = Server.INSERT_PRODUCTS + "/" + barcode + "/"
-					+ idspesa + "/" + quantita;
+			//Preparo la richiesta da inviare al server
+			String req = Server.INSERT_PRODUCT + "/" + c.getBarcode() + "/"
+					+ c.getQuantita()+"\n";
 
-			Login_GUI.out.println(response);
+			System.out.println("\n"+req);
+
+			//invio la richiesta
+			Login_GUI.out.println(req);
+
 
 			String line = Login_GUI.in.readLine();
+			System.out.println(line);
+
 			String part[] = line.split("/");
 
-			if (part[0].contentEquals("prodotto inserito")) {
+			if (part[0].contentEquals(Server.PRODUCT_INSERTED)) {
 
 				try {
 					DefaultTableModel dm = new JTableOperation()
-							.getData(idspesa);
+					.getData(shop.getIdspesa());
 
-					// dm=SpesaDAOImpl.getInstance().getData(idspesa);
 
 					table.setModel(dm);
 
 					importo_finale = Double.parseDouble(part[1]);
+					shop.setImporto_tot(importo_finale); 
 
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
+
 				}
 			}
 
@@ -105,53 +130,57 @@ public class ControllerSpesa {
 					"Error in communication with server!", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
-		return importo_finale;
+
 
 	}
 
 	/**
-	 * Metodo per eliminare il prodotto dalla lista della spesa. Restitusce
-	 * l'importo finale detratto
+	 * Elimina il prodotto dalla lista della spesa.  
+	 * Calcola l'importo finale detratto.
 	 * 
-	 * @param s
-	 * @param barcode
-	 * @param quantita
-	 * @param idspesa
-	 * @param table
-	 * @return
+	 * @param s Socket
+	 * @param barcode Codice a barre prodotto
+	 * @param quantita Quantità prodotto
+	 * @param idspesa  Id della spesa
+	 * @param table    JTable
+
 	 */
-	public static double DeleteProduct(Socket s, String barcode, int idspesa,
+	public static void DeleteProduct(Socket s, Carrello c, Spesa shop,
 			JTable table) {
-		double importo_finale = 0;
 
 		try {
 			Login_GUI.in = new BufferedReader(new InputStreamReader(
 					s.getInputStream()));
 			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
 
-			String response = Server.DELETE_PRODUCTS + "/" + barcode + "/"
-					+ idspesa;
+			//Preparo la richiesta da inviare al server
+			String response = Server.DELETE_PRODUCT + "/" + c.getBarcode() + "\n";
 
+			System.out.println("\n"+response);
+			//Invio la richiesta al server
 			Login_GUI.out.println(response);
 
 			String line = Login_GUI.in.readLine();
+			System.out.println(line);
+
 			String[] part = line.split("/");
 
-			if (part[0].contentEquals("prodotto eliminato")) {
+			if (part[0].contentEquals(Server.PRODUCT_DELETED)) {
 
 				try {
 					DefaultTableModel dm = new JTableOperation()
-							.getData(idspesa);
+					.getData(shop.getIdspesa());
 
-					// dm=SpesaDAOImpl.getInstance().getData(idspesa);
 
 					table.setModel(dm);
 
-					importo_finale = Double.parseDouble(part[1]);
+					// importo finale = Double.parseDouble(part[1]);
+					shop.setImporto_tot(Double.parseDouble(part[1])); 
+
 
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
+
 				}
 			}
 
@@ -167,38 +196,52 @@ public class ControllerSpesa {
 					JOptionPane.ERROR_MESSAGE);
 		}
 
-		return importo_finale;
 
 	}
 
-	public static double UpdateProduct(Socket s, String barcode,
-			String quantita, int idspesa, JTable table) {
+	/**
+	 *  Aggiorna la quantità del prodotto che si vuole acquistare.
+	 *  Viene aggiornato l'importo finale
+	 * @param s
+	 * @param barcode
+	 * @param quantita
+	 * @param idspesa
+	 * @param table
+	 * @return
 
-		double importo_finale = 0;
+	 */
+	public static void UpdateProduct(Socket s, Carrello c, Spesa shop, JTable table) {
+
 		try {
 			Login_GUI.in = new BufferedReader(new InputStreamReader(
 					s.getInputStream()));
 			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
 
-			String response = Server.UPDATE_PRODUCTS + "/" + barcode + "/"
-					+ quantita + "/" + idspesa;
+			//Preparo la richiesta da inviare al server
+			String req = Server.UPDATE_PRODUCT + "/" + c.getBarcode() + "/"
+					+ c.getQuantita() + "\n";
 
-			Login_GUI.out.println(response);
+			System.out.println("\n"+req);
+
+			//Invio la richiesta al server
+			Login_GUI.out.println(req);
+
+			//Ricevo la richiesta dal client
 
 			String line = Login_GUI.in.readLine();
+			System.out.println(line);
 			String[] part = line.split("/");
 
-			if (part[0].contentEquals("prodotto aggiornato")) {
+			if (part[0].contentEquals(Server.PRODUCT_UPDATED)) {
 
 				try {
 					DefaultTableModel dm = new JTableOperation()
-							.getData(idspesa);
+					.getData(shop.getIdspesa());
 
-					// dm=SpesaDAOImpl.getInstance().getData(idspesa);
 
 					table.setModel(dm);
 
-					importo_finale = Double.parseDouble(part[1]);
+					shop.setImporto_tot(Double.parseDouble(part[1]));
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -216,131 +259,44 @@ public class ControllerSpesa {
 					"Error in communication with server!", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
-		return importo_finale;
 	}
 
 
 
-	public static String getSpesa(Socket s,int idspesa){
 
-		String error="errore";
-		try {
-			Login_GUI.in = new BufferedReader(new InputStreamReader(
-					s.getInputStream()));
-			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
+	 
 
-			String response = Server.SHOW_SPESA + "/" + idspesa ;
-			System.out.println(response);
-
-			Login_GUI.out.println(response);
-
-			String line = Login_GUI.in.readLine();
-			String[] part = line.split("/");
-
-			if (part[0].contentEquals(Server.SPESA_INVIATA)) {
-
-				JOptionPane.showMessageDialog(null, part[1]);
-
-				return part[1];
-
-
-			}
-
-			else {
-				JOptionPane.showMessageDialog(null, "Prodotto non eliminato!!", "ATTENZIONE", JOptionPane.WARNING_MESSAGE, warning);
-
-			}
-
-		} catch (IOException ioe) {
-
-			JOptionPane.showMessageDialog(null,
-					"Error in communication with server!", "Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
-
-		return error;
-
-
-
-	}
-
-
-	public static void UpdateMassimale(Socket s,double up_mass,int idspesa){
+	/**
+	 * Calcolo dei punti tessera fedeltà, per ogni singola spesa
+	 * @param s Socket
+	 * @param shop Spesa
+	 */
+	public static void  CalcolaPuntiSpesa(Socket s , Spesa shop){
 
 		try {
 			Login_GUI.in = new BufferedReader(new InputStreamReader(
 					s.getInputStream()));
 			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
 
-			String response = Server.UPDATE_MASSIMALE + "/"+up_mass+"/"+idspesa;
+			//Preparo la stringa da mandare al server
+			String req = Server.GET_POINTS +"\n";
 
-			Login_GUI.out.println(response);
+			System.out.println(req);
 
-			System.out.println(response);
+			//Invio la stringa al server
+			Login_GUI.out.println(req);
 
-
-
-
-
+			//Ricevo la risposta dal server 
 			String line = Login_GUI.in.readLine();
 
-			if (line.contentEquals(Server.MASSIMALE_INSERITO)) {
-
-				System.out.println("Massimale aggiornato");
-
-			}
-			else{
-				System.out.println("Massimale non aggiornato");
-
-			}
-
-		}
-		catch (IOException ioe) {
-
-			JOptionPane.showMessageDialog(null,
-					"Error in communication with server!", "Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
+			String parts[]=line.split("/");
 
 
+			if (parts[0].contentEquals(Server.POINTS_ADDED)) {
 
+				// assegno alla spesa, i relativi punti
+				shop.setPunti_spesa(Integer.parseInt(parts[1]));
 
-
-
-
-	}
-
-
-
-	public static int  CalcolaPuntiSpesa(Socket s , int idspesa){
-
-		int punti_spesa=0;
-		try {
-			Login_GUI.in = new BufferedReader(new InputStreamReader(
-					s.getInputStream()));
-			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
-
-
-			String response = Server.GET_POINTS + "/"+idspesa;
-
-			Login_GUI.out.println(response);
-
-
-			System.out.println(response);
-
-
-
-
-
-			String line = Login_GUI.in.readLine();
-
-
-			String part[] = line.split("/");
-
-			if (part[0].contentEquals(Server.ADD_POINTS)) {
-
-
-				punti_spesa=Integer.parseInt(part[1]);
 
 			}
 
@@ -355,15 +311,19 @@ public class ControllerSpesa {
 					"Error in communication with server!", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
-		return punti_spesa;
 
 	}
 
 
+	/**
+	 * Calcolo i punti totali.
+	 * I punti totali sono dati dalla somma tra i punti acquisiti precedentemente e i punti acquisiti della spesa corrente.
+	 * @param s Socket
+	 * @param shop Spesa
+	 * @param card Scheda
+	 */
+	public static void CalcoloPuntiTotali(Socket s,Spesa shop,Scheda card){
 
-	public static int CalcoloPuntiTotali(Socket s,int idspesa,int punti_spesa){
-
-		int punti_spesa_aggiornati=0;
 
 		try {
 			Login_GUI.in = new BufferedReader(new InputStreamReader(
@@ -371,31 +331,32 @@ public class ControllerSpesa {
 			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
 
 
-			String response = Server.UPDATE_POINTS + "/"+idspesa+"/"+punti_spesa;
+			//Preparo la richiesta da inviare al server
+			String req = Server.UPDATE_POINTS + "/"+shop.getIdspesa()+"/"+shop.getPunti_spesa()+"\n";
 
-			Login_GUI.out.println(response);
-
-
-			System.out.println(response);
-
+			//Invio la richiesta al server
+			Login_GUI.out.println(req);
 
 
+			System.out.println(req);
 
 
+
+
+
+			//ricevo la richiesta dal server
 			String line = Login_GUI.in.readLine();
 
-
+			System.out.println(line);
 			String part[] = line.split("/");
 
 			if (part[0].contentEquals(Server.POINTS_UPDATED)) {
 
 
-				punti_spesa_aggiornati=Integer.parseInt(part[1]);
-
+				card.setPunti_totali(Double.parseDouble((part[1])));                 
 			}
 
 			else {
-				JOptionPane.showMessageDialog(null, "Punti non aggiornati", "ATTENZIONE", WARNING_MESSAGE, null);
 
 			}
 
@@ -405,24 +366,32 @@ public class ControllerSpesa {
 					"Error in communication with server!", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
-		return punti_spesa_aggiornati;
 
 	}
 
 
-	public static void updateMassimale_totale(Socket s,int idspesa, double update_massres){
+
+	/**
+	 * Aggiorna il massimale residuo con l'importo dell'ultima spesa.
+	 * @param s
+	 * @param shop
+	 * @param card
+	 */
+	public static void updateMassimale_residuo(Socket s,Spesa shop, Scheda card){
 		try {
 			Login_GUI.in = new BufferedReader(new InputStreamReader(
 					s.getInputStream()));
 			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
 
+			//Preparo la richiesta da inviare al server
+			String req = Server.UPDATE_MASSIMALE_RESIDUO + "/"+card.getMassimale_res()+"/"  +"\n";
 
-			String response = Server.UPDATE_MASSIMALE_RESIDUO + "/"+idspesa+"/"+update_massres+"/"  +"\n";
+			System.out.println(req);
 
-			Login_GUI.out.println(response);
+			//Invio la richiesta
+			Login_GUI.out.println(req);
 
 
-			System.out.println(response);
 
 
 
@@ -430,19 +399,20 @@ public class ControllerSpesa {
 
 			String line = Login_GUI.in.readLine();
 
+			String part[]=line.split("/");
 			System.out.println(line);
 
 
-			if (line.contentEquals(Server.MASSIMALE_RESIDUO_UPDATED)) {
+			if (part[0].contentEquals(Server.MASSIMALE_RESIDUO_UPDATED)) {
 
 
+				card.setMassimale_res(Double.parseDouble(part[1]));
 
-				JOptionPane.showMessageDialog(null, "Massimale Aggiornato!!", "Conferma massimale", JOptionPane.WARNING_MESSAGE, ok);
 
 			}
 
 			else {
-				JOptionPane.showMessageDialog(null, "Punti non aggiornati!!", "Attenzione", JOptionPane.WARNING_MESSAGE, warning);
+				JOptionPane.showMessageDialog(null, "Massimale non aggiornato. \nContattare : uniclamarket@gmail.comßå", "Attenzione", JOptionPane.WARNING_MESSAGE, warning);
 
 			}
 

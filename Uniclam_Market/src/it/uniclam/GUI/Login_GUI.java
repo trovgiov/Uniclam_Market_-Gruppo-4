@@ -6,6 +6,7 @@ import it.uniclam.DAO.SchedaDAOImpl;
 import it.uniclam.DAO.UtenteDAOImpl;
 import it.uniclam.UniclamMarket.Server;
 import it.uniclam.entity.Scheda;
+import it.uniclam.entity.Utente;
 import it.uniclam.mail.EmailUtility;
 
 import java.awt.EventQueue;
@@ -136,7 +137,13 @@ public class Login_GUI extends JFrame {
 				@SuppressWarnings("deprecation")
 				String pino = pin_field.getText();
 
-				ControllerLogin.authenticate(numScheda, pino);
+				// scheda con id scheda e pin
+				
+				Scheda card=new Scheda(Integer.parseInt(numScheda),Integer.parseInt(pino));
+				
+				
+				
+				ControllerLogin.authenticate(card);
 				Login_GUI.this.setVisible(false);
 			
 
@@ -150,9 +157,13 @@ public class Login_GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				Icon email = new ImageIcon("img/email.png");
+				
+				 
 				String email_recover = (String) JOptionPane.showInputDialog(null, "Inserisca la mail per il recupero pin", "Inserire Email", JOptionPane.INFORMATION_MESSAGE,email, null, null);
 
-				ControllerLogin.forgot_pin(email_recover);
+				Utente u =new Utente(email_recover);
+				
+				ControllerLogin.forgot_pin(u);
 
 
 

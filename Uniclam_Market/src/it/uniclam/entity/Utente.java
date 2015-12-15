@@ -54,9 +54,13 @@ public class Utente {
 		this.email = email;
 	}
 
+	// Costruttore Utente personalizzato
 	public Utente(String string) {
-		// TODO Auto-generated constructor stub
+		this.email=string;
 	}
+
+	public Utente() {
+ 	}
 
 	public String getCognome() {
 		return cognome;

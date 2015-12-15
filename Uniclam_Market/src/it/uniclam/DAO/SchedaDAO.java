@@ -7,23 +7,31 @@ import java.sql.SQLException;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
-
+/**
+ * Interfaccia SchedaDAO
+ * @author GiovanniTrovini
+ *
+ */
 public interface SchedaDAO {
 
-	public void activeCard(Scheda s, String email_Utente) throws SQLException;
+	 
+	public void activeCard(Scheda s, Utente u) throws SQLException;
 
-	public int[] generatePin(String m) throws SQLException;
+	public int[] generatePin(Utente u) throws SQLException;
 
-	public void recovery_pin(String email) throws SQLException,
-			AddressException, MessagingException;
 
-	public double checkMassimale(int idscheda) throws SQLException;
+	public double checkMassimale(Scheda card) throws SQLException;
 
-	// String checkUtente(int idscheda) throws SQLException;
-	public Utente checkUser(int idScheda) throws SQLException; // Gio
+ 	public Utente checkUser(Scheda card) throws SQLException; 
 
-	public int show_points(int idscheda) throws SQLException;
+	public double show_points(Scheda card) throws SQLException;
 	public void UpdateMassimaleResiduo(Scheda s) throws SQLException;
+
+
+
+
+	public  void recovery_pin(Utente u) throws SQLException, AddressException,
+	MessagingException;
 
 
 

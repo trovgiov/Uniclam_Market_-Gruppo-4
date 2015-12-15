@@ -1,29 +1,40 @@
 package it.uniclam.Controller;
 
-import it.uniclam.DAO.UtenteDAOImpl;
-import it.uniclam.GUI.Login_GUI;
-import it.uniclam.GUI.PersonalPage_GUI;
-import it.uniclam.GUI.Spesa_GUI;
+ import it.uniclam.GUI.Login_GUI;
+ import it.uniclam.GUI.Spesa_GUI;
 import it.uniclam.UniclamMarket.Server;
+import it.uniclam.entity.Scheda;
+import it.uniclam.entity.Spesa;
+import it.uniclam.entity.Utente;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.sql.SQLException;
-
+ 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+/**
+ * Controller Pagina Personale
+ * @author Giovanni Trovini
+ *
+ */
 public class Controller_PersonalPage {
-	
+
 	static Icon scary = new ImageIcon("img/scary.png");
- 	static Icon error = new ImageIcon("img/error.png");
- 	static Icon email_icon = new ImageIcon("img/email.png");
- 	
-	public static void effettuaspesa(Socket s, int scheda, double mass_res) {
+	static Icon error = new ImageIcon("img/error.png");
+	static Icon email_icon = new ImageIcon("img/email.png");
+
+
+	/**
+	 * Permette all'utente di accede all'area della spesa. 
+	 * @param s     Socket
+	 * @param card  Scheda
+	 */
+	public static void effettuaspesa(Socket s, Scheda card) {
 
 		try {
 
@@ -32,9 +43,12 @@ public class Controller_PersonalPage {
 
 			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
 
-			String req = Server.CREA_SPESA + "/" + scheda;
-			System.out.println(req);
+			// preparo la richiesta da inviare al server
+			String req = Server.CREATE_SHOPPING + "/" + card.getIdScheda()+"\n";
 
+			System.out.println("\n"+req);
+
+			// invio richiesta al server
 			Login_GUI.out.println(req);
 
 			String line = Login_GUI.in.readLine();
@@ -42,14 +56,17 @@ public class Controller_PersonalPage {
 			String parts[] = line.split("/");
 
 			String operation = parts[0];
-			String id_spesa = parts[1];
-			int idspesa = Integer.parseInt(id_spesa);
+
 
 			Login_GUI.out.println(line);
+			System.out.println(line);
 
-			if (operation.contentEquals("spesa_creata")) {
+			if (operation.contentEquals(Server.SHOPPING_CREATED)) {
 
-				Spesa_GUI spesawindow = new Spesa_GUI(idspesa, s, mass_res);
+
+				Spesa shop=new Spesa(Integer.parseInt(parts[1]));
+
+				Spesa_GUI spesawindow = new Spesa_GUI(s,shop,card);
 				spesawindow.setVisible(true);
 
 			}
@@ -64,7 +81,14 @@ public class Controller_PersonalPage {
 
 	}
 
-	public static void CancellaUtente(Socket s, String email) {
+
+
+	/**
+	 * Eliminazione utente dal sistema
+	 * @param s  Socket
+	 * @param u  Utente
+	 */
+	public static void CancellaUtente(Socket s, Utente u) {
 
 		try {
 
@@ -73,22 +97,19 @@ public class Controller_PersonalPage {
 
 			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
 
-			String req = Server.ELIMINAUTENTE + "/" + email;
-			System.out.println(req);
+			//Preparo la richiesta da inviare al server
+			String req = Server.DELETE_USER + "/" + u.getEmail()+"\n";
 
+			System.out.println("\n"+req);
+
+			//Invio la richiesta al server
 			Login_GUI.out.println(req);
 
+
+			//Ricevo la risposta dal server
 			String line = Login_GUI.in.readLine();
+			System.out.println(line);
 
-			if (line.contentEquals(Server.UTENTE_ELIMINATO)) {
-				System.out.println("Utente cancellato correttamente!");
-
-			} else {
-				System.out.println("ATTENZIONE Utente non eliminato!");
-
-			}
-
-			// Login_GUI.out.println(line);
 
 		}
 
@@ -101,10 +122,18 @@ public class Controller_PersonalPage {
 
 	}
 
-	public static void ChangeEmail(Socket s, String email, String new_mail) {
+	/**
+	 * Cambio mail di accesso
+	 * @param s Socket
+	 * @param u Utente
+	 * @param new_mail Nuova mail da aggiornare
+	 */
+	public static void ChangeEmail(Socket s, Utente u, String new_mail) {
 
+		// Pattern standard email 
 		String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+		//controllo se l'email inserita dall'utente, corrisponde al pattern
 		if (new_mail.matches(emailPattern)) {
 			try {
 
@@ -113,23 +142,28 @@ public class Controller_PersonalPage {
 
 				Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
 
-				String req = Server.CHANGE_EMAIL + "/" + email + "/" + new_mail;
-				System.out.println(req);
+				// Preparo la richiesta da inviare al server
+				String req = Server.CHANGE_EMAIL + "/" + u.getEmail() + "/" + new_mail+"\n";
+				System.out.println("\n"+req);
 
+				// Invio la richiesta al sever
 				Login_GUI.out.println(req);
 
+				// Ricevo la risposta dal server
 				String line = Login_GUI.in.readLine();
+				System.out.println(line);
+
 
 				if (line.contentEquals(Server.EMAIL_CHANGED)) {
 
 					JOptionPane.showMessageDialog(null,
-							 "Email modificata con successo ", "Email modificata", JOptionPane.INFORMATION_MESSAGE, email_icon);
+							"Email modificata con successo ", "Email modificata", JOptionPane.INFORMATION_MESSAGE, email_icon);
 
 				}
 
 				else {
 					JOptionPane.showMessageDialog(null,
-							 "Attenzione! Email non modificata!", "Errore", JOptionPane.INFORMATION_MESSAGE, error);
+							"Attenzione! Email non modificata!", "Errore", JOptionPane.INFORMATION_MESSAGE, error);
 
 				}
 
@@ -143,12 +177,17 @@ public class Controller_PersonalPage {
 			.showMessageDialog(null, "Email inserita non valida !!!");
 		}
 	}
-	
-	
-	public static int  Show_punti_scheda(Socket s, int idscheda){
-		int punti=0;
-		
-		
+
+
+	/**
+	 * Mostra i punti totali acquisiti precedentemente
+	 * @param s Socket
+	 * @param card Scheda
+	  
+	 */
+	public static void  Show_punti_scheda(Socket s, Scheda card){
+ 
+
 		try {
 
 			Login_GUI.in = new BufferedReader(new InputStreamReader(
@@ -156,25 +195,30 @@ public class Controller_PersonalPage {
 
 			Login_GUI.out = new PrintWriter(s.getOutputStream(), true);
 
-			String req = Server.SHOW_POINTS + "/" + idscheda;
-			System.out.println(req);
+			//Preparo la richiesta da inviare al server
+			String req = Server.SHOW_POINTS + "/" + card.getIdScheda()+"\n";
 
+			System.out.println("\n"+req);
+			//Invio la richiesta al server
 			Login_GUI.out.println(req);
 
+
+			//Ricevo la risposta dal server e la divido tramite uno split
 			String line = Login_GUI.in.readLine();
+			System.out.println(line);
+
 			String parts[] = line.split("/");
 			String operation=parts[0];
-			
+
 			if(operation.contentEquals(Server.POINTS_SHOWED)){
-				
-				 punti=Integer.parseInt(parts[1]);
-				
-				
+
+				card.setPunti_totali(Double.parseDouble(parts[1]));
+
 			}
 			else {
 				System.out.println("Error");
 			}
- 		 
+
 		}
 
 		catch (IOException ioe) {
@@ -183,8 +227,7 @@ public class Controller_PersonalPage {
 					"Error in communication with server!", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
-		return punti;
-
+ 
 	}
 
- }
+}

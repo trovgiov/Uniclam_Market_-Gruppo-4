@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import com.mysql.jdbc.Connection;
 
 import it.uniclam.db.DBUtility;
+import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Utente;
 
 public class UtenteDAOImpl implements UtenteDAO {
@@ -24,11 +25,16 @@ public class UtenteDAOImpl implements UtenteDAO {
 		}
 		return dao;
 	}
+	
+	
+	
+	/**
+	 * Metodo per inserire l'utente nel DB
+	 */
 
 	@Override
 	public void insertUtente(Utente u) throws SQLException {
-		// TODO Auto-generated method stub
-
+ 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
@@ -53,6 +59,7 @@ public class UtenteDAOImpl implements UtenteDAO {
 		} catch (SQLException e) {
 
 			System.out.println(e.getMessage());
+			throw e ;
 
 		} finally {
 
@@ -68,33 +75,34 @@ public class UtenteDAOImpl implements UtenteDAO {
 
 	}
 
+	@SuppressWarnings("unused")
 	@Override
-	public void updateUtente(String mail, String new_mail) throws SQLException {
+	public void updateUtente(Utente u, String new_mail) throws SQLException {
 		// TODO Auto-generated method stub
 
 		Statement s = DBUtility.getStatement();
 		String updateQuery = "UPDATE utente SET email = '" + new_mail
-				+ "'   WHERE email = '" + mail + "' ";
+				+ "'   WHERE email = '" + u.getEmail() + "' ";
 		try {
 
 			int n = s.executeUpdate(updateQuery);
 		}
 
 		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+ 			e.printStackTrace();
+ 			throw e;
 		}
 		s.close();
 	}
 
 	@Override
-	public void deleteUtente(String email) throws SQLException {
+	public void deleteUtente(Utente u) throws SQLException {
 		// TODO Auto-generated method stub
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
-		String deleteSQL = "DELETE from utente WHERE email='" + email + "'";
+		String deleteSQL = "DELETE from utente WHERE email='" + u.getEmail() + "'";
 
 		try {
 
@@ -121,19 +129,24 @@ public class UtenteDAOImpl implements UtenteDAO {
 
 	}
 
+	/**
+	 * Metodo che consente l'autenticazione. Restituisce true se le credenziali inserite si trovano nel database, altrimenti non consente l'accesso al sistema
+	 */
 	@Override
-	public boolean login(int id, int pin) throws SQLException {
-		// TODO Auto-generated method stub
-
+	public boolean login(Scheda scheda) throws SQLException {
+ 
 		boolean login_succed = false;
 
 		java.sql.Statement s = DBUtility.getStatement();
 		String sql = " select scheda_idScheda,pin from login where scheda_idScheda='"
-				+ id + "' and pin= '" + pin + "' ";
+				+ scheda.getIdScheda() + "' and pin= '" + scheda.getPin() + "' ";
 
 		try {
 			ResultSet rs = s.executeQuery(sql);
 
+			// se la query ottiene un result ,allora il login è stato effettuato con successo. 
+			//Se la query è vuota, la variabile boolean non cambia il suo stato
+			
 			if (rs.next()) {
 
 				login_succed = true;
@@ -141,8 +154,8 @@ public class UtenteDAOImpl implements UtenteDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+ 			e.printStackTrace();
+			throw e;
 		}
 
 		return login_succed;

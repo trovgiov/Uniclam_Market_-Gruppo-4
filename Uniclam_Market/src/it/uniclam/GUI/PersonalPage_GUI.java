@@ -1,6 +1,6 @@
 package it.uniclam.GUI;
 
-import java.awt.EventQueue;
+import java.awt.HeadlessException;
 
 import javax.swing.JFrame;
 
@@ -9,10 +9,10 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import it.uniclam.Controller.ControllerLogin;
 import it.uniclam.Controller.Controller_PersonalPage;
-import it.uniclam.DAO.SchedaDAOImpl;
-import it.uniclam.DAO.UtenteDAOImpl;
 import it.uniclam.UniclamMarket.Server;
+import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Utente;
 
 import java.awt.Font;
@@ -26,55 +26,48 @@ import javax.swing.JSeparator;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.sql.SQLException;
 
-import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class PersonalPage_GUI extends JFrame {
 
- 	private int scheda;
-	private int pin;
-	private String nome;
-	private String cognome;
-	private String email;
- 	Socket s;
-  
-	private double mass_res = 0;
+
+	private Socket s;
+	private Scheda card;
+	private Utente u;
+
 
 	/**
 	 * Create the application.
 	 */
-	public PersonalPage_GUI(int i, int j, Socket s, double mas, String nome,
-			String cognome, String email ) {
 
-		this.scheda = i;
-		this.pin = j;
+
+
+	public PersonalPage_GUI(Socket s, Scheda card,Utente u)
+			throws HeadlessException {
+		super();
 		this.s = s;
-		this.mass_res = mas;
-		this.nome = nome;
-		this.cognome = cognome;
-		this.email = email;
- 		initialize();
+		this.card = card;
 
+		this.u = u;
+		initialize();
 	}
+
 
 	// Icone 
 	Icon card_icon = new ImageIcon("img/card.png");
- 	Icon spesa = new ImageIcon("img/cart.png");
- 	Icon settings = new ImageIcon("img/settings.png");
- 	Icon delete = new ImageIcon("img/trash.png");
- 	Icon exit = new ImageIcon("img/exit.png");
- 	Icon pers_icon = new ImageIcon("img/personal_area.png");
- 	Icon money_icon = new ImageIcon("img/money.png");
- 	Icon scary = new ImageIcon("img/scary.png");
- 	Icon sad = new ImageIcon("img/sad.png");
- 	Icon email_icon = new ImageIcon("img/email.png");
- 	
+	Icon spesa = new ImageIcon("img/cart.png");
+	Icon settings = new ImageIcon("img/settings.png");
+	Icon delete = new ImageIcon("img/trash.png");
+	Icon exit = new ImageIcon("img/exit.png");
+	Icon pers_icon = new ImageIcon("img/personal_area.png");
+	Icon money_icon = new ImageIcon("img/money.png");
+	Icon scary = new ImageIcon("img/scary.png");
+	Icon sad = new ImageIcon("img/sad.png");
+	Icon email_icon = new ImageIcon("img/email.png");
+
 
 	/**
 	 * Initialize the contents of the frame.
@@ -97,7 +90,7 @@ public class PersonalPage_GUI extends JFrame {
 		lblBenvenutoNellaTua.setBounds(61, 133, 299, 17);
 		this.getContentPane().add(lblBenvenutoNellaTua);
 
-		
+
 		JButton btnEffettuaSpesa = new JButton("Effettua la spesa");
 		btnEffettuaSpesa.setIcon(spesa);
 		btnEffettuaSpesa.setFont(new Font("Lucida Grande", Font.BOLD, 14));
@@ -116,9 +109,9 @@ public class PersonalPage_GUI extends JFrame {
 		lblIlMassimaleResiduo.setBounds(142, 187, 250, 17);
 		this.getContentPane().add(lblIlMassimaleResiduo);
 
-		
-		
-		
+
+
+
 		JButton btnCambiaEmail = new JButton("Cambia la tua email di accesso");
 		btnCambiaEmail.setFont(new Font("Lucida Grande", Font.BOLD, 11));
 		btnCambiaEmail.setIcon(settings);
@@ -129,8 +122,8 @@ public class PersonalPage_GUI extends JFrame {
 		separator_1.setForeground(Color.WHITE);
 		separator_1.setBounds(11, 374, 531, 12);
 		this.getContentPane().add(separator_1);
-		
-		
+
+
 		JButton btnCancellati = new JButton("Cancellati \ndal sistema");
 		btnCancellati.setFont(new Font("Lucida Grande", Font.BOLD, 11));
 		btnCancellati.setIcon(delete);
@@ -142,7 +135,7 @@ public class PersonalPage_GUI extends JFrame {
 		separator_2.setBounds(11, 468, 527, 9);
 		this.getContentPane().add(separator_2);
 
-		
+
 		JButton btnEsci = new JButton("Esci");
 		btnEsci.setIcon(exit);
 		btnEsci.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 12));
@@ -162,7 +155,7 @@ public class PersonalPage_GUI extends JFrame {
 		lblMasRes.setBounds(378, 187, 125, 16);
 		getContentPane().add(lblMasRes);
 
-		lblMasRes.setText("" + mass_res);
+		lblMasRes.setText("" + card.getMassimale_res());
 
 		// Label Utente
 
@@ -171,68 +164,74 @@ public class PersonalPage_GUI extends JFrame {
 		lblUserEmail.setForeground(new Color(255, 255, 255));
 		lblUserEmail.setBounds(304, 133, 173, 16);
 		getContentPane().add(lblUserEmail);
-		lblUserEmail.setText("" + nome + " " + cognome);// +" , "+getEmail());
-		
+		lblUserEmail.setText("" + u.getNome() + " " + u.getCognome());// +" , "+getEmail());
+
 		JLabel lblITuoiPunti = new JLabel("I tuoi punti fedeltà sono : ");
 		lblITuoiPunti.setHorizontalAlignment(SwingConstants.CENTER);
 		lblITuoiPunti.setForeground(new Color(255, 204, 153));
 		lblITuoiPunti.setBounds(138, 254, 250, 17);
 		getContentPane().add(lblITuoiPunti);
-		
-		
-		int punti=Controller_PersonalPage.Show_punti_scheda(s, scheda);
-		JLabel label_ptTotali = new JLabel(""+punti);
+
+
+		Controller_PersonalPage.Show_punti_scheda(s, card);
+		JLabel label_ptTotali = new JLabel(""+card.getPunti_totali());
 		label_ptTotali.setForeground(Color.WHITE);
 		label_ptTotali.setBounds(358, 255, 125, 16);
 		getContentPane().add(label_ptTotali);
-		
-		
+
+
 		JLabel header = new JLabel(pers_icon);
 		header.setBounds(27, 11, 490, 110);
 		getContentPane().add(header);
-		
-		
+
+
 		JLabel money = new JLabel(money_icon);
 		money.setBounds(97, 168, 69, 60);
 		getContentPane().add(money);
-		
-		
-		JLabel card = new JLabel(card_icon);
-		card.setBounds(97, 235, 69, 60);
-		getContentPane().add(card);
-		
+
+
+		JLabel cardicon = new JLabel(card_icon);
+		cardicon.setBounds(97, 235, 69, 60);
+		getContentPane().add(cardicon);
+
 		JSeparator separator_3 = new JSeparator();
 		separator_3.setForeground(new Color(153, 102, 0));
 		separator_3.setBounds(11, 228, 531, 12);
 		getContentPane().add(separator_3);
-		
+
 		JSeparator separator_4 = new JSeparator();
 		separator_4.setForeground(new Color(153, 102, 0));
 		separator_4.setBounds(11, 289, 531, 12);
 		getContentPane().add(separator_4);
 
-		// Button Effettua Spesa
+		// Button Effettua Spesa ok
 
 		btnEffettuaSpesa.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 
-				Controller_PersonalPage.effettuaspesa(s, scheda, mass_res);
+				Controller_PersonalPage.effettuaspesa(s,card);
 				PersonalPage_GUI.this.setVisible(false);
 			}
 		});
 
-		// Pulsante di uscita
-		
+		// Pulsante di uscita ok
+
 		btnEsci.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+
+
 				JOptionPane.showMessageDialog(PersonalPage_GUI.this,
-						 "Arrivederci!", "Logout", JOptionPane.INFORMATION_MESSAGE, exit);
+						"Arrivederci!", "Logout", JOptionPane.INFORMATION_MESSAGE, exit);
+				try {
+					ControllerLogin.logout(s);
+ 				} catch (IOException e1) {
+					e1.printStackTrace();
+				} 
 				System.exit(0);
 			}
 		});
@@ -242,22 +241,21 @@ public class PersonalPage_GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 
-				
+
 				int scelta = JOptionPane.showConfirmDialog(PersonalPage_GUI.this, "Sei sicuro di volerti cancellare dal sistema?", 
 						"Eliminazione Account", JOptionPane.YES_NO_OPTION, JOptionPane.YES_OPTION, scary);
-				
+
 				switch (scelta) {
 
 				case JOptionPane.YES_OPTION:
 
-					Controller_PersonalPage.CancellaUtente(s, email);
+					Controller_PersonalPage.CancellaUtente(s, u);
 					JOptionPane.showMessageDialog(PersonalPage_GUI.this,
-							 "Ci dispiace per la tua scelta! \nSperiamo di rivederti presto!!", "Account Cancellato correttamente", JOptionPane.INFORMATION_MESSAGE, sad);
-					
-					
-				
+							"Ci dispiace per la tua scelta! \nSperiamo di rivederti presto!!", "Account Cancellato correttamente", JOptionPane.INFORMATION_MESSAGE, sad);
+
+					System.exit(0);
+
 				case JOptionPane.NO_OPTION:
 					break;
 				}
@@ -265,22 +263,22 @@ public class PersonalPage_GUI extends JFrame {
 			}
 		});
 
+		//Pulsante Cambio email di accesso ok
 		btnCambiaEmail.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 
-				
+
 				String new_mail = (String) JOptionPane.showInputDialog(null, "Inserisca la nuava mail", "Inserire Email", JOptionPane.INFORMATION_MESSAGE,email_icon, null, null);
-				
+
 				if(new_mail==null){
 					JOptionPane.showMessageDialog(PersonalPage_GUI.this, "Email non valida", "Modifica email", JOptionPane.DEFAULT_OPTION, scary);
-							 
-					
+
+
 				}
 				else{
-				Controller_PersonalPage.ChangeEmail(s, email, new_mail);
+					Controller_PersonalPage.ChangeEmail(s, u, new_mail);
 				}
 			}
 		});

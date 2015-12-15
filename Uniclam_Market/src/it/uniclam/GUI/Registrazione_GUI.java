@@ -3,6 +3,7 @@ package it.uniclam.GUI;
 import it.uniclam.Controller.ControllerUtente;
 import it.uniclam.UniclamMarket.Client;
 import it.uniclam.UniclamMarket.Server;
+import it.uniclam.entity.Utente;
 import it.uniclam.mail.EmailUtility;
 
 import java.awt.EventQueue;
@@ -144,21 +145,23 @@ public class Registrazione_GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
-				String nome = txtNome.getText();
+ 
+				
+ 				String nome = txtNome.getText();
 				String cognome = textCognome.getText();
 				String email = textEmail.getText();
 
 				String telefono = textTelefono.getText();
-				String massimale = textMassimale.getText();
+				Double massimale = Double.parseDouble(textMassimale.getText());
+				
+				
+				Utente u=new Utente(nome,cognome,email,telefono,massimale );
 
 				String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 				// Passo alla funzione di Controller
 
-				ControllerUtente.registrazioneUtente(nome, cognome, email,
-						massimale, telefono, emailPattern);
+				ControllerUtente.registrazioneUtente(u, emailPattern);
 
 
 			}

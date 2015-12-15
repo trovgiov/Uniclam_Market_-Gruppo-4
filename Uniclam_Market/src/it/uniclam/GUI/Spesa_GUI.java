@@ -11,6 +11,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextPane;
 
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.SystemColor;
 
 import javax.swing.JScrollPane;
@@ -39,7 +40,10 @@ import it.uniclam.Controller.Controller_PersonalPage;
 import it.uniclam.DAO.SpesaDAOImpl;
 import it.uniclam.DAO.UtenteDAOImpl;
 import it.uniclam.UniclamMarket.Server;
+import it.uniclam.entity.Carrello;
 import it.uniclam.entity.JTableOperation;
+import it.uniclam.entity.Scheda;
+import it.uniclam.entity.Spesa;
 
 import javax.swing.JButton;
 
@@ -57,16 +61,19 @@ import javax.swing.JScrollBar;
 public class Spesa_GUI extends JFrame {
 
 	private JTextField textBarcode;
-	private int idspesa;
 	private JTextField textQuantità;
 	Socket s;
 	private JTable table;
-	private double mass_residuo;
 	double importo_finale;
 
+	private Spesa shop;
+	private Scheda card;
 	/**
 	 * Create the application.
 	 */
+
+
+	/*
 	public Spesa_GUI(int id, Socket s, double mass_res) {
 		this.idspesa = id;
 		this.s = s;
@@ -75,13 +82,26 @@ public class Spesa_GUI extends JFrame {
 		initialize();
 	}
 
+	 */
+
+
 	public static BufferedReader in;
+
+	public Spesa_GUI(Socket s, Spesa shop,Scheda card) throws HeadlessException {
+		super();
+		this.s = s;
+		this.shop = shop;
+		this.card=card;
+
+		initialize();
+	}
+
 	public static PrintWriter out;
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	
+
 	Icon error = new ImageIcon ("img/error.png");
 	Icon scary = new ImageIcon("img/scary.png");
 	private void initialize() {
@@ -129,22 +149,6 @@ public class Spesa_GUI extends JFrame {
 		lbl_importofinale.setBounds(475, 669, 93, 16);
 		getContentPane().add(lbl_importofinale);
 
-		btnAggiungiAlCarrello.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				String barcode = textBarcode.getText();
-				String quantita = textQuantità.getText();
-
-				// table.setVisible(true);
-
-				importo_finale = ControllerSpesa.AddProduct(s, barcode,
-						quantita, idspesa, table);
-				lbl_importofinale.setText("" + importo_finale);
-
-			}
-		});
 
 		Icon delete_prod = new ImageIcon("img/delete_prod.png");
 		JButton btnEliminaProdotto = new JButton("Elimina Prodotto");
@@ -153,17 +157,7 @@ public class Spesa_GUI extends JFrame {
 		btnEliminaProdotto.setBounds(603, 246, 217, 58);
 		getContentPane().add(btnEliminaProdotto);
 
-		btnEliminaProdotto.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				String barcode = textBarcode.getText();
-
-				importo_finale = ControllerSpesa.DeleteProduct(s, barcode,
-						idspesa, table);
-
-				lbl_importofinale.setText("" + importo_finale);
-			}
-		});
+		 
 
 		JLabel lblIdSpesa = new JLabel(
 				"La sua spesa è registrata con il codice : ");
@@ -176,7 +170,7 @@ public class Spesa_GUI extends JFrame {
 		JLabel lblsetIDspesa = new JLabel("");
 		lblsetIDspesa.setBounds(287, 147, 61, 16);
 		lblsetIDspesa.setForeground(new Color(255, 255, 255));
-		lblsetIDspesa.setText("" + getIdspesa());
+		lblsetIDspesa.setText("" + shop.getIdspesa());
 		getContentPane().add(lblsetIDspesa);
 
 		JSeparator separator_1 = new JSeparator();
@@ -241,7 +235,7 @@ public class Spesa_GUI extends JFrame {
 		lblMassimaleResiduo.setBounds(294, 639, 196, 16);
 		getContentPane().add(lblMassimaleResiduo);
 
-		JLabel lbl_masRes = new JLabel("" + mass_residuo);
+		JLabel lbl_masRes = new JLabel("" + card.getMassimale_res());
 		lbl_masRes.setForeground(new Color(255, 255, 51));
 		lbl_masRes.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC,
 				15));
@@ -258,6 +252,41 @@ public class Spesa_GUI extends JFrame {
 		label_1.setBounds(102, 176, 61, 58);
 		getContentPane().add(label_1);
 
+
+		//Pulsante che consente di inserire il prodotto nel carrello e aggiornare l'importo totale
+
+		btnAggiungiAlCarrello.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				String barcode = textBarcode.getText();
+				String quantita = textQuantità.getText();
+
+				//Creo Carrello con barcode e quantita
+				Carrello c=new Carrello(barcode, Integer.parseInt(quantita));
+
+ 
+				ControllerSpesa.AddProduct(s,
+						c,shop , table);
+				lbl_importofinale.setText("" + shop.getImporto_tot());
+
+			}
+		});
+
+		
+		btnEliminaProdotto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String barcode = textBarcode.getText();
+
+				Carrello c=new Carrello (barcode);
+				 ControllerSpesa.DeleteProduct(s, c,
+						shop, table);
+
+				lbl_importofinale.setText("" + shop.getImporto_tot());
+			}
+		});
 		btnModificaQuantit.addActionListener(new ActionListener() {
 
 			@Override
@@ -267,9 +296,10 @@ public class Spesa_GUI extends JFrame {
 				String barcode = textBarcode.getText();
 				String quantita = textQuantità.getText();
 
-				importo_finale = ControllerSpesa.UpdateProduct(s, barcode,
-						quantita, idspesa, table);
-				lbl_importofinale.setText("" + importo_finale);
+				Carrello c=new Carrello(barcode,Integer.parseInt(quantita));
+				
+				 ControllerSpesa.UpdateProduct(s,c, shop, table);
+				lbl_importofinale.setText("" + shop.getImporto_tot());
 
 			}
 
@@ -283,8 +313,8 @@ public class Spesa_GUI extends JFrame {
 
 
 
-				if(importo_finale<=mass_residuo){
-					Riepilogo_GUI windows=new Riepilogo_GUI(idspesa, s, mass_residuo, importo_finale);
+				if(shop.getImporto_tot()<=card.getMassimale_res()){
+					Riepilogo_GUI windows=new Riepilogo_GUI(s,card,shop);
 					windows.setVisible(true);
 
 
@@ -292,12 +322,12 @@ public class Spesa_GUI extends JFrame {
 				}
 
 				else {
-					
+
 					JOptionPane.showMessageDialog(null,
 							"ATTENZIONE! Il tuo massimale non ti permette di effettuare una spesa del genere! "
-							+ "\nRimuovi qualche prodotto dal carrello",
-							"Errore Massimale", JOptionPane.INFORMATION_MESSAGE, error);
-					
+									+ "\nRimuovi qualche prodotto dal carrello",
+									"Errore Massimale", JOptionPane.INFORMATION_MESSAGE, error);
+
 				}
 
 
@@ -312,14 +342,14 @@ public class Spesa_GUI extends JFrame {
 
 				int scelta = JOptionPane.showConfirmDialog(Spesa_GUI.this, "Sei di voler annullare la spesa e uscire?", "Conferma uscita",
 						JOptionPane.YES_NO_OPTION, JOptionPane.YES_OPTION, scary);
-				
+
 				switch (scelta) {
 				case JOptionPane.YES_OPTION: {
 					try {
-						/*JOptionPane.showMessageDialog(null,
-								"Il suo massimale residuo e' " + mass_residuo);*/
 
-						ControllerSpesa.cancellaSpesa(s, idspesa);
+
+						ControllerSpesa.cancellaSpesa(s,shop);
+						s.close();
 						System.exit(0);
 						// PersonalPage_GUI = new Per
 					} catch (IOException e1) {
@@ -339,11 +369,5 @@ public class Spesa_GUI extends JFrame {
 
 	}
 
-	public int getIdspesa() {
-		return idspesa;
-	}
 
-	public void setIdspesa(int idspesa) {
-		this.idspesa = idspesa;
-	}
 }

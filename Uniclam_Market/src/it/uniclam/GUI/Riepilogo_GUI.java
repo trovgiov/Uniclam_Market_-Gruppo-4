@@ -1,16 +1,23 @@
 package it.uniclam.GUI;
 
 import javax.swing.JFrame;
+
 import java.awt.Color;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+
 import it.uniclam.Controller.ControllerSpesa;
+import it.uniclam.entity.Scheda;
+import it.uniclam.entity.Spesa;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,15 +28,16 @@ public class Riepilogo_GUI extends JFrame{
 	private int idspesa;
 	Socket s;
 	private double mass_residuo;
-	double importo_totale;
+ 	private Spesa shop;
+	private Scheda card;
 
+	public Riepilogo_GUI(Socket s,Scheda card,Spesa shop) {
 
-	public Riepilogo_GUI(int idSpesa, Socket s, double mass_res, double importo_finale2) {
-
-		this.idspesa = idSpesa;
-		this.s = s;
-		this.mass_residuo = mass_res;
-		this.importo_totale=importo_finale2;
+	
+		this.s=s;
+		this.card=card;
+		this.shop=shop;
+	
 		initialize();
 	}
 
@@ -43,7 +51,7 @@ public class Riepilogo_GUI extends JFrame{
 	static Icon confirm = new ImageIcon("img/ok_final.png");
 	static Icon no = new ImageIcon("img/no.png");
 	static Icon money = new ImageIcon("img/money.png");
-	static Icon card = new ImageIcon("img/card.png");
+	static Icon card_ico = new ImageIcon("img/card.png");
 	static Icon scary = new ImageIcon("img/scary.png");
 	static Icon happy = new ImageIcon("img/happy.png");
 
@@ -71,32 +79,32 @@ public class Riepilogo_GUI extends JFrame{
 		lblImportoTotale.setForeground(new Color(255, 255, 0));
 		lblImportoTotale.setBounds(120, 160, 256, 59);
 		this.getContentPane().add(lblImportoTotale);
-
-
-		JLabel lblNewLabel = new JLabel("Punti Fedeltà accumulati: ");
+ 
+		JLabel lblNewLabel = new JLabel("Punti Fedeltà Spesa: ");
 		lblNewLabel.setForeground(new Color(255, 255, 0));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setIcon(card);
+		lblNewLabel.setIcon(card_ico);
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 16));
-		lblNewLabel.setBounds(149, 243, 281, 46);
+		lblNewLabel.setBounds(120, 243, 281, 46);
 		this.getContentPane().add(lblNewLabel);
 
 		JLabel lblTotale = new JLabel(" ");
 		lblTotale.setBounds(315, 362, 61, 16);
 		this.getContentPane().add(lblTotale);
 
-		JLabel lblImporto = new JLabel(""+ importo_totale);
+		JLabel lblImporto = new JLabel(""+ shop.getImporto_tot());
 		lblImporto.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 15));
 		lblImporto.setForeground(new Color(255, 255, 0));
 		lblImporto.setBounds(361, 177, 90, 24);
 		getContentPane().add(lblImporto);
 
-		int punti_spesa=ControllerSpesa.CalcolaPuntiSpesa(s, idspesa);
+		
+ 		ControllerSpesa.CalcolaPuntiSpesa(s, shop);
 
-		JLabel labelPunti = new JLabel(""+punti_spesa);
+		JLabel labelPunti = new JLabel(""+shop.getPunti_spesa());
 		labelPunti.setForeground(Color.YELLOW);
 		labelPunti.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 15));
-		labelPunti.setBounds(425, 258, 90, 17);
+		labelPunti.setBounds(385, 258, 90, 17);
 		getContentPane().add(labelPunti);
 
 		Icon header_riepilogue = new ImageIcon("img/riepilogo.png");
@@ -112,7 +120,10 @@ public class Riepilogo_GUI extends JFrame{
 		separator_1.setBounds(6, 225, 527, 17);
 		getContentPane().add(separator_1);
 
-		double tot=mass_residuo-importo_totale;
+		// Calcolo il massimale residuo - importo spesa
+		double tot=card.getMassimale_res()-shop.getImporto_tot();
+		//aggiorno 	campo massimale residuo
+		card.setMassimale_res(tot);
 		this.setBounds(100, 100, 539, 400);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -126,13 +137,13 @@ public class Riepilogo_GUI extends JFrame{
 				switch (scelta) {
 				case JOptionPane.YES_OPTION: {
 					try {
+						ControllerSpesa.cancellaSpesa(s, shop);
 
 						JOptionPane.showMessageDialog(null,
-								"Spesa annullata. Non ti è stato addebitato alcun costo.\n" + "Il tuo massimale residuo è ora: " + mass_residuo,
+								"Spesa annullata. Non ti è stato addebitato alcun costo.\n" + "Il tuo massimale residuo è ora: " + card.getMassimale_res(),
 								"Esito Spesa", JOptionPane.INFORMATION_MESSAGE, happy);
 
-						ControllerSpesa.cancellaSpesa(s, idspesa);
-						System.exit(0);
+ 						System.exit(0);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -152,21 +163,18 @@ public class Riepilogo_GUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				int punti_totali=ControllerSpesa.CalcoloPuntiTotali(s, idspesa, punti_spesa);
+				//Aggiorno i punti totali
+				ControllerSpesa.CalcoloPuntiTotali(s,shop,card);
 
-				ControllerSpesa.updateMassimale_totale(s, idspesa, tot);
+				ControllerSpesa.updateMassimale_residuo(s, shop, card);
 				//aggiorno massimale totale
-				
+
 				JOptionPane.showMessageDialog(null,
-						"Spesa inoltrata correttamente. \n" + "Il tuo massimale residuo è ora: " + mass_residuo + 
-						"\nCon questa spesa hai accumulato: "+punti_totali +" punti. \n Grazie per aver scelto Uniclam Market!",
+						"Spesa inoltrata correttamente." + "\nIl tuo massimale residuo è ora: € " + card.getMassimale_res() + 
+						"\nCon questa spesa hai in totale "+card.getPunti_totali() +" punti. \nGrazie per aver scelto Uniclam Market!",
 						"Esito Spesa", JOptionPane.INFORMATION_MESSAGE, confirm);
-				
-				
-				/*JOptionPane.showMessageDialog(null,"Punti Spesa Aggiornati "+punti_totali
-						+"\nMassimale Residuo e' di : € "+tot);*/
-				System.exit(0);
-			}
+ 
+   			}
 		});
 
 

@@ -2,6 +2,7 @@ package it.uniclam.DAO;
 
 import it.uniclam.db.DBUtility;
 import it.uniclam.entity.Carrello;
+import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Spesa;
 
 import java.sql.ResultSet;
@@ -10,10 +11,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import com.mysql.jdbc.Connection;
 
+/**
+ * Implementazione metodi interfaccia Spesa DAO
+ * @author GiovanniTrovini
+ *
+ */
 public class SpesaDAOImpl implements SpesaDAO {
 
 	private SpesaDAOImpl() {
@@ -28,18 +35,27 @@ public class SpesaDAOImpl implements SpesaDAO {
 		return dao;
 	}
 
+ 
+
+	/**
+	 * Inserisce la spesa nel database,generando un id spesa con la funzione random
+	 * @param  c Entity Spesa  
+	 * @return id spesa
+	 * @throws SQLException
+	 */
 	@Override
-	public int insertSpesa(Spesa c) throws SQLException {
+	 public int insertSpesa(Spesa c) throws SQLException {
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
-		// Date today = new Date();
+		// genero un id spesa con il metodo random
 		Random random = new Random();
-		int j = 30;
+		int j = 10;
 		int n = 70 - j;
 		int idspesa = random.nextInt(n) + j;
 
+		// Query per l'inserimento nella tabella spesa 
 		String insertTableSQL = "insert into spesa (idspesa,scheda_idScheda,data_spesa) VALUES (?,?,?)";
 
 		try {
@@ -60,6 +76,7 @@ public class SpesaDAOImpl implements SpesaDAO {
 		} catch (SQLException e) {
 
 			System.out.println(e.getMessage());
+			throw e;
 
 		} finally {
 
@@ -76,15 +93,24 @@ public class SpesaDAOImpl implements SpesaDAO {
 
 	}
 
+	 
+	/**
+	 * Aggiunge i  prodotti nel carrello, tramite una query di insert nel database.
+	 * Restituisce una variabile boolean. Se return true allora il prodotto è stato correttamente inserito
+	 * @param  c Entity Carrello
+	 * @param  shop Entity Spesa
+	 * @return
+	 * @throws SQLException
+	 */
 	@Override
-	public boolean addProducts(String barcode, int idspesa, int quantita)
+	public boolean addProducts(Carrello c , Spesa shop)
 			throws SQLException {
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
 		String insertTableSQL = "insert into carrello(prodotto_barcode,spesa_idSpesa,quantita)  VALUES ('"
-				+ barcode + "','" + idspesa + "', '" + quantita + "')";
+				+ c.getBarcode() + "','" + shop.getIdspesa() + "', '" + c.getQuantita() + "')";
 
 		try {
 			dbConnection = DBUtility.getDBConnection();
@@ -99,6 +125,7 @@ public class SpesaDAOImpl implements SpesaDAO {
 		} catch (SQLException e) {
 
 			System.out.println(e.getMessage());
+
 			return false;
 
 		} finally {
@@ -115,6 +142,12 @@ public class SpesaDAOImpl implements SpesaDAO {
 
 	}
 
+	/**
+	 * Metodo necessario per l'interfacciamento con la JTable. Esegue una select di tutte le informazioni necessarie sui prodotti, che saranno fornite all'utente
+	 * @param  int idspesa
+	 * @return DefaultTableModel dm
+	 */
+	 
 	@Override
 	public DefaultTableModel getData(int idspesa) throws SQLException {
 
@@ -160,7 +193,15 @@ public class SpesaDAOImpl implements SpesaDAO {
 	}
 
 	@Override
-	public boolean deleteProduct(String barcode, int idspesa)
+
+
+	/**
+	 * Eliminazione Prodotto dalla lista spesa e aggiornamento dell'importo finale. 
+	 * @param  c Entity Carrello
+	 * @param  shop  Entity Spesa
+	 * @return boolean
+	 */
+	public boolean deleteProduct(Carrello c, Spesa shop)
 			throws SQLException {
 
 		Connection dbConnection = null;
@@ -168,7 +209,7 @@ public class SpesaDAOImpl implements SpesaDAO {
 
 		// ' " ' "
 		String deleteTableSQL = "delete from carrello where prodotto_barcode='"
-				+ barcode + "' and spesa_idspesa= '" + idspesa + "'";
+				+ c.getBarcode() + "' and spesa_idspesa= '" + shop.getIdspesa() + "'";
 
 		try {
 			dbConnection = DBUtility.getDBConnection();
@@ -199,8 +240,16 @@ public class SpesaDAOImpl implements SpesaDAO {
 
 	}
 
+
+
 	@Override
-	public double calcoloImporto(int idspesa) throws SQLException {
+	/**
+	 * Calcolo dell'importo finale della spesa.
+	 * Il calcolo viene eseguito direttamente nella query.
+	 * @param shop Entity Spesa
+	 * 
+	 */
+	public void calcoloImporto(Spesa shop) throws SQLException {
 		// TODO Auto-generated method stub
 
 		double importo_finale = 0;
@@ -208,7 +257,7 @@ public class SpesaDAOImpl implements SpesaDAO {
 		java.sql.Statement s = DBUtility.getStatement();
 
 		String sql = "select sum(p.costo*c.quantita) importo from prodotto p,carrello c,spesa s where s.idspesa= '"
-				+ idspesa
+				+ shop.getIdspesa()
 				+ "' and s.idspesa=c.spesa_idspesa and c.prodotto_barcode=p.barcode";
 
 		try {
@@ -219,6 +268,8 @@ public class SpesaDAOImpl implements SpesaDAO {
 				importo_finale = rs.getDouble("importo");
 
 			}
+			// set di importo totale con il result della query
+			shop.setImporto_tot(importo_finale);
 
 		}
 
@@ -234,20 +285,25 @@ public class SpesaDAOImpl implements SpesaDAO {
 
 		}
 
-		return importo_finale;
 	}
 
+	/**
+	 * Consente di aggiornare la quantità del prodotto da acquistare.
+	 * @param carrello Entity Carrello
+	 * @param shop   Entity Spesa
+	 * @return boolean
+     **/
 	@Override
-	public boolean updateProduct(String barcode, int quantita, int idspesa)
+	public boolean updateProduct(Carrello carrello, Spesa shop)
 			throws SQLException {
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
 		// ' " " '
-		String updateTableSQL = "update carrello set quantita ='" + quantita
-				+ "' where prodotto_barcode='" + barcode
-				+ "' and spesa_idSpesa='" + idspesa + "'";
+		String updateTableSQL = "update carrello set quantita ='" + carrello.getQuantita()
+				+ "' where prodotto_barcode='" + carrello.getBarcode()
+				+ "' and spesa_idSpesa='" + shop.getIdspesa() + "'";
 
 		try {
 			dbConnection = DBUtility.getDBConnection();
@@ -278,24 +334,27 @@ public class SpesaDAOImpl implements SpesaDAO {
 
 	}
 
+	/**
+	 * Consente di eliminare la spesa dal database
+	 * @param shop Entity Spesa
+	 * @return boolean
+	 */
 	@Override
-	public boolean cancellaSpesa(int idSpesa) throws SQLException {
+	public boolean cancellaSpesa(Spesa shop) throws SQLException {
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
-		java.sql.PreparedStatement preparedStatement2 = null;
 
 		// '"+idspesa+"'
 		String deleteSpesaSQL = "DELETE FROM carrello WHERE spesa_idSpesa  = '"
-				+ idSpesa + "'";
-		String deleteSQL2 = "DELETE FROM spesa WHERE idSpesa = '" + idSpesa
+				+ shop.getIdspesa() + "'";
+		String deleteSQL2 = "DELETE FROM spesa WHERE idSpesa = '" + shop.getIdspesa()
 				+ "'";
 
 		try {
 			dbConnection = DBUtility.getDBConnection();
 
 			preparedStatement = dbConnection.prepareStatement(deleteSpesaSQL);
-			preparedStatement2 = dbConnection.prepareStatement(deleteSQL2);
 
 			// execute insert SQL stetement
 			preparedStatement.execute(deleteSpesaSQL);
@@ -305,8 +364,8 @@ public class SpesaDAOImpl implements SpesaDAO {
 
 		} catch (SQLException e) {
 
-			System.out.println(e.getMessage());
-			return false;
+			e.printStackTrace();
+			throw e;
 
 		} finally {
 
@@ -347,8 +406,13 @@ public class SpesaDAOImpl implements SpesaDAO {
 		}
 		return idscheda;
 	}
+
+/**
+ * Mostra il massimale residuo dell'utente
+ *   
+ */
 	@Override
-	public boolean updateMassimale(double mas_res,int idscheda)
+	public boolean show_Massimale(Scheda card)
 			throws SQLException {
 
 
@@ -356,8 +420,8 @@ public class SpesaDAOImpl implements SpesaDAO {
 		java.sql.PreparedStatement preparedStatement = null;
 
 		// ' " " '
-		String updateTableSQL = "update scheda set massimale_res ='" + mas_res
-				+ "' where idscheda='"+idscheda+"' ";
+		String updateTableSQL = "update scheda set massimale_res ='" + card.getMassimale_res()
+				+ "' where idscheda='"+card.getIdScheda()+"' ";
 
 		try {
 			dbConnection = DBUtility.getDBConnection();
@@ -388,8 +452,14 @@ public class SpesaDAOImpl implements SpesaDAO {
 
 	}
 
+	/**
+	 * Calcolo punti tessera fedeltà per la singola spesa  
+	 * Il calcolo punti viene eseguito dentro la query : SUM (quantita*punti prodotto) as punti.
+	 * Il result della query, viene assegnato alla spesa con il metodo setPunti_spesa
+	 * @param shop Entity Spesa
+	 */
 	@Override
-	public int CalcolaPuntiSpesa(int idspesa) throws SQLException {
+	public void CalcolaPuntiSpesa(Spesa shop) throws SQLException {
 		// TODO Auto-generated method stub
 
 
@@ -399,16 +469,18 @@ public class SpesaDAOImpl implements SpesaDAO {
 		java.sql.Statement s = DBUtility.getStatement();
 
 		String sql = "select sum(c.quantita * p.punti_prod) AS punti from carrello c, prodotto p, spesa s "
-				+ "where s.idspesa='"+idspesa+"' and s.idspesa=c.spesa_idspesa and c.prodotto_barcode=p.barcode";
+				+ "where s.idspesa='"+shop.getIdspesa()+"' and s.idspesa=c.spesa_idspesa and c.prodotto_barcode=p.barcode";
 		try {
 			ResultSet rs = s.executeQuery(sql);
 
 			while (rs.next()) {
 
 				punti_spesa = rs.getInt("punti");
+				shop.setPunti_spesa(punti_spesa);
 
 			}
 
+			// assegno a shop, il valore dei punti
 		}
 
 		catch (Exception e) {
@@ -423,36 +495,41 @@ public class SpesaDAOImpl implements SpesaDAO {
 
 		}
 
-		return punti_spesa;
 	}
 
+	/**
+	 * Aggiorna i punti della scheda sommando i punti precendenti con quelli dell'ultima spesa
+	 * @param card Entity Scheda
+	 * @param shop Entity Spesa
+	 */
 	@Override
-	public int AggiornaPuntiSpesa(int idscheda,int punti_spesa) throws SQLException {
+	public void AggiornaPuntiScheda(Scheda card,Spesa shop) throws SQLException {
 		java.sql.Statement s = DBUtility.getStatement();
-		int punti_totali=0;
-
+		double punti_aggiornati=0;
+		double punti_totali_scheda=0;
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
-		String sql = "select punti_totali from scheda where idscheda='"+idscheda+"' ";
+		String sql = "select punti_totali from scheda where idscheda='"+card.getIdScheda()+"' ";
 		try {
 			ResultSet rs = s.executeQuery(sql);
 
 			while (rs.next()) {
 
-				punti_totali=rs.getInt("punti_totali");
+				punti_totali_scheda=rs.getDouble("punti_totali");
 
+				card.setPunti_totali(punti_totali_scheda);
 
 			}
 
-			punti_totali=punti_spesa+punti_totali;
-			
-			
-			
+			punti_aggiornati=shop.getPunti_spesa()+card.getPunti_totali();
 
 
-			String updateTableSQL = "update scheda set punti_totali ='" + punti_totali
-					+ "' where idscheda='"+idscheda+"' ";
+
+
+
+			String updateTableSQL = "update scheda set punti_totali ='" + punti_aggiornati
+					+ "' where idscheda='"+card.getIdScheda()+"' ";
 
 			dbConnection = DBUtility.getDBConnection();
 
@@ -461,19 +538,20 @@ public class SpesaDAOImpl implements SpesaDAO {
 			// execute insert SQL stetement
 			preparedStatement.execute(updateTableSQL);
 
-			
-			
+
+			//aggiorno i punti
+			card.setPunti_totali(punti_aggiornati);
 
 
 		}
- 
+
 
 		catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		}
-		return punti_totali;
 
- 	}
- 
+	}
+
 }
 

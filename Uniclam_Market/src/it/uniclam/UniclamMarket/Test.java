@@ -101,15 +101,14 @@ public class Test {
 
 	public static void main(String[] args) throws SQLException{
 
-		Icon exit = new ImageIcon("img/sad.png");
-		JOptionPane.showMessageDialog(null,
-				"Ci dispiace per la tua scelta! \nSperiamo di rivederti presto!!", "Account Cancellato correttamente", JOptionPane.INFORMATION_MESSAGE, exit);
 		
 		
-	/*	Double pino=pino();
+		
+	 
+		
+ 	Double pino=pino();
 		System.out.println("\nMassimale _ residuo : "+pino);
-		//JOptionPane.showMessageDialog(null, "Prova","title", DISPOSE_ON_CLOSE, icon);
-	}
+ 	}
 
 
 	public static double pino() throws SQLException{
@@ -174,9 +173,9 @@ public class Test {
 
 
 
-			}*/
+			}
 
-/*
+
 			// prendo il primo record della tabella : equivale alla data dell'ultima spesa
 			Date data_ultimaSpesaSQL = dataspesa.get(0);
 			System.out.println("\ndata ultima spesa : "+data_ultimaSpesaSQL);
@@ -228,7 +227,7 @@ public class Test {
 		return massimale_residuo;
 
 
-*/
+
 	}
 
 		
