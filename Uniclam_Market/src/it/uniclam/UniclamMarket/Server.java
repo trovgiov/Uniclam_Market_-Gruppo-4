@@ -3,6 +3,7 @@ package it.uniclam.UniclamMarket;
 import it.uniclam.DAO.SchedaDAOImpl;
 import it.uniclam.DAO.SpesaDAOImpl;
 import it.uniclam.DAO.UtenteDAOImpl;
+import it.uniclam.GUI.Login_GUI;
 import it.uniclam.entity.Carrello;
 import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Spesa;
@@ -430,11 +431,15 @@ public class Server {
 
 				else if (operation.equals(Server.LOGOUT)) {
 
+					Login_GUI.in.close();
+					Login_GUI.out.close();
+					s.close();
+
+
+
 					closeConnection = true;
-					
-					String response=Server.LOGOUT_OK;
-					out.println(response);
-					 
+
+
 				}
 
 

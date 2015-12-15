@@ -147,33 +147,28 @@ public class ControllerLogin {
 
 
 	// Da Fare
-	public static void logout(Socket s) throws IOException{
+	public static void logout( ) throws IOException{
 
 
 		//Preparo la richiesta da inviare al server
 		String req = Server.LOGOUT;
+		Login_GUI.out.println(req);
 
 		System.out.println(req);
 
+		Login_GUI.in.close();
+		Login_GUI.out.close();
 		//Invio la richiesta
-		Login_GUI.out.println(req);
 
 
 
 
 
 
-
-		String line = Login_GUI.in.readLine();
-		if(line.contentEquals(Server.LOGOUT_OK)){
-
-
-
-			s.close();
-			System.out.println("Socket Closed");			
-		}
-
+		System.out.println("Socket Closed");			
 	}
 
-
 }
+
+
+

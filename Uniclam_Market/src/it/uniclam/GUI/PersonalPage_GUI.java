@@ -230,7 +230,7 @@ public class PersonalPage_GUI extends JFrame {
 				JOptionPane.showMessageDialog(PersonalPage_GUI.this,
 						"Arrivederci!", "Logout", JOptionPane.INFORMATION_MESSAGE, exit);
 				try {
-					ControllerLogin.logout(s);
+					ControllerLogin.logout();
  				} catch (IOException e1) {
 					e1.printStackTrace();
 				} 
