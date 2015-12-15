@@ -1,29 +1,26 @@
 package it.uniclam.GUI;
 
 import it.uniclam.Controller.ControllerUtente;
-import it.uniclam.UniclamMarket.Client;
-import it.uniclam.UniclamMarket.Server;
 import it.uniclam.entity.Utente;
-import it.uniclam.mail.EmailUtility;
 
-import java.awt.EventQueue;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
+
+
 import javax.swing.JFrame;
 
 import java.awt.Color;
 
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
 
-import java.awt.SystemColor;
+
+
 
 import javax.swing.JLabel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.JProgressBar;
+
+
+
 
 import java.awt.Font;
 
@@ -31,12 +28,14 @@ import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 
+
+/**
+ * Interfaccia Grafica per la registrazione utente
+ * @author Giovanni Trovini - Enea Marinelli
+ *
+ */
+@SuppressWarnings("serial")
 public class Registrazione_GUI extends JFrame {
 
 	// private JFrame this;
@@ -47,14 +46,14 @@ public class Registrazione_GUI extends JFrame {
 	private JTextField textMassimale;
 
 	/**
-	 * Create the application.
+	 * Crea il frame
 	 */
 	public Registrazione_GUI() {
 		initialize();
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Inizializza il frame
 	 */
 	private void initialize() {
 		// this = new JFrame();
@@ -145,16 +144,16 @@ public class Registrazione_GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
- 
-				
- 				String nome = txtNome.getText();
+
+
+				String nome = txtNome.getText();
 				String cognome = textCognome.getText();
 				String email = textEmail.getText();
 
 				String telefono = textTelefono.getText();
 				Double massimale = Double.parseDouble(textMassimale.getText());
-				
-				
+
+
 				Utente u=new Utente(nome,cognome,email,telefono,massimale );
 
 				String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";

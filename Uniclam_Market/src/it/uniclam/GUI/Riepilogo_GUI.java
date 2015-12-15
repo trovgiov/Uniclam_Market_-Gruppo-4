@@ -23,24 +23,27 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
 
+/**
+ * Interfaccia grafica di riepilogo
+ * @author Giovanni Trovini - Enea Marinelli
+ *
+ */
+@SuppressWarnings("serial")
 public class Riepilogo_GUI extends JFrame{
 
-	private int idspesa;
 	Socket s;
-	private double mass_residuo;
- 	private Spesa shop;
+	private Spesa shop;
 	private Scheda card;
 
 	public Riepilogo_GUI(Socket s,Scheda card,Spesa shop) {
 
-	
+
 		this.s=s;
 		this.card=card;
 		this.shop=shop;
-	
+
 		initialize();
 	}
-
 
 
 	/**
@@ -79,7 +82,7 @@ public class Riepilogo_GUI extends JFrame{
 		lblImportoTotale.setForeground(new Color(255, 255, 0));
 		lblImportoTotale.setBounds(120, 160, 256, 59);
 		this.getContentPane().add(lblImportoTotale);
- 
+
 		JLabel lblNewLabel = new JLabel("Punti Fedeltà Spesa: ");
 		lblNewLabel.setForeground(new Color(255, 255, 0));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -98,8 +101,8 @@ public class Riepilogo_GUI extends JFrame{
 		lblImporto.setBounds(361, 177, 90, 24);
 		getContentPane().add(lblImporto);
 
-		
- 		ControllerSpesa.CalcolaPuntiSpesa(s, shop);
+
+		ControllerSpesa.CalcolaPuntiSpesa(s, shop);
 
 		JLabel labelPunti = new JLabel(""+shop.getPunti_spesa());
 		labelPunti.setForeground(Color.YELLOW);
@@ -143,7 +146,7 @@ public class Riepilogo_GUI extends JFrame{
 								"Spesa annullata. Non ti è stato addebitato alcun costo.\n" + "Il tuo massimale residuo è ora: " + card.getMassimale_res(),
 								"Esito Spesa", JOptionPane.INFORMATION_MESSAGE, happy);
 
- 						System.exit(0);
+						System.exit(0);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -173,8 +176,8 @@ public class Riepilogo_GUI extends JFrame{
 						"Spesa inoltrata correttamente." + "\nIl tuo massimale residuo è ora: € " + card.getMassimale_res() + 
 						"\nCon questa spesa hai in totale "+card.getPunti_totali() +" punti. \nGrazie per aver scelto Uniclam Market!",
 						"Esito Spesa", JOptionPane.INFORMATION_MESSAGE, confirm);
- 
-   			}
+
+			}
 		});
 
 

@@ -1,5 +1,10 @@
 package it.uniclam.entity;
 
+/**
+ * Entity Scheda
+ * @author GiovanniTrovini
+ *
+ */
 public class Scheda {
 
 	private int idScheda;

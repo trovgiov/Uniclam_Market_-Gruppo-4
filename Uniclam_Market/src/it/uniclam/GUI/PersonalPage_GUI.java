@@ -11,8 +11,7 @@ import javax.swing.JOptionPane;
 
 import it.uniclam.Controller.ControllerLogin;
 import it.uniclam.Controller.Controller_PersonalPage;
-import it.uniclam.UniclamMarket.Server;
-import it.uniclam.entity.Scheda;
+ import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Utente;
 
 import java.awt.Font;
@@ -29,7 +28,11 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
 
-
+/**
+ * Interfaccia grafica Pagina Personale
+ * @author Giovanni Trovini - Enea Marinelli
+ *
+ */
 @SuppressWarnings("serial")
 public class PersonalPage_GUI extends JFrame {
 
@@ -70,7 +73,7 @@ public class PersonalPage_GUI extends JFrame {
 
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Inizializza il contenuto del frame
 	 */
 	private void initialize() {
 		// frame = new JFrame();

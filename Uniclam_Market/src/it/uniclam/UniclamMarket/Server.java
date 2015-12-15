@@ -430,7 +430,7 @@ public class Server {
 
 				else if (operation.equals(Server.LOGOUT)) {
 					closeConnection = true;
-
+             
 
 
 					String response=Server.LOGOUT_OK;

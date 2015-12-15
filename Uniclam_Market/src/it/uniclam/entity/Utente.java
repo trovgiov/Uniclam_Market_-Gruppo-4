@@ -1,5 +1,10 @@
 package it.uniclam.entity;
 
+/**
+ * Entity Utente
+ * @author GiovanniTrovini
+ *
+ */
 public class Utente {
 	private String nome;
 	private String cognome;
@@ -10,11 +15,11 @@ public class Utente {
 	/**
 	 * Costruttore utente per la registrazione
 	 * 
-	 * @param nome
-	 * @param cognome
-	 * @param email
-	 * @param telefono
-	 * @param massimale
+	 * @param nome String
+	 * @param cognome String
+	 * @param email String
+	 * @param telefono String
+	 * @param massimale String
 	 */
 	public Utente(String nome, String cognome, String email, String telefono,
 			double massimale) {
@@ -41,10 +46,10 @@ public class Utente {
 	}
 
 	/**
-	 * costruttore Pagina Personale
-	 * 
-	 * @param nome
-	 * @param cognome
+	 * Costruttore Pagina Personale
+	 * @param nome String
+	 * @param cognome String
+	 * @param email String
 	 */
 
 	public Utente(String nome, String cognome, String email) {
@@ -54,7 +59,10 @@ public class Utente {
 		this.email = email;
 	}
 
-	// Costruttore Utente personalizzato
+ /**
+  * Costruttore personalizzato utente
+  * @param email
+  */
 	public Utente(String string) {
 		this.email=string;
 	}

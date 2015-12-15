@@ -1,14 +1,13 @@
 package it.uniclam.GUI;
 
-import java.awt.EventQueue;
-
+ 
 import javax.swing.JFrame;
 
 import java.awt.Color;
 
 import javax.swing.JLabel;
-import javax.swing.JFormattedTextField;
-import javax.swing.JTextPane;
+ 
+
 
 import java.awt.Font;
 import java.awt.HeadlessException;
@@ -17,31 +16,16 @@ import java.awt.SystemColor;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.ListSelectionModel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JSeparator;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JRadioButton;
-import javax.swing.border.BevelBorder;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
-import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
+ 
+
 
 import it.uniclam.Controller.ControllerSpesa;
-import it.uniclam.Controller.Controller_PersonalPage;
-import it.uniclam.DAO.SpesaDAOImpl;
-import it.uniclam.DAO.UtenteDAOImpl;
-import it.uniclam.UniclamMarket.Server;
 import it.uniclam.entity.Carrello;
-import it.uniclam.entity.JTableOperation;
 import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Spesa;
 
@@ -50,14 +34,16 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JScrollBar;
-
+ /**
+  * Interfaccia grafica Spesa
+   * @author GiovanniTrovini Enea Marinelli
+  *
+  */
+@SuppressWarnings("serial")
 public class Spesa_GUI extends JFrame {
 
 	private JTextField textBarcode;
@@ -73,17 +59,7 @@ public class Spesa_GUI extends JFrame {
 	 */
 
 
-	/*
-	public Spesa_GUI(int id, Socket s, double mass_res) {
-		this.idspesa = id;
-		this.s = s;
-		this.mass_residuo = mass_res;
-
-		initialize();
-	}
-
-	 */
-
+ 
 
 	public static BufferedReader in;
 

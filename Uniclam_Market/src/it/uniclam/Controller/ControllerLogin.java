@@ -145,6 +145,8 @@ public class ControllerLogin {
 
 	}
 	
+	
+	// Da Fare
 	public static void logout(Socket s) throws IOException{
 		
 		

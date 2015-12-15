@@ -2,6 +2,11 @@ package it.uniclam.entity;
 
 import java.util.Date;
 
+/**
+ * Entity Spesa
+ * @author GiovanniTrovini
+ *
+ */
 public class Spesa {
 
 	private int idspesa;

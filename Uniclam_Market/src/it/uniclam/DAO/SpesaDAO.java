@@ -6,8 +6,7 @@ import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Spesa;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-
+ 
 import javax.swing.table.DefaultTableModel;
 
 public interface SpesaDAO {

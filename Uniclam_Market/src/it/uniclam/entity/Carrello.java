@@ -1,5 +1,10 @@
 package it.uniclam.entity;
 
+/**
+ * Entity Carrello
+ * @author GiovanniTrovini
+ *
+ */
 public class Carrello {
 
 	private String barcode;
@@ -16,8 +21,9 @@ public class Carrello {
 	
 	/**
 	 * Costruttore personalizzato per le operazioni di CRUD prodotto
-	 * @param barcode
-	 * @param quantita
+	 * @param barcode String
+	 * @param quantita int
+	 * 
 	 */
 	public Carrello(String barcode, int quantita) {
 		super();
@@ -42,6 +48,12 @@ public class Carrello {
 	public void setPrezzo_finale(double prezzo_finale) {
 		this.prezzo_finale = prezzo_finale;
 	}
+	/**
+	 * Costruttore personalizzato lista spesa
+	 * @param nome_prodotto String
+	 * @param quantita int
+	 * @param prezzo_finale double
+	 */
 	public Carrello(String nome_prodotto, int quantita, double prezzo_finale) {
 		super();
 		this.nome_prodotto = nome_prodotto;
@@ -50,7 +62,7 @@ public class Carrello {
 	}
 	/**
 	 * Costruttore personalizzato per eliminazione prodotto dalla lista spesa
-	 * @param barcode barcode prodotto
+	 * @param barcode  String
 	 */
 	public Carrello(String barcode) {
 		this.barcode=barcode;

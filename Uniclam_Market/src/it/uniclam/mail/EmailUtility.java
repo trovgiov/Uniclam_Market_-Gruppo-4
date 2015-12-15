@@ -14,9 +14,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
- * A utility class for sending e-mail with attachment.
+ * Classe per la gestione dell'invio mail all'utente
  * 
- * @author www.codejava.net
+ * @author Giovanni Trovini
  *
  */
 public class EmailUtility {
@@ -27,7 +27,7 @@ public class EmailUtility {
 	public static String PASSWORD = "trovinimarinelli";
 
 	/**
-	 * This methos is used to set parameters for sending Email
+	 * Configurazione parametri mail
 	 * 
 	 * @param host
 	 * @param port

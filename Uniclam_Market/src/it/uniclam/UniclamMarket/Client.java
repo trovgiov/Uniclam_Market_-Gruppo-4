@@ -15,8 +15,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
 
-import javax.swing.SwingConstants;
-
+ 
 @SuppressWarnings("serial")
 public class Client extends JFrame {
 	// private Registrazione_GUI Reg_GUI_Panel;
@@ -40,7 +39,7 @@ public class Client extends JFrame {
 	}
 
 	/**
-	 * Create the application.
+	 * Creo l'applicazione.
 	 */
 	public Client() {
 		initialize();
@@ -49,7 +48,7 @@ public class Client extends JFrame {
 
 	
 	/**
-	 * Initialize the contents of the frame.
+	 * Inizializzo il contenuto del frame
 	 */
 	private void initialize() {
 		frmUniclamMarket = new JFrame();

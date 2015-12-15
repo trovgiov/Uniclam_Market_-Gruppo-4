@@ -6,12 +6,17 @@ import it.uniclam.entity.Utente;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+/**
+ * Classe per l'invio di email all'utente
+ * @author GiovanniTrovini
+ *
+ */
 public class SendEmail {
 
 	
 	
 	/**
-	 * Metodo per iviare mail contenente le credenziali di accesso al sistema
+	 * Metodo per inviare mail contenente le credenziali di accesso al sistema
 	 * @param nome
 	 * @param cognome
 	 * @param telefono

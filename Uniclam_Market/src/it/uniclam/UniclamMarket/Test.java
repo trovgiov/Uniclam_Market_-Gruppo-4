@@ -1,99 +1,24 @@
 package it.uniclam.UniclamMarket;
 
-import it.uniclam.GUI.PersonalPage_GUI;
-import it.uniclam.db.DBUtility;
-import it.uniclam.entity.Carrello;
+ import it.uniclam.db.DBUtility;
+ 
+ 
 
-import java.awt.Font;
-import java.awt.Image;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+ 
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
+ 
 
-import com.mysql.jdbc.Connection;
-
+ 
 public class Test {
-
-	private static final int DISPOSE_ON_CLOSE = 0;
-	private static final int SYSTEM_MESSAGE = 0;
+ 
 
 	
-	@SuppressWarnings({ "deprecation", "unused" })
-
-	/*
-	public static void main(String[] args) throws SQLException {
-
-		java.util.Date today = new java.util.Date(); //DATA DI OGGI
-		Date date = null;
-
-		java.sql.Statement s = DBUtility.getStatement();
-
-		String sql = " select data_spesa from spesa where scheda_idscheda=45 ORDER BY data_spesa DESC ";
-
-		ArrayList<Date> dataspesa = new ArrayList<Date>();
-
-
-			ResultSet rs = s.executeQuery(sql);
-
-			while (rs.next()) {
-
-				date = rs.getDate("data_spesa");
-				dataspesa.add(date);
-
-
-
-			Date data_ultimaSpesaSQL = dataspesa.get(1);
-
-			// ho la data spesa nel formato java util
-
-			java.util.Date data_Spesa = new java.util.Date(data_ultimaSpesaSQL.getTime());
-
-			int month = data_Spesa.getMonth(); // prendo il mese
-
-
-			System.out.println("data sql: " + data_ultimaSpesaSQL);
-
-			System.out.println("data util.date: " +data_Spesa+"\n");
-
-			System.out.println("Mese della data inserita nel db : " + month);
-
-			System.out.println("Mese della data odierna : " + today.getMonth());
-
-			// System.out.println(cal.toString());
-
-
-			if(month>today.getMonth()){
-				//mass res=mass tot
-			}
-			else if(month==today.getMonth()){
-				//mass_res non cambia 
-			}
-		}
-
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		finally {
-
-			if (s != null) {
-				s.close();
-			}
-
-		}
-
-	}
-
-	 */
+ 	 
 
 
 
@@ -111,6 +36,7 @@ public class Test {
  	}
 
 
+	@SuppressWarnings({ "deprecation", "unused" })
 	public static double pino() throws SQLException{
 
 		double massimale_residuo = 0;

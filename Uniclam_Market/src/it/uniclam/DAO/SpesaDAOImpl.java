@@ -7,12 +7,10 @@ import it.uniclam.entity.Spesa;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
+ 
 import java.util.Random;
 
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+ import javax.swing.table.DefaultTableModel;
 
 import com.mysql.jdbc.Connection;
 

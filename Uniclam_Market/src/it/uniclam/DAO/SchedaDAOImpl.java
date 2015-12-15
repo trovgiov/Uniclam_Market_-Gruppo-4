@@ -3,7 +3,7 @@ package it.uniclam.DAO;
  import it.uniclam.db.DBUtility;
 import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Utente;
- import it.uniclam.mail.SendEmail;
+import it.uniclam.mail.SendEmail;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -271,7 +271,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 	 * @throws SQLException
 	 */
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "deprecation" })
 	@Override
 	public double checkMassimale(Scheda card) throws SQLException {
 
@@ -495,6 +495,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 		String updateQuery =  "update scheda set massimale_res='"+card.getMassimale_res()+"' where idscheda='"+card.getIdScheda()+"' ";
 		try {
 
+			@SuppressWarnings("unused")
 			int n = s.executeUpdate(updateQuery);
 		}
 

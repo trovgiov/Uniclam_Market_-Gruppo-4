@@ -1,17 +1,9 @@
 package it.uniclam.GUI;
 
 import it.uniclam.Controller.ControllerLogin;
-import it.uniclam.Controller.ControllerUtente;
-import it.uniclam.DAO.SchedaDAOImpl;
-import it.uniclam.DAO.UtenteDAOImpl;
-import it.uniclam.UniclamMarket.Server;
 import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Utente;
-import it.uniclam.mail.EmailUtility;
 
-import java.awt.EventQueue;
-
-import javax.mail.MessagingException;
 import javax.swing.JFrame;
 
 import java.awt.Color;
@@ -19,15 +11,12 @@ import java.awt.Color;
 import javax.swing.JLabel;
 
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
-import java.sql.SQLException;
+ 
+
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -37,6 +26,12 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 
+/**
+ * Interfaccia grafica Login
+ * @author GiovanniTrovini - Enea Marinelli
+ *
+ */
+@SuppressWarnings("serial")
 public class Login_GUI extends JFrame {
 
 	protected static final int INPUT_MESSAGE = 0;
@@ -55,14 +50,14 @@ public class Login_GUI extends JFrame {
 	public static PrintWriter out;
 
 	/**
-	 * Create the application.
+	 * Crea l'applicazione.
 	 */
 	public Login_GUI() {
 		initialize();
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Inizializza il contenuto del frame.
 	 */
 	private void initialize() {
 		// = new JFrame();
@@ -123,9 +118,7 @@ public class Login_GUI extends JFrame {
 		this.setBounds(100, 100, 555, 366);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		/**
-		 * ActionListener per il Login
-		 */
+		 
 
 		btnLogin.addActionListener(new ActionListener() {
 
@@ -150,7 +143,7 @@ public class Login_GUI extends JFrame {
 			}
 
 		});
-
+	 
 		btnRecuperaPin.addActionListener(new ActionListener() {
 
 			@Override

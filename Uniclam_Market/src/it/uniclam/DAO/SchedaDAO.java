@@ -15,6 +15,7 @@ import javax.mail.internet.AddressException;
 public interface SchedaDAO {
 
 	 
+	
 	public void activeCard(Scheda s, Utente u) throws SQLException;
 
 	public int[] generatePin(Utente u) throws SQLException;
