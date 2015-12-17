@@ -112,8 +112,9 @@ public class ControllerLogin {
 				// Invio la richiesta al server
 
 				String req = Server.RECOVERY_PIN + "/"+u.getEmail()+"\n" ; 
-				System.out.println (req);
-				out.println(req);
+ 				out.println(req);
+
+ 				System.out.println("\n"+req);
 
 				String line = in.readLine();
 				System.out.println(line);
@@ -163,7 +164,7 @@ public class ControllerLogin {
 
 
 
-		System.out.println("Socket Closed");			
+		System.out.println("\nSocket Closed");			
 	}
 
 }

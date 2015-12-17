@@ -46,10 +46,11 @@ public class Controller_PersonalPage {
 			// preparo la richiesta da inviare al server
 			String req = Server.CREATE_SHOPPING + "/" + card.getIdScheda()+"\n";
 
-			System.out.println("\n"+req);
-
+ 
 			// invio richiesta al server
 			Login_GUI.out.println(req);
+			System.out.println("\n"+req);
+
 
 			String line = Login_GUI.in.readLine();
 
@@ -100,10 +101,10 @@ public class Controller_PersonalPage {
 			//Preparo la richiesta da inviare al server
 			String req = Server.DELETE_USER + "/" + u.getEmail()+"\n";
 
-			System.out.println("\n"+req);
-
+ 
 			//Invio la richiesta al server
 			Login_GUI.out.println(req);
+			System.out.println("\n"+req);
 
 
 			//Ricevo la risposta dal server
@@ -144,10 +145,11 @@ public class Controller_PersonalPage {
 
 				// Preparo la richiesta da inviare al server
 				String req = Server.CHANGE_EMAIL + "/" + u.getEmail() + "/" + new_mail+"\n";
-				System.out.println("\n"+req);
-
+ 
 				// Invio la richiesta al sever
 				Login_GUI.out.println(req);
+
+				System.out.println("\n"+req);
 
 				// Ricevo la risposta dal server
 				String line = Login_GUI.in.readLine();
@@ -198,10 +200,10 @@ public class Controller_PersonalPage {
 			//Preparo la richiesta da inviare al server
 			String req = Server.SHOW_POINTS + "/" + card.getIdScheda()+"\n";
 
-			System.out.println("\n"+req);
-			//Invio la richiesta al server
+ 			//Invio la richiesta al server
 			Login_GUI.out.println(req);
 
+			System.out.println("\n"+req);
 
 			//Ricevo la risposta dal server e la divido tramite uno split
 			String line = Login_GUI.in.readLine();

@@ -48,10 +48,11 @@ public class ControllerSpesa {
 
 		//Preparo la richiesta da mandare al server
 		String req = Server.DELETE_SHOP+"\n";
-		System.out.println("\n"+req);
-
+ 
 		//invio la richiesta
 		Login_GUI.out.println(req);
+
+		System.out.println("\n"+req);
 
 
 		String line = Login_GUI.in.readLine();
@@ -92,11 +93,12 @@ public class ControllerSpesa {
 			String req = Server.INSERT_PRODUCT + "/" + c.getBarcode() + "/"
 					+ c.getQuantita()+"\n";
 
-			System.out.println("\n"+req);
-
+ 
 			//invio la richiesta
 			Login_GUI.out.println(req);
 
+
+			System.out.println("\n"+req);
 
 			String line = Login_GUI.in.readLine();
 			System.out.println(line);
@@ -158,9 +160,11 @@ public class ControllerSpesa {
 			//Preparo la richiesta da inviare al server
 			String response = Server.DELETE_PRODUCT + "/" + c.getBarcode() + "\n";
 
-			System.out.println("\n"+response);
-			//Invio la richiesta al server
+ 			//Invio la richiesta al server
 			Login_GUI.out.println(response);
+			
+			System.out.println("\n"+response);
+
 
 			String line = Login_GUI.in.readLine();
 			System.out.println(line);
@@ -223,10 +227,11 @@ public class ControllerSpesa {
 			String req = Server.UPDATE_PRODUCT + "/" + c.getBarcode() + "/"
 					+ c.getQuantita() + "\n";
 
-			System.out.println("\n"+req);
-
+ 
 			//Invio la richiesta al server
 			Login_GUI.out.println(req);
+
+			System.out.println("\n"+req);
 
 			//Ricevo la richiesta dal client
 
@@ -283,10 +288,11 @@ public class ControllerSpesa {
 			//Preparo la stringa da mandare al server
 			String req = Server.GET_POINTS +"\n";
 
-			System.out.println(req);
-
+ 
 			//Invio la stringa al server
 			Login_GUI.out.println(req);
+
+			System.out.println("\n"+req);
 
 			//Ricevo la risposta dal server 
 			String line = Login_GUI.in.readLine();
@@ -340,7 +346,7 @@ public class ControllerSpesa {
 			Login_GUI.out.println(req);
 
 
-			System.out.println(req);
+			System.out.println("\n"+req);
 
 
 
@@ -388,13 +394,12 @@ public class ControllerSpesa {
 			//Preparo la richiesta da inviare al server
 			String req = Server.UPDATE_MASSIMALE_RESIDUO + "/"+card.getMassimale_res()+"/"  +"\n";
 
-			System.out.println(req);
-
+ 
 			//Invio la richiesta
 			Login_GUI.out.println(req);
 
 
-
+			System.out.println("\n"+req);
 
 
 

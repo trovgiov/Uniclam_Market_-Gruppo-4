@@ -161,12 +161,12 @@ public class Server {
 							u);
 
 					// mando la risposta al client, con id scheda(a[0]) e pin(a[1])
-					String response =  Server.USER_INSERTED + "/" + a[0] + "/" + a[1]+"\n";
+					String response =  Server.USER_INSERTED +"/"+a[0]+"/"+a[1]+"\n";
 
 					out.println(response);
+					s.close();
 
-
-
+					closeConnection=true;
 				}
 
 				else if (operation.contentEquals(LOGIN_USER)) {

@@ -49,7 +49,7 @@ public class ControllerUtente {
 
 				out.println(req);
 
-				System.out.println(req);
+				System.out.println("\n"+req);
 
 				//	Icon happy = new ImageIcon("img/happy.png");
 
@@ -86,7 +86,7 @@ public class ControllerUtente {
 					SendEmail.Email_User(u, card);
 
 
-				}
+ 				}
 
 				else {
 					System.out.println(response);
@@ -122,7 +122,7 @@ public class ControllerUtente {
 
 
 			}
-
+		 
 		}
 
 	}

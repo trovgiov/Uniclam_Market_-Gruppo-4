@@ -1,7 +1,11 @@
 package it.uniclam.GUI;
 
+import it.uniclam.Controller.ControllerLogin;
 import it.uniclam.Controller.ControllerUtente;
 import it.uniclam.entity.Utente;
+
+
+
 
 
 
@@ -22,12 +26,17 @@ import javax.swing.ImageIcon;
 
 
 
+
+
+
 import java.awt.Font;
 
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.sql.SQLException;
 
 
 /**
@@ -161,8 +170,9 @@ public class Registrazione_GUI extends JFrame {
 				// Passo alla funzione di Controller
 
 				ControllerUtente.registrazioneUtente(u, emailPattern);
-
-
+		 
+				Registrazione_GUI.this.setVisible(false);
+ 
 			}
 		});
 	}
