@@ -16,16 +16,16 @@ public class Spesa {
 	private int quantita;
 	private int idscheda;
 
-	/**
-	 * Costruttore per la creazione della spesa
-	 * 
-	 * @param data_spesa
-	 * @param idscheda
-	 */
-
+	 
 	public int getIdscheda() {
 		return idscheda;
 	}
+
+	/**
+	 * Costruttore per la creazione della spesa
+	 * @param data_spesa int
+	 * @param idscheda int
+	 */
 
 	public Spesa(int idscheda, Date data_spesa) {
 		super();

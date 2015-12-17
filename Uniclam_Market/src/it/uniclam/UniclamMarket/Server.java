@@ -381,10 +381,10 @@ public class Server {
 
 					//Metodo che esegue la query per mostrare i punti.
 					//Restituisce i punti totali da inviare al server
-					double punti=SchedaDAOImpl.getInstance().show_points(card);
+					SchedaDAOImpl.getInstance().show_points(card);
 
 					// Preparo la risposta da inviare al server
-					String response=Server.POINTS_SHOWED+"/"+punti+"\n";
+					String response=Server.POINTS_SHOWED+"/"+card.getPunti_totali()+"\n";
 					//Invio la risposta
 					out.println(response);
 				}

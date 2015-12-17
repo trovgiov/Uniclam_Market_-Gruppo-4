@@ -11,6 +11,7 @@ import javax.swing.SwingConstants;
 import it.uniclam.Controller.ControllerSpesa;
 import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Spesa;
+import it.uniclam.entity.Utente;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -34,13 +35,15 @@ public class Riepilogo_GUI extends JFrame{
 	Socket s;
 	private Spesa shop;
 	private Scheda card;
+	private Utente u;
 
-	public Riepilogo_GUI(Socket s,Scheda card,Spesa shop) {
+	public Riepilogo_GUI(Socket s,Scheda card,Spesa shop,Utente u) {
 
 
 		this.s=s;
 		this.card=card;
 		this.shop=shop;
+		this.u=u;
 
 		initialize();
 	}
@@ -135,7 +138,7 @@ public class Riepilogo_GUI extends JFrame{
 
 			public void actionPerformed(ActionEvent e) {
 
-				int scelta = JOptionPane.showConfirmDialog(Riepilogo_GUI.this, "Sei di voler annullare la spesa e uscire?", "Conferma uscita",
+				int scelta = JOptionPane.showConfirmDialog(Riepilogo_GUI.this, "Sei di voler annullare la spesa e tornare nella tua area personale ?", "Conferma uscita",
 						JOptionPane.YES_NO_OPTION, JOptionPane.YES_OPTION, scary);
 				switch (scelta) {
 				case JOptionPane.YES_OPTION: {
@@ -146,7 +149,9 @@ public class Riepilogo_GUI extends JFrame{
 								"Spesa annullata. Non ti è stato addebitato alcun costo.\n" + "Il tuo massimale residuo è ora: " + card.getMassimale_res(),
 								"Esito Spesa", JOptionPane.INFORMATION_MESSAGE, happy);
 
-						System.exit(0);
+						Riepilogo_GUI.this.setVisible(false);
+						PersonalPage_GUI window=new PersonalPage_GUI(s, card, u);
+						window.setVisible(true);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -169,16 +174,16 @@ public class Riepilogo_GUI extends JFrame{
 				//Aggiorno i punti totali
 				ControllerSpesa.CalcoloPuntiTotali(s,shop,card);
 
-				ControllerSpesa.updateMassimale_residuo(s, shop, card);
+				ControllerSpesa.updateMassimale_residuo(s, shop, card,u);
 				//aggiorno massimale totale
 
 				JOptionPane.showMessageDialog(null,
 						"Spesa inoltrata correttamente." + "\nIl tuo massimale residuo è ora: € " + card.getMassimale_res() + 
 						"\nCon questa spesa hai in totale "+card.getPunti_totali() +" punti. \nGrazie per aver scelto Uniclam Market!",
 						"Esito Spesa", JOptionPane.INFORMATION_MESSAGE, confirm);
-				
+
 				Riepilogo_GUI.this.setVisible(false);
-  
+
 			}
 		});
 

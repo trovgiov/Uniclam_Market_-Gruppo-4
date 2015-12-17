@@ -34,7 +34,7 @@ public class Controller_PersonalPage {
 	 * @param s     Socket
 	 * @param card  Scheda
 	 */
-	public static void effettuaspesa(Socket s, Scheda card) {
+	public static void effettuaspesa(Socket s, Scheda card,Utente u) {
 
 		try {
 
@@ -66,7 +66,7 @@ public class Controller_PersonalPage {
 
 				Spesa shop=new Spesa(Integer.parseInt(parts[1]));
 
-				Spesa_GUI spesawindow = new Spesa_GUI(s,shop,card);
+				Spesa_GUI spesawindow = new Spesa_GUI(s,shop,card,u);
 				spesawindow.setVisible(true);
 
 			}

@@ -1,6 +1,6 @@
 package it.uniclam.DAO;
 
- import it.uniclam.db.DBUtility;
+import it.uniclam.db.DBUtility;
 import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Utente;
 import it.uniclam.mail.SendEmail;
@@ -38,15 +38,14 @@ public class SchedaDAOImpl implements SchedaDAO {
 		return dao;
 	}
 
-	
+
 	/**
 	 * Si occupa di attivare la tessera fedelta' e inserire i dati nel database.
-	 * 
-	 * @param s
-	 * @param u
+	 * @param s Socket
+	 * @param u Utente
 	 * @throws SQLException
 	 */
-	 
+
 	@Override
 	public void activeCard(Scheda s, Utente u) throws SQLException {
 
@@ -194,7 +193,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 		return a;
 
 	}
- 
+
 
 	/**
 	 * Metodo che fornisce una funzione aggiuntiva al progetto.
@@ -203,7 +202,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 	 * @throws SQLException
 	 */
-	
+
 	@Override
 	public void recovery_pin(Utente u) throws SQLException,
 
@@ -267,7 +266,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 	 * Se il mese, in cui l'utente accede al sistema, corrisponde al mese dell'ultima spesa effetuato, il sistema restituisce il massimale reiduo.
 	 * Se il mese, in cui l'utente accede al sistema, corrisponde a un mese diverso dall'ultima spesa, il sistema resetta il massimale residuo a quello totale.
 	 * @param card Scheda
-	 * @return Restituisce il massimale 
+	 * @return massimale Restituisce il massimale 
 	 * @throws SQLException
 	 */
 
@@ -408,7 +407,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 
 	/**
-	 * Metodo che restituisce l'utente (informazioni personali) che ha effettuato il login 
+	 * Acquisisce le informazioni personali dell'utente  che ha effettuato il login 
 	 * @param card Scheda
 	 * @return Utente
 	 *  @throws SQLException
@@ -443,13 +442,12 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 	@Override
 	/**
-	 * Metodo che seleziona , tramite query, i punti totali a partire dall'id scheda.
-	 * Restituisce i punti totali
+	 * Seleziona , tramite query, i punti totali a partire dall'id scheda.
 	 * @param card Scheda
-	 * @retrun Punti Acquisiti
+	 * @retrun Punti_Acquisiti 	 
 	 *  @throws SQLException
 	 */
-	public double show_points(Scheda card) throws SQLException {
+	public void show_points(Scheda card) throws SQLException {
 
 		int punti=0;
 
@@ -473,8 +471,8 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 
 
+		card.setPunti_totali(punti);
 
-		return punti;
 	}
 
 
@@ -484,7 +482,7 @@ public class SchedaDAOImpl implements SchedaDAO {
 
 	/**
 	 * Eseguo l'update del massimale residuo e lo inserisco nel db
-	 * @param card
+	 * @param card Scheda
 	 *  @throws SQLException
 	 */
 	public void UpdateMassimaleResiduo(Scheda card) throws SQLException {

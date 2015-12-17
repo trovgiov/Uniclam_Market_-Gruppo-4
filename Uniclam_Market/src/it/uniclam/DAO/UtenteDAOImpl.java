@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
- 
+
 import com.mysql.jdbc.Connection;
 
 import it.uniclam.db.DBUtility;
@@ -24,16 +24,18 @@ public class UtenteDAOImpl implements UtenteDAO {
 		}
 		return dao;
 	}
-	
-	
-	
+
+
+
 	/**
-	 * Metodo per inserire l'utente nel DB
+	 * Crea ed inserisce l'utente nel db
+	 * @param u Utente
+	 * @throws SQLException
 	 */
 
 	@Override
 	public void insertUtente(Utente u) throws SQLException {
- 
+
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
@@ -74,7 +76,14 @@ public class UtenteDAOImpl implements UtenteDAO {
 
 	}
 
+
 	@SuppressWarnings("unused")
+	/**
+	 * Aggiorna la mail dell'utente
+	 * @param u Utente
+	 * @param new_mail nuova mail da aggiornare
+	 * @throws SQLException
+	 */
 	@Override
 	public void updateUtente(Utente u, String new_mail) throws SQLException {
 		// TODO Auto-generated method stub
@@ -88,12 +97,17 @@ public class UtenteDAOImpl implements UtenteDAO {
 		}
 
 		catch (SQLException e) {
- 			e.printStackTrace();
- 			throw e;
+			e.printStackTrace();
+			throw e;
 		}
 		s.close();
 	}
 
+	/**
+	 * Cancella utente
+	 * @param u Utente
+ 	 * @throws SQLException
+	 */
 	@Override
 	public void deleteUtente(Utente u) throws SQLException {
 		// TODO Auto-generated method stub
@@ -127,13 +141,17 @@ public class UtenteDAOImpl implements UtenteDAO {
 		}
 
 	}
-
+ 
 	/**
-	 * Metodo che consente l'autenticazione. Restituisce true se le credenziali inserite si trovano nel database, altrimenti non consente l'accesso al sistema
+	 * Consente l'autenticazione. 
+	 * Restituisce true se le credenziali inserite si trovano nel database, altrimenti non consente l'accesso al sistema
+	 * @param s Scheda
+	 * @return boolean
+	 * @throws SQLException
 	 */
 	@Override
 	public boolean login(Scheda scheda) throws SQLException {
- 
+
 		boolean login_succed = false;
 
 		java.sql.Statement s = DBUtility.getStatement();
@@ -145,7 +163,7 @@ public class UtenteDAOImpl implements UtenteDAO {
 
 			// se la query ottiene un result ,allora il login è stato effettuato con successo. 
 			//Se la query è vuota, la variabile boolean non cambia il suo stato
-			
+
 			if (rs.next()) {
 
 				login_succed = true;
@@ -153,7 +171,7 @@ public class UtenteDAOImpl implements UtenteDAO {
 			}
 
 		} catch (SQLException e) {
- 			e.printStackTrace();
+			e.printStackTrace();
 			throw e;
 		}
 

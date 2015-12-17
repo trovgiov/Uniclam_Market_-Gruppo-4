@@ -14,8 +14,8 @@ public class Scheda {
 	 * costruttore scheda con idscheda e pin. Viene Usato dopo che l'utente,
 	 * effettua il login.
 	 * 
-	 * @param idScheda
-	 * @param pin
+	 * @param idScheda int
+	 * @param pin int 
 	 */
 	public Scheda(int idScheda, int pin) {
 		super();
@@ -25,7 +25,7 @@ public class Scheda {
 
 	/**
 	 * Costruttore con idscheda
-	 * @param idScheda
+	 * @param idScheda int
 	 */
 	public Scheda(int idScheda) {
 		super();
@@ -47,8 +47,8 @@ public class Scheda {
 	/**
 	 * Costruttore per creare la scheda
 	 * 
-	 * @param punti_totali
-	 * @param massimale_res
+	 * @param punti_totali double
+	 * @param massimale_res double
 	 */
 	public Scheda(double punti_totali, double massimale_res) {
 		super();
@@ -58,8 +58,8 @@ public class Scheda {
 
 	/**
 	 * Costruttore per id scheda e massimale residuo
-	 * @param idScheda
-	 * @param massimale_res
+	 * @param idScheda int
+	 * @param massimale_res double
 	 */
 	public Scheda(int idScheda, double massimale_res) {
 		super();

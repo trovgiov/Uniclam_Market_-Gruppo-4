@@ -59,6 +59,13 @@ public class PersonalPage_GUI extends JFrame {
 	}
 
 
+	public PersonalPage_GUI(Socket s2, Scheda card2) {
+		this.s=s2;
+		this.card=card2;
+		// TODO Auto-generated constructor stub
+	}
+
+
 	// Icone 
 	Icon card_icon = new ImageIcon("img/card.png");
 	Icon spesa = new ImageIcon("img/cart.png");
@@ -214,7 +221,8 @@ public class PersonalPage_GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				Controller_PersonalPage.effettuaspesa(s,card);
+				Controller_PersonalPage.effettuaspesa(s,card,u);
+				PersonalPage_GUI.this.setVisible(false);
  			}
 		});
 
@@ -272,7 +280,7 @@ public class PersonalPage_GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 
-				String new_mail = (String) JOptionPane.showInputDialog(null, "Inserisca la nuava mail", "Inserire Email", JOptionPane.INFORMATION_MESSAGE,email_icon, null, null);
+				String new_mail = (String) JOptionPane.showInputDialog(null, "Inserisca la nuova mail", "Inserire Email", JOptionPane.INFORMATION_MESSAGE,email_icon, null, null);
 
 				if(new_mail==null){
 					JOptionPane.showMessageDialog(PersonalPage_GUI.this, "Email non valida", "Modifica email", JOptionPane.DEFAULT_OPTION, scary);

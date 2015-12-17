@@ -66,10 +66,9 @@ public class ControllerLogin {
 
 				if (parts[0].contentEquals(Server.USER_LOGGED)) {
 
-					double mas_res = Double.parseDouble(parts[1]);
+					card.setMassimale_res(Double.parseDouble(parts[1])) ;
 
-					card.setMassimale_res(mas_res);
-					Utente u=new Utente(parts[2],parts[3],parts[4]);
+ 					Utente u=new Utente(parts[2],parts[3],parts[4]);
 
 
 					PersonalPage_GUI personalwindow = new PersonalPage_GUI(
@@ -146,7 +145,6 @@ public class ControllerLogin {
 	}
 
 
-	// Da Fare
 	public static void logout( ) throws IOException{
 
 

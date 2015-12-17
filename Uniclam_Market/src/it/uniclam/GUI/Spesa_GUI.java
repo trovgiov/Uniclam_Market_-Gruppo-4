@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 
 
 
+
+
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.SystemColor;
@@ -24,10 +26,14 @@ import javax.swing.JTable;
 
 
 
+
+
+import it.uniclam.Controller.ControllerLogin;
 import it.uniclam.Controller.ControllerSpesa;
 import it.uniclam.entity.Carrello;
 import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Spesa;
+import it.uniclam.entity.Utente;
 
 import javax.swing.JButton;
 
@@ -54,6 +60,7 @@ public class Spesa_GUI extends JFrame {
 
 	private Spesa shop;
 	private Scheda card;
+	private Utente u;
 	/**
 	 * Create the application.
 	 */
@@ -63,11 +70,12 @@ public class Spesa_GUI extends JFrame {
 
 	public static BufferedReader in;
 
-	public Spesa_GUI(Socket s, Spesa shop,Scheda card) throws HeadlessException {
+	public Spesa_GUI(Socket s, Spesa shop,Scheda card,Utente u) throws HeadlessException {
 		super();
 		this.s = s;
 		this.shop = shop;
 		this.card=card;
+		this.u=u;
 
 		initialize();
 	}
@@ -165,7 +173,7 @@ public class Spesa_GUI extends JFrame {
 		getContentPane().add(btnAvanti);
 
 		Icon exit = new ImageIcon("img/exit_ico.png");
-		JButton btnEsci = new JButton("Annulla ed esci");
+		JButton btnEsci = new JButton("Annulla Spesa");
 		btnEsci.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		btnEsci.setIcon(exit);
 		btnEsci.setBounds(221, 725, 166, 58);
@@ -292,10 +300,10 @@ public class Spesa_GUI extends JFrame {
 				if(shop.getImporto_tot()<=card.getMassimale_res()){
 
 					Spesa_GUI.this.setVisible(false);
-					Riepilogo_GUI windows=new Riepilogo_GUI(s,card,shop);
+					Riepilogo_GUI windows=new Riepilogo_GUI(s,card,shop,u);
 					windows.setVisible(true);
  
-
+ 
 				}
 
 				else {
@@ -317,7 +325,7 @@ public class Spesa_GUI extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 
-				int scelta = JOptionPane.showConfirmDialog(Spesa_GUI.this, "Sei di voler annullare la spesa e uscire?", "Conferma uscita",
+				int scelta = JOptionPane.showConfirmDialog(Spesa_GUI.this, "Sei di voler annullare la spesa e tornare nella tua area personale?", "Conferma uscita",
 						JOptionPane.YES_NO_OPTION, JOptionPane.YES_OPTION, scary);
 
 				switch (scelta) {
@@ -326,8 +334,9 @@ public class Spesa_GUI extends JFrame {
 
 
 						ControllerSpesa.cancellaSpesa(s,shop);
-						s.close();
-						System.exit(0);
+						Spesa_GUI.this.setVisible(false);
+						PersonalPage_GUI window=new PersonalPage_GUI(s, card, u);
+						window.setVisible(true);
 						// PersonalPage_GUI = new Per
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block

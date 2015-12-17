@@ -1,24 +1,24 @@
 package it.uniclam.UniclamMarket;
 
- import it.uniclam.db.DBUtility;
- 
- 
+import it.uniclam.db.DBUtility;
+
+
 
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
- 
 
- 
 
- 
+
+
+
 public class Test {
- 
 
-	
- 	 
+
+
+
 
 
 
@@ -26,13 +26,13 @@ public class Test {
 
 	public static void main(String[] args) throws SQLException{
 
-		
- 		
-	 
-		
- 	Double pino=pino();
+
+
+
+
+		Double pino=pino();
 		System.out.println("\nMassimale _ residuo : "+pino);
- 	}
+	}
 
 
 	@SuppressWarnings({ "deprecation", "unused" })
@@ -155,9 +155,9 @@ public class Test {
 
 	}
 
-		
 
- 
+
+
 }
 
 

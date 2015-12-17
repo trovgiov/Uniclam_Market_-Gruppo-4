@@ -7,10 +7,10 @@ import it.uniclam.entity.Spesa;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
- 
+
 import java.util.Random;
 
- import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableModel;
 
 import com.mysql.jdbc.Connection;
 
@@ -33,16 +33,16 @@ public class SpesaDAOImpl implements SpesaDAO {
 		return dao;
 	}
 
- 
+
 
 	/**
 	 * Inserisce la spesa nel database,generando un id spesa con la funzione random
-	 * @param  c Entity Spesa  
-	 * @return id spesa
-	 * @throws SQLException
+	 * @param  c  Spesa  
+	 * @return idspesa id della spesa 
+	 * @throws SQLException 
 	 */
 	@Override
-	 public int insertSpesa(Spesa c) throws SQLException {
+	public int insertSpesa(Spesa c) throws SQLException {
 
 		Connection dbConnection = null;
 		java.sql.PreparedStatement preparedStatement = null;
@@ -91,13 +91,13 @@ public class SpesaDAOImpl implements SpesaDAO {
 
 	}
 
-	 
+
 	/**
 	 * Aggiunge i  prodotti nel carrello, tramite una query di insert nel database.
 	 * Restituisce una variabile boolean. Se return true allora il prodotto è stato correttamente inserito
-	 * @param  c Entity Carrello
-	 * @param  shop Entity Spesa
-	 * @return
+	 * @param  c Carrello
+	 * @param  shop Spesa
+	 * @return boolean
 	 * @throws SQLException
 	 */
 	@Override
@@ -141,11 +141,11 @@ public class SpesaDAOImpl implements SpesaDAO {
 	}
 
 	/**
-	 * Metodo necessario per l'interfacciamento con la JTable. Esegue una select di tutte le informazioni necessarie sui prodotti, che saranno fornite all'utente
-	 * @param  int idspesa
-	 * @return DefaultTableModel dm
+	 * Interfacciamento con la JTable. Esegue una select di tutte le informazioni necessarie sui prodotti, che saranno fornite all'utente
+	 * @param  idspesa int
+	 * @return dm DefaultTableModel
 	 */
-	 
+
 	@Override
 	public DefaultTableModel getData(int idspesa) throws SQLException {
 
@@ -195,8 +195,8 @@ public class SpesaDAOImpl implements SpesaDAO {
 
 	/**
 	 * Eliminazione Prodotto dalla lista spesa e aggiornamento dell'importo finale. 
-	 * @param  c Entity Carrello
-	 * @param  shop  Entity Spesa
+	 * @param  c Carrello
+	 * @param  shop Spesa
 	 * @return boolean
 	 */
 	public boolean deleteProduct(Carrello c, Spesa shop)
@@ -244,7 +244,7 @@ public class SpesaDAOImpl implements SpesaDAO {
 	/**
 	 * Calcolo dell'importo finale della spesa.
 	 * Il calcolo viene eseguito direttamente nella query.
-	 * @param shop Entity Spesa
+	 * @param Entity Spesa
 	 * 
 	 */
 	public void calcoloImporto(Spesa shop) throws SQLException {
@@ -290,7 +290,7 @@ public class SpesaDAOImpl implements SpesaDAO {
 	 * @param carrello Entity Carrello
 	 * @param shop   Entity Spesa
 	 * @return boolean
-     **/
+	 **/
 	@Override
 	public boolean updateProduct(Carrello carrello, Spesa shop)
 			throws SQLException {
@@ -380,35 +380,14 @@ public class SpesaDAOImpl implements SpesaDAO {
 
 
 
-	@Override
-	public int getIdScheda(int idspesa) throws SQLException{
-
-		int idscheda=0;
-		java.sql.Statement s = DBUtility.getStatement();
-
-		String sql = "select scheda_idscheda from spesa where idspesa='"+idspesa+"' ";
-		try {
-			ResultSet rs = s.executeQuery(sql);
-
-			while (rs.next()) {
-
-				idscheda=rs.getInt("scheda_idscheda");
 
 
-			}
-
-		}
-
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return idscheda;
-	}
-
-/**
- * Mostra il massimale residuo dell'utente
- *   
- */
+	/**
+	 * Mostra il massimale residuo dell'utente
+	 * @param card
+	 * @return
+	 * @throws SQLException
+	 */
 	@Override
 	public boolean show_Massimale(Scheda card)
 			throws SQLException {
@@ -454,7 +433,8 @@ public class SpesaDAOImpl implements SpesaDAO {
 	 * Calcolo punti tessera fedeltà per la singola spesa  
 	 * Il calcolo punti viene eseguito dentro la query : SUM (quantita*punti prodotto) as punti.
 	 * Il result della query, viene assegnato alla spesa con il metodo setPunti_spesa
-	 * @param shop Entity Spesa
+	 * @param shop Spesa 
+	 * @throws SQLException
 	 */
 	@Override
 	public void CalcolaPuntiSpesa(Spesa shop) throws SQLException {
@@ -497,8 +477,9 @@ public class SpesaDAOImpl implements SpesaDAO {
 
 	/**
 	 * Aggiorna i punti della scheda sommando i punti precendenti con quelli dell'ultima spesa
-	 * @param card Entity Scheda
-	 * @param shop Entity Spesa
+	 * @param card Scheda
+	 * @param shop Spesa 
+	 * @throws SQLException
 	 */
 	@Override
 	public void AggiornaPuntiScheda(Scheda card,Spesa shop) throws SQLException {

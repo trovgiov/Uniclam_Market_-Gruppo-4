@@ -14,11 +14,13 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import it.uniclam.GUI.Login_GUI;
+import it.uniclam.GUI.PersonalPage_GUI;
 import it.uniclam.UniclamMarket.Server;
 import it.uniclam.entity.Carrello;
 import it.uniclam.entity.JTableOperation;
 import it.uniclam.entity.Scheda;
 import it.uniclam.entity.Spesa;
+import it.uniclam.entity.Utente;
 
 
 /**
@@ -58,7 +60,7 @@ public class ControllerSpesa {
 
 		if (line.contentEquals(Server.SHOP_DELETED)) {
 
-			JOptionPane.showMessageDialog(null, "Spesa Eliminata dal sistema. Arrivederci!", "Conferma eliminazione", JOptionPane.CLOSED_OPTION, ok);
+			JOptionPane.showMessageDialog(null, "Spesa Eliminata dal sistema!", "Conferma eliminazione", JOptionPane.CLOSED_OPTION, ok);
 
 		} else {
 			JOptionPane.showMessageDialog(null,
@@ -377,7 +379,7 @@ public class ControllerSpesa {
 	 * @param shop
 	 * @param card
 	 */
-	public static void updateMassimale_residuo(Socket s,Spesa shop, Scheda card){
+	public static void updateMassimale_residuo(Socket s,Spesa shop, Scheda card,Utente u){
 		try {
 			Login_GUI.in = new BufferedReader(new InputStreamReader(
 					s.getInputStream()));
@@ -407,6 +409,9 @@ public class ControllerSpesa {
 
 
 				card.setMassimale_res(Double.parseDouble(part[1]));
+				
+				PersonalPage_GUI windows=new PersonalPage_GUI(s, card, u);
+				windows.setVisible(true);
 
 
 			}

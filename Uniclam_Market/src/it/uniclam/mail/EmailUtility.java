@@ -29,9 +29,9 @@ public class EmailUtility {
 	/**
 	 * Configurazione parametri mail
 	 * 
-	 * @param host
-	 * @param port
-	 * @param userName
+	 * @param host String
+	 * @param port int
+	 * @param userName String
 	 *            : the email of the sender
 	 * @param password
 	 * @param email
